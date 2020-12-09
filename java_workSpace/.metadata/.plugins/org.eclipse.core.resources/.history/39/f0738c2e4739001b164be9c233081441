@@ -1,0 +1,90 @@
+package kh.java.operator;
+
+public class OperatorTest {
+
+	public static void main(String[] args) {
+
+		OperatorTest ot = new OperatorTest();
+//		ot.test1();
+//		ot.test1_1();
+		ot.test2();
+		
+	}
+	
+	/**
+	 * 단항 연산자
+	 */
+	public void test1() {
+		int a = 10;
+		System.out.println(+a+", "+-a);
+		
+		boolean bool = a!= 10;
+		System.out.println(!bool);
+		
+		System.out.println((long)Integer.MAX_VALUE +1 );
+		
+		//증감연산자 : ++ --
+		//++a(전위 증감연산자)
+		//먼저 1증감후, 인접연산에 사용
+		//a++(후위 증감연산자)
+		//인접연산에 먼저 사용된후, 1증감됨
+		a++; // a=(a+1)
+		a--; // a=a-1
+
+		System.out.println("a = " + a);
+		
+//		System.out.println(++a +1);
+		System.out.println(a++ +1);
+		
+		int k = 1;
+		int m = ++k;
+		System.out.println("k = " + k + ", m = " + m);
+		
+		int c = 1;
+		int d = c++;
+		System.out.println("i = " + c + ", o = " + d);
+		
+		
+		int i = 3;
+		int j = i++ + 10;
+		System.out.println(" i = " + i +", j = " + j);
+		
+	}
+	
+	public void test1_1() {
+		int x= 10;
+		int y = 10;
+		int z = ++x;
+		System.out.println("x = " + x + ", y = "+ y + ", z = " + z);
+		//x = 11, y = 10, z = 11
+		
+		
+		z = y++;
+		System.out.println("x = " + x + ", y = "+ y + ", z = " + z);
+		//x = 11, y = 11, z = 10
+		
+		x = 20;
+		z = x++ + --y;
+		System.out.println("x = " + x + ", y = "+ y + ", z = " + z);
+		//x = 21, y = 10, z = 30
+		
+		int m = 20;
+		int n = m++ + m;
+		System.out.println(" m = " + m + " n = " + n);
+		//m = 21, n = 40
+	}
+	public void test2() {
+		
+		int a = 10;
+		int b = 4;
+		System.out.println(a+b);
+		System.out.println(a-b);
+		System.out.println(a*b);
+		System.out.println(a/b);
+		System.out.println(a%b);
+		
+		System.out.println(a + b * a / b -a % b);
+		
+	}
+
+}

@@ -1,0 +1,23 @@
+package kh.java.operator;
+
+public class OperatorTest {
+
+	public static void main(String[] args) {
+
+		OperatorTest ot = new OperatorTest();
+		ot.test1();
+		
+	}
+	
+	/**
+	 * 단항 연산자
+	 */
+	public void test1() {
+		int a = 10;
+		System.out.println(+a+", "+-a);
+		
+		boolean bool = a!= 10;
+		System.out.println(!bool);
+	}
+
+}

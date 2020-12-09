@@ -1,0 +1,60 @@
+package kh.java.scanner;
+
+import java.util.Scanner;
+
+/**
+ * 
+ * Scanner
+ * 1.next계열
+ * 	- next() : String 값 읽음
+ * 	- nextInt() : int 값 읽음
+ * 	- nextDouble() : double 값 읽음
+ * 	- nextBoolean() : boolean 값 읽음
+ * 
+ * 2.nextLine계열
+ * 	- nextLine() : String 값 읽음 한줄
+ *
+ */
+public class ScannerTest {
+
+	public static void main(String[] args) {
+		ScannerTest s = new ScannerTest();
+		s.test1();
+	}
+	
+	
+	/**
+	 * next계열
+	 */
+	public void test1() {
+		//System.out 표준출력(콘솔)
+		//System.in 표준입력(키보드)
+		Scanner sc = new Scanner(System.in);
+		
+		//String 입력연습
+//		System.out.print("이름 : ");
+//		String name = sc.next();
+//		System.out.println("name = " + name);
+		
+		//int 입력연습
+//		System.out.print("정수 : ");
+//		int num = sc.nextInt();
+//		System.out.println("num = " +num);
+		
+		//double 입력연습
+//		System.out.print("실수 : ");
+//		double dNum = sc.nextDouble();
+//		System.out.println("dnum = " + dNum);
+	
+//		System.out.print("참 / 거짓 (true/false) : ");
+//		boolean bool = sc.nextBoolean();
+//		System.out.println("bool = " + bool);
+		
+		System.out.print(" 딱 한글자만 입력 : ");
+		char ch = sc.next().charAt(0);
+		System.out.println(s.charAt(0));
+		
+		
+		
+	}
+}

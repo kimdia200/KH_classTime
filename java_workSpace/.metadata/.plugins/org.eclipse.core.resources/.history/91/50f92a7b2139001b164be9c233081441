@@ -1,0 +1,14 @@
+package kh.java.format;
+
+public class PrintfTest {
+
+	public static void main(String[] args) {
+		PrintfTest p = new PrintfTest();
+		p.test1();
+		
+	}
+
+	public void test1() {
+		
+	}
+}

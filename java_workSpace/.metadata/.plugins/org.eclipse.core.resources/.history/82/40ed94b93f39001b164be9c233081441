@@ -1,0 +1,36 @@
+package kh.java.operator;
+
+public class OperatorTest {
+
+	public static void main(String[] args) {
+
+		OperatorTest ot = new OperatorTest();
+		ot.test1();
+		
+	}
+	
+	/**
+	 * 단항 연산자
+	 */
+	public void test1() {
+		int a = 10;
+		System.out.println(+a+", "+-a);
+		
+		boolean bool = a!= 10;
+		System.out.println(!bool);
+		
+		System.out.println((long)Integer.MAX_VALUE +1 );
+		
+		//증감연산자 : ++ --
+		//++a(전위 증감연산자)
+		//먼저 1증감후, 인접연산에 사용
+		//a++(후위 증감연산자)
+		//인접연산에 먼저 사용된후, 1증감됨
+		a++; // a=(a+1)
+		a--; // a=a-1
+		
+		System.out.println("a = " + a);
+		
+	}
+
+}
