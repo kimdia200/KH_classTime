@@ -17,6 +17,8 @@
 <fullyQualifiedTypeName name="java.util.Random"/>
 <fullyQualifiedTypeName name="kh.java.condition.ifConditionTest"/>
 <fullyQualifiedTypeName name="kh.java.loop.ForLoopTest"/>
-<fullyQualifiedTypeName name="java.util.Scanner"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="kh.java.loop.WhileLoopTest"/>
+<fullyQualifiedTypeName name="kh.java.loop.BreakContinueTest"/>
+<fullyQualifiedTypeName name="java.util.Scanner"/>
 </qualifiedTypeNameHistroy>
