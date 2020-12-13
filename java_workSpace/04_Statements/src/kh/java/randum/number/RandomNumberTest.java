@@ -92,7 +92,6 @@ public class RandomNumberTest {
 		num = 3.75;
 		long res = Math.round(num*10);
 		System.out.println(res/10.0);
-		
 	}
 	
 }
