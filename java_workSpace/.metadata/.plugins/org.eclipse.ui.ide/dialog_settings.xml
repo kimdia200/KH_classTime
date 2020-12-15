@@ -11,10 +11,12 @@
 		<item key="WizardProjectsImportPage.STORE_NESTED_PROJECTS" value="false"/>
 		<item key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID" value="false"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="C:\workSpaces\KH_classTime\java_workSpace"/>
 			<item value="C:\Users\kimYS\Desktop\Git\KH_classTime\java_workSpace"/>
 			<item value=""/>
 		</list>
 		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
+			<item value=""/>
 			<item value="C:\Users\family\Desktop\01_HelloJava.zip"/>
 		</list>
 	</section>
