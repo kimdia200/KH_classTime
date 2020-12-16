@@ -9,7 +9,6 @@
 <fullyQualifiedTypeName name="kh.java.type.PrimitiveTypeTest"/>
 <fullyQualifiedTypeName name="kh.java.type.CastingTest"/>
 <fullyQualifiedTypeName name="kh.java.format.PrintfTest"/>
-<fullyQualifiedTypeName name="java.lang.Integer"/>
 <fullyQualifiedTypeName name="kh.java.operator.OperatorTest"/>
 <fullyQualifiedTypeName name="kh.java.method.MethodTest"/>
 <fullyQualifiedTypeName name="javax.print.attribute.standard.PrinterInfo"/>
@@ -20,6 +19,11 @@
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="kh.java.loop.WhileLoopTest"/>
 <fullyQualifiedTypeName name="kh.java.loop.BreakContinueTest"/>
-<fullyQualifiedTypeName name="java.util.Scanner"/>
 <fullyQualifiedTypeName name="kh.java.two.dimentional.array.TwoDimentionalArrayTest"/>
+<fullyQualifiedTypeName name="kh.java.args.CommandLineArgumentsTest"/>
+<fullyQualifiedTypeName name="java.lang.Integer"/>
+<fullyQualifiedTypeName name="kh.java.array.sort.SortingTest"/>
+<fullyQualifiedTypeName name="java.util.Arrays"/>
+<fullyQualifiedTypeName name="Test"/>
+<fullyQualifiedTypeName name="java.util.Scanner"/>
 </qualifiedTypeNameHistroy>
