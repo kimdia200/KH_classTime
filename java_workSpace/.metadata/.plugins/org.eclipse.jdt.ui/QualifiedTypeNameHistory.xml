@@ -26,4 +26,7 @@
 <fullyQualifiedTypeName name="java.util.Arrays"/>
 <fullyQualifiedTypeName name="Test"/>
 <fullyQualifiedTypeName name="java.util.Scanner"/>
+<fullyQualifiedTypeName name="kh.java.oop.student.Student"/>
+<fullyQualifiedTypeName name="kh.java.oop.student.Speaker"/>
+<fullyQualifiedTypeName name="kh.java.oop.encapsulation.account.Account"/>
 </qualifiedTypeNameHistroy>
