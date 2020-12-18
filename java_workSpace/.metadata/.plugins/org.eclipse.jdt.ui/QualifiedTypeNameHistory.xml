@@ -16,7 +16,6 @@
 <fullyQualifiedTypeName name="java.util.Random"/>
 <fullyQualifiedTypeName name="kh.java.condition.ifConditionTest"/>
 <fullyQualifiedTypeName name="kh.java.loop.ForLoopTest"/>
-<fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="kh.java.loop.WhileLoopTest"/>
 <fullyQualifiedTypeName name="kh.java.loop.BreakContinueTest"/>
 <fullyQualifiedTypeName name="kh.java.two.dimentional.array.TwoDimentionalArrayTest"/>
@@ -29,4 +28,13 @@
 <fullyQualifiedTypeName name="kh.java.oop.student.Student"/>
 <fullyQualifiedTypeName name="kh.java.oop.student.Speaker"/>
 <fullyQualifiedTypeName name="kh.java.oop.encapsulation.account.Account"/>
+<fullyQualifiedTypeName name="kh.java.oop.field.GalaxyNote20"/>
+<fullyQualifiedTypeName name="kh.java.oop.access.modifier.field.run.KiwiRun"/>
+<fullyQualifiedTypeName name="java.lang.reflect.Constructor"/>
+<fullyQualifiedTypeName name="kh.java.oop.init.block.Sample"/>
+<fullyQualifiedTypeName name="java.lang.reflect.Method"/>
+<fullyQualifiedTypeName name="kh.java.oop.method.MethodTest"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="kh.java.oop.method.Sample"/>
+<fullyQualifiedTypeName name="kh.java.oop.method.RecursionTest"/>
 </qualifiedTypeNameHistroy>
