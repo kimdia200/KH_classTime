@@ -3,7 +3,6 @@
 <fullyQualifiedTypeName name="com.kh.java.KHJava"/>
 <fullyQualifiedTypeName name="com.kh.java.other.OtherJava"/>
 <fullyQualifiedTypeName name="com.kh.java.HelloWorld"/>
-<fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="com.kh.java.print.PrintTest"/>
 <fullyQualifiedTypeName name="com.kh.student.Student"/>
 <fullyQualifiedTypeName name="kh.java.type.PrimitiveTypeTest"/>
@@ -24,7 +23,6 @@
 <fullyQualifiedTypeName name="kh.java.array.sort.SortingTest"/>
 <fullyQualifiedTypeName name="java.util.Arrays"/>
 <fullyQualifiedTypeName name="Test"/>
-<fullyQualifiedTypeName name="java.util.Scanner"/>
 <fullyQualifiedTypeName name="kh.java.oop.student.Student"/>
 <fullyQualifiedTypeName name="kh.java.oop.student.Speaker"/>
 <fullyQualifiedTypeName name="kh.java.oop.encapsulation.account.Account"/>
@@ -34,7 +32,12 @@
 <fullyQualifiedTypeName name="kh.java.oop.init.block.Sample"/>
 <fullyQualifiedTypeName name="java.lang.reflect.Method"/>
 <fullyQualifiedTypeName name="kh.java.oop.method.MethodTest"/>
-<fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="kh.java.oop.method.Sample"/>
 <fullyQualifiedTypeName name="kh.java.oop.method.RecursionTest"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="com.oop.constructor.User"/>
+<fullyQualifiedTypeName name="kh.java.object.array.person.Person"/>
+<fullyQualifiedTypeName name="java.util.Scanner"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="kh.java.object.array.person.PersonManager"/>
 </qualifiedTypeNameHistroy>
