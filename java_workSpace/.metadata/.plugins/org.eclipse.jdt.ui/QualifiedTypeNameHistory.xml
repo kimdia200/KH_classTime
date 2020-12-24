@@ -40,4 +40,15 @@
 <fullyQualifiedTypeName name="java.util.Scanner"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="kh.java.object.array.person.PersonManager"/>
+<fullyQualifiedTypeName name="kh.java.inherit.basic.Child1"/>
+<fullyQualifiedTypeName name="kh.java.inherit.basic.GrandChild"/>
+<fullyQualifiedTypeName name="kh.java.inherit.basic.Parent"/>
+<fullyQualifiedTypeName name="kh.java.inherit.basic.Child2"/>
+<fullyQualifiedTypeName name="java.awt.Desktop"/>
+<fullyQualifiedTypeName name="kh.java.inherit.product.model.vo.Desktop"/>
+<fullyQualifiedTypeName name="kh.java.inherit.product.model.vo.SmartPhone"/>
+<fullyQualifiedTypeName name="kh.java.inherit.product.model.vo.Product"/>
+<fullyQualifiedTypeName name="kh.java.inherit.product.model.vo.Tv"/>
+<fullyQualifiedTypeName name="kh.java.inherit.shape.Shape"/>
+<fullyQualifiedTypeName name="kh.java.inherit.shape.Point"/>
 </qualifiedTypeNameHistroy>
