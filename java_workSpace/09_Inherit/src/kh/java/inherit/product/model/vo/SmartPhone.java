@@ -28,5 +28,4 @@ public class SmartPhone extends Product {
 	public void setCarrier(String carrier) {
 		this.carrier = carrier;
 	}
-	
 }
