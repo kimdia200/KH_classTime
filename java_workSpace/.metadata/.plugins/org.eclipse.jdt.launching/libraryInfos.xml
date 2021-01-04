@@ -38,6 +38,25 @@
 <entry path="C:\Program Files\zulu8.50.0.51-ca-jdk8.0.275\jre\lib\endorsed"/>
 </endorsedDirs>
 </libraryInfo>
+<libraryInfo home="C:\dev\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\jre" version="1.8.0_265">
+<bootpath>
+<entry path="C:\dev\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\jre\lib\resources.jar"/>
+<entry path="C:\dev\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\jre\lib\rt.jar"/>
+<entry path="C:\dev\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\jre\lib\sunrsasign.jar"/>
+<entry path="C:\dev\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\jre\lib\jsse.jar"/>
+<entry path="C:\dev\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\jre\lib\jce.jar"/>
+<entry path="C:\dev\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\jre\lib\charsets.jar"/>
+<entry path="C:\dev\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\jre\lib\jfr.jar"/>
+<entry path="C:\dev\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\jre\classes"/>
+</bootpath>
+<extensionDirs>
+<entry path="C:\dev\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\jre\lib\ext"/>
+<entry path="C:\WINDOWS\Sun\Java\lib\ext"/>
+</extensionDirs>
+<endorsedDirs>
+<entry path="C:\dev\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\java-1.8.0-openjdk-1.8.0.265-1.b01.ojdkbuild.windows.x86_64\jre\lib\endorsed"/>
+</endorsedDirs>
+</libraryInfo>
 <libraryInfo home="C:\Program Files\Java\jre1.8.0_171" version="1.8.0_171">
 <bootpath>
 <entry path="C:\Program Files\Java\jre1.8.0_171\lib\resources.jar"/>

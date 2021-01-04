@@ -9,6 +9,8 @@ import java.io.FileWriter;
 public class FileRWTest {
 	public static void main(String[] args) {
 		FileRWTest f = new FileRWTest();
+		f.test1();
+		System.out.println();
 		f.test2();
 	}
 
@@ -65,5 +67,4 @@ public class FileRWTest {
 			e.printStackTrace();
 		}
 	}
-	
 }
