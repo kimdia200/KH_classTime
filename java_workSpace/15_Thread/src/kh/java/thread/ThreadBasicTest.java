@@ -19,6 +19,7 @@ public class ThreadBasicTest {
 		//작업 B
 		for(int i=0; i<100; i++) {
 			System.out.print('-');
+			
 		}	
 	}
 	
@@ -38,6 +39,7 @@ public class ThreadBasicTest {
 		th1.start();
 		th2.start();
 	}
+	
 	/**
 	 * 멀테쓰레드 생성방법2
 	 * Runnable 인터페이스 구현
