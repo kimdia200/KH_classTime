@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class ChatClient {
 	public static final String SERVER_IP = "localhost"; //khm
-	public static final int SERVER_PORT = 7777;
+	int SERVER_PORT = 7777;
 	
 	public static void main(String[] args) {
 		new ChatClient().init();

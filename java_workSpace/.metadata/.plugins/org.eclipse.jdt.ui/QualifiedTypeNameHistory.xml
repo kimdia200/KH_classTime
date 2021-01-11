@@ -1,25 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="kh.java.exception.Parent"/>
-<fullyQualifiedTypeName name="java.lang.Exception"/>
-<fullyQualifiedTypeName name="java.lang.Override"/>
-<fullyQualifiedTypeName name="java.io.FileNotFoundException"/>
-<fullyQualifiedTypeName name="java.util.Arrays"/>
-<fullyQualifiedTypeName name="kh.java.collection.list.ArrayListTest"/>
-<fullyQualifiedTypeName name="java.util.Date"/>
-<fullyQualifiedTypeName name="java.lang.IncompatibleClassChangeError"/>
-<fullyQualifiedTypeName name="java.lang.Comparable"/>
-<fullyQualifiedTypeName name="java.util.Comparator"/>
-<fullyQualifiedTypeName name="kh.java.collection.list.Student"/>
-<fullyQualifiedTypeName name="kh.java.collection.list.StudentNameAscending"/>
-<fullyQualifiedTypeName name="kh.java.collection.set.HashSetTest"/>
-<fullyQualifiedTypeName name="java.util.Collection"/>
-<fullyQualifiedTypeName name="java.util.List"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="java.lang.Integer"/>
-<fullyQualifiedTypeName name="java.util.Collections"/>
-<fullyQualifiedTypeName name="java.util.Objects"/>
-<fullyQualifiedTypeName name="java.util.HashSet"/>
 <fullyQualifiedTypeName name="java.util.LinkedHashSet"/>
 <fullyQualifiedTypeName name="java.util.Set"/>
 <fullyQualifiedTypeName name="java.util.TreeSet"/>
@@ -60,4 +40,24 @@
 <fullyQualifiedTypeName name="java.net.ServerSocket"/>
 <fullyQualifiedTypeName name="kh.java.network.socket.server.ChatServer"/>
 <fullyQualifiedTypeName name="java.util.Scanner"/>
+<fullyQualifiedTypeName name="kh.java.gui.swing.container.JFrameTest2"/>
+<fullyQualifiedTypeName name="kh.java.gui.swing.container.JPanelTest"/>
+<fullyQualifiedTypeName name="kh.java.gui.swing.container.layout.BorderLayoutTest"/>
+<fullyQualifiedTypeName name="kh.java.gui.swing.container.layout.BorderLayoutTest.BorderPanel1"/>
+<fullyQualifiedTypeName name="java.awt.Color"/>
+<fullyQualifiedTypeName name="java.awt.BorderLayout"/>
+<fullyQualifiedTypeName name="javax.swing.JPanel"/>
+<fullyQualifiedTypeName name="kh.java.gui.swing.container.layout.FlowLayoutTest"/>
+<fullyQualifiedTypeName name="javax.swing.JFrame"/>
+<fullyQualifiedTypeName name="kh.java.gui.util.MyUtil"/>
+<fullyQualifiedTypeName name="javax.swing.JTextField"/>
+<fullyQualifiedTypeName name="javax.swing.JLabel"/>
+<fullyQualifiedTypeName name="javax.swing.JPasswordField"/>
+<fullyQualifiedTypeName name="javax.swing.JButton"/>
+<fullyQualifiedTypeName name="javax.swing.JList"/>
+<fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
+<fullyQualifiedTypeName name="kh.java.gui.swing.container.layout.NullLayoutTest.LoginListener"/>
+<fullyQualifiedTypeName name="java.util.Arrays"/>
+<fullyQualifiedTypeName name="kh.java.inner.class_.OuterClass.B"/>
+<fullyQualifiedTypeName name="kh.java.inner.class_.OuterClass"/>
 </qualifiedTypeNameHistroy>
