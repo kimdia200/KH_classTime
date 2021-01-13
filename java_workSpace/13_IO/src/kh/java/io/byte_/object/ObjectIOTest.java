@@ -58,18 +58,18 @@ public class ObjectIOTest {
 					new ObjectInputStream(
 							new BufferedInputStream(
 									new FileInputStream(f))); 
-			){
-				while(true) {//다 읽어오면 EOFException발생 하니까 예외처리해줌
-					System.out.println(ois.readObject());
-				}
-//				System.out.println(ois.readObject());//동적바인딩에 의해 override된 메서드 호출된것
-//				System.out.println(ois.readObject());
-//				System.out.println(ois.readObject());
-//				System.out.println(ois.readObject().toString());//내가 혼자 한거
-			}catch (EOFException e) { //더이상 읽어올게 없을경우!!!!
-				System.out.println("파일 읽어오기 완료");
-			}catch (IOException | ClassNotFoundException e) {//멀티 캐치절 버티컬바 하나인거 메모
-				e.printStackTrace();
+		){
+			while(true) {//다 읽어오면 EOFException발생 하니까 예외처리해줌
+				System.out.println(ois.readObject());
 			}
+//			System.out.println(ois.readObject());//동적바인딩에 의해 override된 메서드 호출된것
+//			System.out.println(ois.readObject());
+//			System.out.println(ois.readObject());
+//			System.out.println(ois.readObject().toString());//내가 혼자 한거
+		}catch (EOFException e) { //더이상 읽어올게 없을경우!!!!
+		System.out.println("파일 읽어오기 완료");
+		}catch (IOException | ClassNotFoundException e) {//멀티 캐치절 버티컬바 하나인거 메모
+			e.printStackTrace();
+		}
 	}
 }
