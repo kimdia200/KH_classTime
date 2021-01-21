@@ -11,13 +11,16 @@ import javax.swing.JLabel;
  */
 public class JFrameTest1 {
 	public static void main(String[] args) {
+		
 		JFrame f = new JFrame();
+		
 		//제목지정
 		f.setTitle("Hello Swing");
 		
 		//윈도우 크기지정
 		f.setSize(300,200);
-		f.setLocation(0,0);
+//		f.setLocation(0,0);
+//		f.setBounds(0, 0, 300, 200);
 		
 		//스크린 가운데 띄우기
 		f.setLocationRelativeTo(null);

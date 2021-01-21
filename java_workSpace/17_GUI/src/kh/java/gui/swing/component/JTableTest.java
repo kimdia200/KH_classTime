@@ -104,32 +104,32 @@ public class JTableTest extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//실제 전체 길이
-				int rowLen = model.getRowCount();
-				//실제 컬럼 길이
-				int colLen = model.getColumnCount();
-				
-				List<Member> newList = new ArrayList<Member>();
-				
-				for (int i = 0; i < rowLen; i++) {
-					Member newMember = new Member();
-					for (int j = 0; j < colLen; j++) {
-						Object data = model.getValueAt(i, j);
-//						System.out.println(data);
-						//0열 = 이름, 1열 = 주소, 2열 = 나이, 3열 = 결혼여부
-						switch(j) {
-						case 0 : newMember.setName((String)data);break;
-						case 1 : newMember.setAddr((String)data);break;
-						case 2 : newMember.setAge(Integer.parseInt(data.toString()));break;
-						case 3 : newMember.setMarried((boolean)data);break;
-						
+					//실제 전체 길이
+					int rowLen = model.getRowCount();
+					//실제 컬럼 길이
+					int colLen = model.getColumnCount();
+					
+					List<Member> newList = new ArrayList<Member>();
+					
+					for (int i = 0; i < rowLen; i++) {
+						Member newMember = new Member();
+						for (int j = 0; j < colLen; j++) {
+							Object data = model.getValueAt(i, j);
+	//						System.out.println(data);
+							//0열 = 이름, 1열 = 주소, 2열 = 나이, 3열 = 결혼여부
+							switch(j) {
+							case 0 : newMember.setName((String)data);break;
+							case 1 : newMember.setAddr((String)data);break;
+							case 2 : newMember.setAge(Integer.parseInt(data.toString()));break;
+							case 3 : newMember.setMarried((boolean)data);break;
+							
+							}
 						}
+						newList.add(newMember);
 					}
-					newList.add(newMember);
+					for(Member newMember : newList)
+						System.out.println(newMember);
 				}
-				for(Member newMember : newList)
-					System.out.println(newMember);
-			}
 		});
 		add(scrollPane);
 		add(btn, BorderLayout.SOUTH);

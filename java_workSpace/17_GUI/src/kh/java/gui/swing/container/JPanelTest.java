@@ -1,6 +1,5 @@
 package kh.java.gui.swing.container;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JFrame;
@@ -46,7 +45,7 @@ public class JPanelTest extends JFrame {
 		panel2.add(label2);
 		
 		//프레임에 패널 추가
-		add(panel1, BorderLayout.NORTH);
+		add(panel1);
 		add(panel2);
 
 		// 시각화처리(맨 마지막에 작성)

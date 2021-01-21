@@ -76,6 +76,7 @@ public class ActionEventTest extends JFrame implements ActionListener{
 			input.requestFocus();//바로 입력할 수 있도록 foucs를 가져오기
 		}
 	}
+	
 	public static void main(String[] args) {
 		new ActionEventTest(300, 200, "액션 이벤트").setVisible(true);;
 	}
