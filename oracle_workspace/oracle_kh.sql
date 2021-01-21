@@ -75,11 +75,15 @@ LOB타입(Large Object) 중의 CLOB(Character LOB)는 단일컬럼 최대 4GB까
 고정형, 가변형 모두 지정한 크기 이상의 값은 추가할 수 없다.
 */
 
+drop table tb_datatype;
+
 create table tb_datatype (
--- 컬럼명  자료형 널여부 기본값
-    a char(10),
+-- 컬럼명  자료형  널여부 기본값
+    a char(10) NOT NULL,
     b varchar(10)
 );
+
+desc tb_datatype;
 
 --테이블 조회
 select * -- *는 모든 컬럼
@@ -118,7 +122,7 @@ number(p,s)로 사용한다
 p=표현가능한 전체 자리수 (전체 자리수 라는게 핵심!!!)
 s = p 중 소수점 이하자리수를 가르킨다 (p중에서 라는게 핵심!!!)
 ---------------------------------------------------------
-값 : 1234.567 일경우
+값 : 1234.567 일경우  (내가 가지고 저장할 숫자의 길이가 중요함)
 number              1234.567
 number(7)           1235       (7,0)으로 인식하기 때문+ 자동반올림
 number(7,1)         1234.6     자동 반올림 처리 되어서
@@ -127,7 +131,7 @@ number(7,-2)       1200       자동 반올림 처리 되어서
 
 create table tb_datatype_number(
     a number,
-    b number(7),
+    b number(7,0),
     c number(7,1),
     d number(7,-2)
 );
@@ -135,7 +139,8 @@ create table tb_datatype_number(
 select * from tb_datatype_number;
 
 insert into tb_datatype_number
-values(1234.567, 1234.567, 1234.567, 1234.567);
+values(1234.567, 1234567.567, 12345678.5678, 1234.567);
+--                                       8+1=9        1200       
 
 --지정한 크기보다 큰 숫자는 ORA-01438: value larger than specified precision allowed for this column 발생
 insert into tb_datatype_number
@@ -165,7 +170,7 @@ create table tb_datatype_date (
 select * from tb_datatype_date;
 
 insert into tb_datatype_date
-VALUES (sysdate, systimestamp);
+VALUES (sysdate, systimestamp);  -- 현재시간 넣는 함수 두개
 
 --날짜형 - 날짜형 = 숫자 (1 = 하루)
 --to_char 는 날짜를 문자열로 표시해주는 함수
