@@ -246,3 +246,354 @@ select *
 from employee
 where quit_yn = 'N'
 order by emp_name asc;
+
+
+
+--==========================================
+--SELECT
+--==========================================
+--table의 존재하는 컬럼
+--가상컬럼(산술연산)
+--임의의 literal (어떤 값)
+--각 컬럼은 별칭(alias)를 가질 수 있다.
+--별칭에 공백, 특수문자가 있거나 숫자로 시작하는경우 쌍따옴표 필수
+
+select emp_name as "사원명", --별칭사용(쌍따옴표)
+        phone "전화번호", --별칭사용시 as생략가능
+        salary 급여, --별칭사용시 쌍따옴표도 생략가능
+        salary*12 "연  봉", --산술연산, 별칭에 공백이 포함된 경우 반드시 쌍따옴표
+        123, --literal
+        '안녕' --literal
+from employee;
+
+--실급여 : salary + (salary*bonus)
+select emp_name, 
+         salary,
+         bonus,
+         salary + (salary*bonus) 실급여
+from employee;
+
+--null값과는 산술연산을 할 수 없다. 그 결과는 무조건 null이다.
+--null % 1(X), 나머지연산자는 사용불가
+select null+1,
+         null-1,
+         null*1,
+         null/1
+from dual; --1행
+
+--nvl(col, null일때 값)   null처리 함수
+--col의 값이 null이 아니면 (col)의 값 리턴
+--col의 값이 null이면 , (null일때 값)을 리턴
+--3항 연산자처럼 생각하면 쉬움
+select emp_name, 
+         salary,
+         bonus,
+         salary + (salary * nvl(bonus, 0)) 실급여   --nvl 이용해서 null처리해줌
+from employee;
+
+
+--distinct 중복제거용 키워드
+--select절에 단 한번 사용가능하다
+select distinct job_code
+from employee;
+
+
+--직급 코드를 중복없이 출력
+select distinct job_code, dept_code
+from employee;
+
+--여러 컬럼 사용시 컬럼을 묶어서 고유한 값으로 취급한다
+select distinct job_code, dept_code
+from employee;
+
+--문자 연결연산자 ||
+-- +는 산술연산만 가능하다.
+select '안녕'+'하세요' --에러뜸, +연산은 숫자만 가능하기 때문
+from dual;
+
+select '안녕'||'하세요'||123  --예시
+from dual;
+
+select emp_name || ' (' || phone || ')'  "개인정보"
+from employee;
+
+
+--==========================================
+--WHERE
+--==========================================
+--테이블의 모든 행 중 결과집합에 포함될 행을 필터링한다.
+--특정행에 대해 true(포함) | false(제외) 결과를 리턴한다
+/*
+WHERE 절에서의 연산자
+같다                                = 
+다르다                            <> != ^=
+between A and B             A이상 B이하 범위연산
+and
+or
+not
+like, not like                    문자 패턴연산
+is null, is not null ,            null여부 검사
+in, not in                        값목록에 포함여부
+*/
+
+--부서코드가 D6인 사원조회
+
+select *
+from employee
+where dept_code = 'D6';
+--where dept_code <> 'D6';
+--where not dept_code= 'D6';
+
+--급여가 2,000,000보다 많은 사원 조회
+select *
+from employee
+where salary > 2000000;
+
+--부서코드가 D6 이거나 D9인 사원조회
+select emp_name, dept_code
+from employee
+where dept_code ='D6' or dept_code='D9';
+
+--날짜형도 크기 비교 가능
+--과거<미래
+select emp_name, hire_date
+from employee
+where hire_date < '2000/01/01'; 
+--날짜 형식의 문자열은 자동으로 날짜형으로 형변환됨, 안되는경우 명시적 형변환
+--hire_date가 2000/01/01보다 이전인 사람
+
+--20년 이상 근무한 사원조회, 퇴사 X인사람
+select *
+from employee
+where quit_yn='N' and to_date('2021/01/22')-hire_date >=365*20;  --명시적 형변환 사용
+--where quit_yn='N' and sysdate-hire_date >=365*20; 
+
+
+--범위 연산
+--급여가 200만원이상 400만원 이하인 사원 조회
+select emp_name, salary
+from employee
+where salary BETWEEN 2000000 AND 4000000; --이상 이하 인경우에만 사용 가능
+--where salary >= 2000000 and salary <= 4000000; --좀더 세부적 설정가능
+
+--1990/01/01~ 2001/01/01 인 사원 조회(사원명, 입사일)
+select emp_name, hire_date
+from employee
+where hire_date >= '1990/01/01' and hire_date <= '2001/01/01';
+--where hire_date between '1990/01/01' and '2001/01/01';
+--where hire_date between to_date('1990/01/01') and to_date('2001/01/01');
+
+--like, not like
+--문자열 패턴 비교 연산
+--wildcard : 의미를 가지는 특수문자
+--  _(언더스코어) = 아무문자 1개, 글자수제한
+--  %    (퍼센트)   = 아무문자 0개 이상
+
+select emp_name
+from employee
+where emp_name like '전%'; --전으로 시작, 그뒤로는 0개이상의 문자가 존재하는가?
+--전, 전차, 전진, 전형돈, 등등 무궁무진
+--파전(X)
+
+select emp_name
+from employee
+where emp_name like '전__'; --전으로 시작하고 연달아 두개의 문자가 존재하는가?
+--전형동, 전전전.... 전으로 시작하는 세글자 가능
+--전, 전진, 파전, 전당포아저씨 (XXXXXXX) 불가능
+
+
+--문제!) 이름에 가운데 글자가 '옹'인 사원 조회. 단, 이름은 3글자이다.
+select emp_name
+from employee
+where emp_name like '_옹_';
+
+--문제!) 이름에 '이'가 들어가는 사원 조회;
+select emp_name
+from employee
+where emp_name like '%이%';
+
+--email컬럼 값의 '_'이전 글자가 3글자인 이메일 조회
+select email
+from employee
+--where email like '____%'; --4글자 이후 0개이상의 문자열이 뒤따르는가?? (결론적으로 잘못되었음)
+where email like '___\_%' escape '\'; --escaping 문자 등록 
+--escape문자는 custom해줄수있다는것이 자바와 차이, escaping문자는 데이터에 존재하지 않는 문자로 해줄것!
+
+-- in, not in     값목록에 포함여부
+--부서코드에 따른 값 출력       총24명
+select emp_name, dept_code
+from employee
+order by dept_code;
+
+
+--부서코드가 D6 또는 D8인 사원 조회      총6명
+select emp_name, dept_code
+from employee
+where dept_code in ('D6', 'D8'); --갯수 제한 없이 값 나열 해주면된다
+--where dept_code = 'D6' or dept_code = 'D8';
+
+--부서코드 D6또는 D8이 아닌 사원 조회    총16명(왜?? 2명은 널이기때문에) null은 계산 안됨!!
+select emp_name, dept_code
+from employee
+--where dept_code not in ('D6', 'D8'); 
+--where not dept_code = 'D6' and not dept_code = 'D8';
+where dept_code != 'D6' and dept_code != 'D8';
+
+
+--is null, is not null : null비교연산
+--인턴 사원 조회(인턴사원은 부서코드가 null이라고 가정)
+--null값은 산술연산, 비교연산 모두 불가능 하다
+select emp_name, dept_code
+from employee
+where dept_code is null;
+--where dept_code is not null;
+--where dept_code = null   이런식으로는 사용불가능함
+
+--D6, D8부서원이 아닌 사원을 조회 하는데 인턴사원도 포함해봐라
+select emp_name, dept_code
+from employee
+where dept_code is null or dept_code not in('D6', 'D8');
+
+--nvl버전
+select emp_name, dept_code
+from employee
+where nvl(dept_code, 'D0' ) not in('D6','D8'); --nvl을 이용해서 NULL일 경우 임시값을 주고 검색
+--어떤 튜플을 출력해줄기 검사만 해준거기 때문에 원본값은 바뀌지 않는다!
+
+
+--==========================================
+--ORDER BY
+--==========================================
+--select구문 중 가장 마지막에 처리.
+--지정한 컬럼 기준으로 결과집합을 정렬해서 보여준다.
+
+--number       ex)0 < 10
+--string          ex)ㄱ< ㅎ, a < z  사전적 순서
+--date           ex) 과거 < 현재 < 미래 시간이 흐를수록 쌓여져가는 개념
+--null값 위치를 결정가능 : nulls first | nulls last
+
+select *
+from employee
+order by emp_id asc;    --oracle official 정렬기준을 설정하지 않은경우 출력 순서를 보장하지 않는다(될수는 있으나 보장은 x)
+--오름차순 asc(생략가능), 내림차순 desc
+--복수개의 컬럼 차례로 정렬가능
+select emp_id, emp_name, dept_code, job_code, hire_date
+from employee
+order by dept_code desc nulls last, job_code asc; 
+--기준1 : dept_code로 내림차순(널값은 마지막에)
+--기준2 : job_code로 오름차순
+
+--alias사용가능
+select emp_id 사번,
+        emp_name 사원명
+from employee
+order by 사원명;
+
+--1부터 시작하는 컬럼순서 사용가능
+select *
+from employee
+order by 9 desc; --사실 이사용 방법은 비추(컬럼 추가, 삭제시 영향을 받기 때문)
+
+
+--==========================================
+--BUILT-IN FUNCTION
+--==========================================
+--일련의 실행 코드 작성해두고 호출해서 사용함
+--반드시 하나의 리턴값을 가짐.
+
+--1. 단일행 함수 : 각 행마다 반복호출되어서 호출된 수 만큼 결과를 리턴함
+--      a. 문자 처리 함수
+--      b. 숫자 처리 함수
+--      c. 날짜 처리 함수
+--      d. 형변환 함수
+--      e. 기타 함수
+--2. 그룹함수 : 여러행을 그룹핑 한 후, 그룹당 하나의 결과를 리턴
+
+------------------------------------------------------------------------
+--단일행 함수
+------------------------------------------------------------------------
+
+--******************************************************************************************
+-- a. 문자 처리 함수
+--******************************************************************************************
+
+--length(col): number
+--문자열의 길이를 리턴
+select emp_name, length(emp_name)
+from employee;
+--where절에서도 사용가능하다
+select emp_name, email
+from employee
+where length(email) < 15;
+
+--lengthb(col)
+--값의 byte수 리턴
+select emp_name, lengthb(emp_name)
+from employee;
+
+--instr(string, search[ , position[ , occurence ] ] )
+--string에서 search가 위치한 index를 반환
+--oracle에서는 1-based index. 인덱스가 1부터 시작한다
+--JAVA의 String.indexOf와 비슷
+select instr('kh정보교육원 국가정보원', '정보'), --몇번째 인덱스에 위치하는지 알수있음
+         instr('kh정보교육원 국가정보원', '안녕'), --값이 없다면 0을 리턴
+         instr('kh정보교육원 국가정보원', '정보', 5), --5번째 이후에 처음 표시된곳 리턴(리턴시에는 처음부터인덱스값으로 리턴)
+         instr('kh정보교육원 국가정보원 정보문화사', '정보', 1 ,3), --1번지부터 검색하되 3번째 나온친구의 인덱스값을 알려줘~
+         instr('kh정보교육원 국가정보원 정보문화사', '정보', -1), --뒤에서부터 찾아줘~
+         instr('kh정보교육원 국가정보원 정보문화사', '정보', -1, 3)   --뒤에서부터 값을 찾는데 세번째 나온친구의 인덱스값을 알려줘~
+from dual;
+
+--email컬럼값중 '@'의 위치는? (이메일, 인덱스)
+select email, instr(email, '@') "@인덱스"
+from employee;
+
+
+--substr(string, startindex[, length] )
+--string에서 startIndex부터 length개수만큼 잘라내어 리턴
+--length생략 시에는 문자열 끝까지 반환
+
+select substr('show me the money', 6, 2), --me
+         substr('show me the money', 6), --length부분은 생략가능, me the money
+         substr('show me the money', -5, 3) --뒤에서 5번째 인덱스부터 3개 출력
+from dual;
+
+
+--@실습문제 : 사원명에서 성(1글자로가정)만 중복없이 사전순으로 출력
+select DISTINCT substr(emp_name, 1, 1) "성"
+from employee
+order by "성";
+--order by 1;
+
+--lpad | rpad(string, byte[, padding_char])
+-- byte수의 공간에 string을 대입하고 남은공간은 padding_char로 채워라
+--왼쪽에 채우는건 lpad, 오른쪽에 채우는건 rpad
+-- padding char는 생략시 공백문자
+
+select lpad(email, 20, '#'),
+         rpad(email, 20, '#'),
+         '[' || lpad(email, 20, '#') || ']',
+         '[' || rpad(email, 20, '#') || ']',
+         '[' || lpad(email, 20) || ']',
+         '[' || rpad(email, 20) || ']'
+from employee;
+
+
+--@실습문제 : 남자사원만 사번, 사원명, 주민번호, 연봉조회
+--주민번호 뒤 6자리는 ****** 숨김처리 할 것;
+
+select emp_id 사번, emp_name 이름 , rpad(substr(emp_no,1,8), 14, '*') 주민번호,salary*(1+nvl(bonus,0))*12 연봉
+from employee
+where substr(emp_no, 8,1) in ('1', '3');
+
+select bonus
+from employee;
+
+
+
+
+
+
+
+
+
+
