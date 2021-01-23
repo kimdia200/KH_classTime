@@ -170,20 +170,24 @@ create table tb_datatype_date (
 select * from tb_datatype_date;
 
 insert into tb_datatype_date
-VALUES (sysdate, systimestamp);  -- 현재시간 넣는 함수 두개
+VALUES (sysdate, systimestamp);  -- 현재시간 넣는 함수 두개, format을 정해주지않으면 기본형이 다르다
 
 --날짜형 - 날짜형 = 숫자 (1 = 하루)
---to_char 는 날짜를 문자열로 표시해주는 함수
-select to_char(a,'yyyy/mm/dd hh24:mi:ss'),
-         to_char(a+1,'yyyy/mm/dd hh24:mi:ss'),
-         b
+--to_char 는 날짜를 문자열로 표시해주는 함수(파라미터가 두개인경우)
+select 
+        a,
+        to_char(a,'yyyy/mm/dd hh24:mi:ss'),
+        to_char(a+1,'yyyy/mm/dd hh24:mi:ss'),
+        b,
+        to_char(b,'yyyy/mm/dd hh24:mi:ss'),
+        to_char(b+1,'yyyy/mm/dd hh24:mi:ss')
 from tb_datatype_date;
 
 --날짜형 +- 숫자(1=하루) = 날짜형 
 select sysdate-a
 from tb_datatype_date;
 
---to_date 는 문자열을 날짜형으로 변환해주는 함수
+--to_date 는 문자열을 날짜형으로 변환해주는 함수(파라미터가 한개인경우)
 select to_date('2021/01/23')-a
 from tb_datatype_date;
 
@@ -213,7 +217,7 @@ having 그룹조건절 (4) 선택
 order by 정렬조건 (6) 선택
 
 */
-select *
+select  *
 from employee
 where dept_code = 'D9' --데이터는 대소문자 구분
 order by emp_name asc; --오름차순 정렬 (내림차순 = desc)
@@ -223,7 +227,7 @@ select job_name
 from job;
 
 --2.department테이블에서 모든컬럼을 출력
-select *
+select department.*
 from department;
 
 --3.employee테이블에서 이름, 이메일, 전화번호, 입사일을 출력
@@ -385,7 +389,7 @@ where hire_date >= '1990/01/01' and hire_date <= '2001/01/01';
 
 --like, not like
 --문자열 패턴 비교 연산
---wildcard : 의미를 가지는 특수문자
+--wildcard : 의미를 가지는 특수문자, like, not like에서만 작동
 --  _(언더스코어) = 아무문자 1개, 글자수제한
 --  %    (퍼센트)   = 아무문자 0개 이상
 

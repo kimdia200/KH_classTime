@@ -48,3 +48,6 @@ grant create table to kh;
 
 --한번에 부여하기
 grant connect, resource to kh;
+
+--권한 뺏기
+revoke connect, resource from kh;
