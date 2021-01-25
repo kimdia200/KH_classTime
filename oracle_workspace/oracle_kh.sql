@@ -593,6 +593,379 @@ select bonus
 from employee;
 
 
+--******************************************************************************************
+-- b. 숫자 처리 함수
+--******************************************************************************************
+
+--mod(피젯수, 젯수)
+--나머지 함수(자바에서의 %같은 나머지 연산자가 없어서 mod함수 이용)
+select mod(10,2),
+        mod(10,3)
+from dual;
+
+--입사년도가 짝수인 사원 조회
+select emp_name,
+        extract(year from hire_date) year --날짜함수 : 년도 추출
+from employee
+where mod(extract(year from hire_date), 2) = 0
+order by year;
+
+
+--ceil(number)
+--소수점 기준으로 올림.
+--부동소수점 방식 이기때문에 따로 몇번째에서 올림처리해주는 파라미터없음
+select ceil(123.456),
+        ceil(123.456*100)/100 --부동소수점 방식이라서
+from dual;
+
+--floor(number)
+--소수점 기준으로 버림
+--똑같은 부동소수점 방식
+select floor(456.789),
+        floor(456.789*10)/10
+        from dual;
+        
+--round(number[, position])
+--올림, 버림 과는 다르게 두번째 파라미터 설정 가능(선택)
+--position값을 입력하지 않으면 소수점 첫째자리에서 반올림
+--position기준(정수쪽은 음수,기본값0, 소수점기준)으로 반올림 처리
+select round(234.567),
+        round(234.567,2),
+        round(234.567,-1)
+from dual;
+
+--trunc(number[, position])
+--버림
+select trunc(123.567),
+        trunc(123.567, 2)
+from dual;
+
+--******************************************************************************************
+-- c. 날짜 처리 함수
+--******************************************************************************************
+
+--add_months(date, number)
+--date기준으로 몇달(number)전후의 날짜형을 리턴
+--1월30일 +1달 = 2월 30일 이 되는데, 2월은28일 까지라서 2/28로 나옴(말일 언저리 조심)
+select sysdate,
+        add_months(sysdate,1),
+        add_months(sysdate,-1),
+        add_months(sysdate + 5,1)
+from dual;
+
+--months_between(미래, 과거)
+--두 날짜형의 개월수 차이를 리턴한다.
+
+select sysdate,
+        to_date('2021/07/08'),
+        trunc(months_between(to_date('2021/07/08'), sysdate),1) diff
+from dual;
+
+--이름, 입사일, 근무개월수(n개월), 근무개월수(n년 m개월)
+select emp_name, hire_date, 
+        trunc(months_between(sysdate,hire_date))||'개월' "근무 개월수(n개월)",
+        trunc(months_between(sysdate,hire_date)/12)||'년 ' || trunc(mod(months_between(sysdate,hire_date),12))||'개월' "근무 개월수(n년 m개월)"
+from employee;
+
+--extract(year | month | day | hour | minute | second from date) : number
+--날짜형 데이터에서 특정필드만 숫자형으로 리턴.
+select extract(year from sysdate) yyyy,
+        extract(month from sysdate) mm, --1~12월
+        extract(day from sysdate) dd,
+        extract(hour from cast (sysdate as timestamp)) hh,
+        extract(second from cast (sysdate as timestamp)) mm,
+        to_char(sysdate,'mm'),
+        to_number(to_char(sysdate,'mm')) --이거 물어보기
+from dual;
+
+--trunc(date)
+--시분초 정보를 제외한 년월일 정보만 리턴
+select to_char(sysdate, 'yyyy/mm/dd hh24:mi:ss') date1,
+        to_char(trunc(sysdate), 'yyyy/mm/dd hh24:mi:ss') date2
+from dual;
+
+
+--******************************************************************************************
+-- d. 형변환 함수
+--******************************************************************************************
+/*      to_char            to_date
+        ------>           ------->
+    number          string          date
+        <------           <-------
+        to_number          to_char
+*/
+
+--to_char 리턴타입 = string
+--1.date를 string으로
+select to_char(sysdate, 'fmyyyy/mm/dd hh24:mi:ss am') "now", --fm을 형식 맨앞에 붙여주면 불필요한 0을 표시 안해준다
+        to_char(sysdate, 'yyyy/mm/dd(day) hh12:mi:ss am') "now",  --hh,hh12 = 12시간제, hh24=24시간제
+        to_char(sysdate, 'yyyy"년" mm"월" dd"일"') "now"  --한글이 필요하면 쌍따옴표
+from dual;
+
+--2.number를 string으로
+--숫자포멧으로는 9(#느낌)또는 0(0느낌)을 사용함
+--fm=공백, 불필요한0 제거
+--9는 fm으로 불필요한 0을 제거할수 있지만 0을 사용할 경우 제거가 불가능하다
+select to_char(1234567, 'fmL9,999,999,999,999,999') won,  -- L은 지역화폐
+        to_char(1234567, 'fmL9,999') won, --자릿수가 모자라 오류가남(#으로 표시됨)
+        to_char(123.4, '999.99'), --소수점 이상의 빈자리는 공란, 소수점이하의 빈자리는 0처리
+        to_char(123.4, '0000.00'),
+        to_char(123.4, 'fm0000.99'),
+        to_char(123.4, 'fm9999.00'),
+        to_char(123.4, '0000.00')
+from dual;
+
+--이름, 급여(3자리 콤마), 입사일(1990-9-3(화))를 조회
+select emp_name,
+        to_char(salary, 'fmL999,999,999,999') "급여",
+        to_char(hire_date, 'fmyyyy"-"mm"-"dd(dy)') "입사"  --dy=일,월,화,수,목,금,  day = 일요일,월요일,화요일.....
+from employee;
+
+--to_number(string, format) 리턴타입 = number
+--밑에 두예제는 ''안에 ,라든지 ￦라는 추가적 요소가 있어서 자동형변환이 되지 않음
+select to_number('1,234,567', '9,999,999') +100 ,  --문자를 숫자형으로 바꿔줬기때문에 산술연산이 가능하다
+        --'1,234,567' +100 은 문자열에 산술연산을 하는것이므로 불가능하다(에러)
+        to_number('￦3,000','L9,999,999')+100   --특수문자 ㄹ한자
+from dual;
+
+--자동형변환 지원
+select '1000' + 100,
+        '99'+'1',
+        '99'||'1' -- 문자열연산자를 쓰면 당연히 문자로 인식
+from dual;
+
+--to_date(string, format) 리턴타입 = date
+select to_date('2020/09/09', 'yyyy/mm/dd') +1
+from dual;
+
+
+--@실습문제
+--1시간 : 1/24
+--1분 : 1/(24*60)
+--1초 : 1/(24*60*60)
+select 
+        --'2021/07/08 21:50:00'을 2시간후의 날짜 정보를 yyyy/mm/dd hh24:mi:ss 형식으로 출력
+        to_char(to_date('2021/07/08 21:50:00','yyyy/mm/dd hh24:mi:ss')+2/24, 'yyyy/mm/dd hh24:mi:ss') 내답안1,
+        --현재시각 기준 1일 2시간 3분 4초후의 날짜 정보를 yyyy/mm/dd hh24:mi:ss 형식으로 출력
+        to_char(sysdate+(1 + 2/24 + 3/60/24 + 4/60/60/24), 'yyyy/mm/dd hh24:mi:ss') 내답안2,
+        
+        to_char(
+            to_date('2021/07/08 21:50:00','yyyy/mm/dd hh24:mi:ss')+2/24, 
+            'yyyy/mm/dd hh24:mi:ss'
+        ) 강사님답안1,
+       to_char( sysdate + 1 + (2/24) + (3/(24*60)) + (4/(24*60*60)), 'yyyy/mm/dd hh24:mi:ss') 강사님답안2 ,
+        sysdate + 1 + (2/24) + (3/(24*60)) + (4/(24*60*60))
+from dual;
+
+
+--기간타임
+--interval year to month : 년월 기간
+--interval date to second : 일시분초 기간
+
+--기존 사용방식
+select to_char(add_months(sysdate,14) , 'yyyy/mm/dd hh24:mi:ss'), --14개월후
+        --1년 2개월 3일 4시간 5분 6초후 조회
+        to_char(add_months(sysdate,14)+3+(4/24)+(5/24/60)+(6/24/60/60), 'yyyy/mm/dd hh24:mi:ss' )
+from dual;
+--interval 사용방식
+select to_char(sysdate + to_yminterval('+01-02'), 'yyyy/mm/dd hh24:mi:ss') "14개월 후", -- (+-중 +가 기본값으로 생략도 가능하다)
+        to_char(sysdate + to_dsinterval('3 04:05:06'), 'yyyy/mm/dd hh24:mi:ss') "3일 4시간5분 6초후",--ds = daySeconds
+        to_char(sysdate + to_yminterval('+01-02') + to_dsinterval('3 04:05:06'), 'yyyy/mm/dd hh24:mi:ss') "종합"
+from dual;
+    
+--numToDsInterval(diff, unit)
+--numToYmInterval(diff, unit)
+--diff : 날짜차이
+--unit : year | month | day | hour | second
+select extract(day from
+        numtodsinterval(
+            to_date('20210708', 'yyyymmdd') - sysdate,
+            'day' --unit
+        )) diff,
+        numtodsinterval(
+            to_date('20210708', 'yyyymmdd') - sysdate,
+            'day'
+        ) ddddd
+from dual;
+
+
+--******************************************************************************************
+-- e. 기타함수
+--******************************************************************************************
+
+--null처리 함수
+--nvl(col, nullvalue)
+--nvl2(col, notnullvalue, nullvalue)
+--col값이 null이 아니면 두번재 인자를 리턴, null이면 세번째 인자를 리턴
+
+select emp_name,
+        bonus,
+        nvl(bonus,0) nvl1,
+        nvl2(bonus,'있음', '없음') nvl2
+from employee;
+
+--선택함수1
+--decode(expr표현값, 값1, 결과값1, 값2, 결과값2, ............마지막에는 기본값)
+
+select emp_name, emp_no,
+        decode(substr(emp_no,8,1), '1', '남', '2', '여', '3', '남', '4', '여') 성별, --기본값 사용하지 않음
+        decode(substr(emp_no,8,1), '1', '남', '2', '여', '3', '남', '여') 성별 --기본값 = '여'
+from employee;
+
+--직급코드에 따라서 J1 = 대표, J2,J3 = 임원 , 나머지 = 평사원
+select job_code,
+        decode(job_code, 'J1', '대표', 'J2', '임원', 'J3', '임원', '평사원') 직급
+from employee;
+
+--where절에도 사용가능
+--여사원만 조회
+select emp_name, emp_no
+from employee
+where decode(substr(emp_no,8,1), '1', '남', '2', '여', '3', '남', '4', '여') = '여';
+
+
+--선택함수2
+--case
+/*
+type1 (decode와 유사)
+
+case 표현식
+    when 값1 then 결과1
+    when 값2 then 결과2
+    ......
+    [else 기본값]
+    end
+
+
+type2 
+
+case
+    when 조건식1 then 결과1
+    when 조건식2 then 결과2
+    ......
+    [else 기본값]
+    end
+
+*/
+
+
+select emp_no,
+        --case type1
+        case substr(emp_no,8,1)
+            when '1' then '남'
+            when '2' then '여'
+            when '3' then '남'
+            else '여'
+            end 성별,
+        case
+            when substr(emp_no,8,1) = '1' then '남'
+            when substr(emp_no,8,1) = '2' then '여'
+            when substr(emp_no,8,1) = '3' then '남'
+            else '여'
+            end 성별,
+        case
+            when substr(emp_no,8,1) in ('1','3') then '남'
+            else '여'
+            end 성별,
+        job_code,
+        case
+            when job_code = 'J1' then '대표'
+            when job_code in ('J2', 'J3') then '임원'
+            else case
+                        when substr(emp_no,8,1) in ('1','3') then '남자 평사원'
+                        else '여자 평사원'
+                        end
+            end 직급
+from employee;
+
+
+------------------------------------------------------------------------
+-- GROUP FUNCTION
+------------------------------------------------------------------------
+--모든행을 그룹핑하고, 그룹당 하나의 결과를 리턴하는 함수
+--모든 행을 하나의 그룹, 또는 group by를 통해서 세부그룹 지정이 가능하다.
+
+--sum(col)
+ select sum(salary),
+         sum(bonus), --null인 컬럼은 제외하고 누계처리 nvl을 사용해주지 않아도됨 (count 숫자가 중요한 avg같은경우는 다름)
+         sum( salary + ( salary * nvl(bonus, 0))) -- 가공된 컬럼도 그룹함수가능
+ from employee;
+ --select emp_name, sum(salary) from employee
+ --!!!!!!!!!!!!!그룹함수의 결과와 일반컬럼을 동시에 조회할 수 없다.
+ --ORA-00937: not a single-group group function
+ 
+ --다른 그룹 함수들과는 동시에 사용가능하다.
+ 
+ --avg(col)
+ --평균
+ select to_char(round(avg(salary),1), 'fmL999,999,999,999.9') avg
+ from employee;
+ 
+ --부서코드가 D5인 부서원의 평균급여 조회
+ select to_char(round(avg(salary),1), 'fmL999,999,999,999.9') avg
+ from employee
+ where dept_code = 'D5';
+
+--남자사원의 평균 급여조회
+ select to_char(round(avg(salary),1), 'fmL999,999,999,999.9') avg
+ from employee
+ where substr(emp_no, 8, 1 ) in ('1','3');
+
+--count(col)
+--null이 아닌 컬럼의 개수
+-- * 모든 컬럼, 즉 하나의 행을 의미
+select count(*),
+        count(emp_no),
+        count(emp_name),
+        count(salary),
+        count(bonus) "count(bonus)",-- bonus 컬럼은 null이 존재하는 컬럼
+        count(nvl(bonus,'0')) "count(nvl(bonus))"-- nvl을 써주면 이런식으로도 표현가능
+from employee;
+
+--보너스를 받는 사원수 조회
+select count(bonus)
+from employee
+where bonus is not null;
+
+
+--오 오 ~~~~~~~~where 절 사용하지 않고 보너스 받는사람 숫자 구하기
+select 
+        sum(
+            case
+                when bonus is not null then 1
+                when bonus is null then 0
+                end
+        ) sum,
+        sum(
+            case nvl2(bonus, 1, 0)
+                when 1 then 1
+                when 0 then 0
+                end
+        ) sum,
+        sum(
+            decode(nvl2(bonus,1,0), 1, 1, 0)
+        ) sum
+from employee;
+
+--사원이 속한 부서 총수(중복없음)
+select count(distinct dept_code)
+from employee;
+
+--max(col) | min(col)
+--숫자, 날짜(과거->미래), 문자(ㄱ->ㅎ, a->z)
+select max(salary), min(salary),
+        max(hire_date), min(hire_date),
+        max(emp_name), min(emp_name)
+from employee;
+
+
+
+
+
+
+
+
+
 
 
 
