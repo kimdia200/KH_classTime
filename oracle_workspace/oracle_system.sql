@@ -51,3 +51,13 @@ grant connect, resource to kh;
 
 --권한 뺏기
 revoke connect, resource from kh;
+
+
+
+-- 시험문제 풀이용 chun 계정 생성
+create user chun
+identified by chun
+default tablespace users;
+
+--connect, resource를 부여
+grant connect, resource to chun;

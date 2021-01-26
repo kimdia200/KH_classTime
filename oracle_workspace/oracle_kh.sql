@@ -673,7 +673,8 @@ select extract(year from sysdate) yyyy,
         extract(month from sysdate) mm, --1~12월
         extract(day from sysdate) dd,
         extract(hour from cast (sysdate as timestamp)) hh,
-        extract(second from cast (sysdate as timestamp)) mm,
+        extract(minute from cast (sysdate as timestamp)) mi,
+        extract(second from cast(sysdate as timestamp)) ss,
         to_char(sysdate,'mm'),
         to_number(to_char(sysdate,'mm')) --이거 물어보기
 from dual;
