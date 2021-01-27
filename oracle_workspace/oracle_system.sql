@@ -61,3 +61,9 @@ default tablespace users;
 
 --connect, resource를 부여
 grant connect, resource to chun;
+
+-- role(권한 묶음)에 포함된 권한 확인
+-- DataDictinary db의 각 객체에 대한 메타정보를 확인할 수 있는 read - only 테이블
+select *
+from dba_sys_privs
+where grantee in ('CONNECT', 'RESOURCE');
