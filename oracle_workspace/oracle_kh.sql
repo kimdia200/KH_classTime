@@ -1184,19 +1184,261 @@ where e.emp_name = '송종기';
 --1. ANSI 표준문법 : 모든 DBMS 공통문법
 --2. Vendor별 문법 : DBMS별로 지원하는 문법. 오라클전용문법
 
+--테이블 별칭
+select e.emp_name,
+        e.job_code,   --ORA-00918: column ambiguously defined( Job_code는 두개인데 어디의 것을 가져올지 명시안해주면)
+        j.job_name
+from employee e join job j
+    on e.job_code = j.job_code;
+    
+--기준컬럼명이 좌우테이블에서 동일하다면, on대신 using사용 가능
+--using을 사용한 경우는 해당컬럼에 별칭을 사용할 수 없다.
+select E.emp_name,
+        job_code, --별칭을 사용 할 수 없다
+        J.job_name
+from employee E join job J
+    using(job_code);
+--using 을 사용할경우 맨앞으로 튀어나오면서 딱 한번만 포함된다
+
+
 
 --equi Join 종류
 /*
-1.inner join
+1.inner join  교집합, 두테이블의 겹쳐지는 부분만 추려내는 친구
 
-2.outer join
+2.outer join 합집합
+        -   left outer join      ( 좌측테이블 기준 합집합 )
+        -   right outer join    ( 우측테이블 기준 합집합 )
+        -   full outer join      ( 양테이블 기준 합집합    )
 
 3.cross join
+    두테이블간의 조인 할 수 있는 최대경우의 수를 표현
 
 4.self join
+    같은 테이블의 조인
 
 5.multiple join
+    3개이상의 테이블을 조인
 */
+
+-------------------------------------------------
+--Inner Join
+-------------------------------------------------
+--A (inner) join B 
+--어떤 조인인지 생략 해주면 inner조인이 기본값이다
+--교집합 
+--1. 기준 컬럼값이 null인 경우, 결과집합에서 제외된다.
+--2. 기준 컬럼값이 상대테이블 존재하지 않는 경우, 결과집합에서 제외.
+
+--1. employee에서 dept_code가 null인 행 제외 : 인턴사원 2행제외
+--2. department에서 겹치지 않는부분 제외 : dept_id가 D3, D4, D7인 행은 제외 (dept_code에는 없어서)
+
+--(ansi 문법)
+select *
+from employee E join department D
+    on E.dept_code = D.dept_id;
+    
+    
+--(oracle) 문법
+select *
+from employee E, department D --inner조인시 ,콤마 사용
+where e.dept_code = d.dept_id; --추가 조건이 있다면 and로 연결하면됨
+
+
+--(ansi문법)
+select *
+from employee E join job j
+    on e.job_code = j.job_code;
+
+--(oracle)문법
+select *
+from employee e, job j
+where e.job_code = j.job_code;
+
+-------------------------------------------------
+--Outter Join
+-------------------------------------------------
+--1.left outer join
+--좌측테이블 기준
+--좌측테이블 모든 행이 포함, 우측 테이블에는 on조건절에 만족하는 행만 포함.
+--24 = 22 + 2(left에 있는 null두개)
+--오라클 문법시 --기준테이블의 반대편 컬럼에 (+)를 추가
+--(ansi 표준문법)
+select *
+from employee E left join department D
+    on E.dept_code = D.dept_id;
+
+--(oracle문법)
+--기준테이블의 반대편 컬럼에 (+)를 추가
+select *
+from employee e, department d
+where e.dept_code = d.dept_id(+);
+
+--2.right(outer) join
+--우측테이블 기준
+--우측테이블 모든 행이 포함, 좌측테이블에는 on 조건절에 만족하는 행만 포함.
+--25 = 22 +3(right에 있는 null세개)
+--(ansi 문법)
+select *
+from employee E right join department D
+    on E.dept_code = D.dept_id;
+
+--(oracle문법)
+select *
+from employee e, department d
+where e.dept_code(+) = d.dept_id;
+
+--3.full (outer) join
+--완전 조인
+--양쪽테이블 모든 행이 포함.
+--27 = 22 + 2(left에 인턴2) + 3(D3,D4,D7)
+
+--(ansi문법)
+select * 
+from employee E full join department D
+    on E.dept_code = D.dept_id;
+
+--(oracle)에서는 full outer join을 지원하지 않는다.
+
+--사원명/부서명 조회시
+--부서지정이 안된 사원은 제외 : inner join
+--부서지정이 안된 사원도 포함 : left join
+--사원배정이 안된 부서도 포함 : right join
+--부서지정이 안된사원, 사원배정이 안된부서도 포함 : full join
+
+--(ansi)문법
+select *
+from department D left join employee E
+    on E.dept_code = D.dept_id;
+
+
+
+--oracle_chun 11번 문제 확인
+
+
+-------------------------------------------------
+--cross Join
+-------------------------------------------------
+--상호조인
+--on조건절 없이, 좌측테이블 행과 우측 테이블의 행이 연결될 수 있는 모든 경우의 수를 포함한 결과집합.
+--Cartesian's product
+--216 = 24 * 9;
+
+select *
+from employee; --24
+
+select *
+from department; --9
+
+--ansi문법
+select * 
+from employee cross join department; --24*9 = 216
+--일반 컬럼, 그룹함수결과를 함께 보고자 할때 사용됨.
+
+--oracle 문법 where절을 안써주면 cross조인
+select * 
+from employee,department;
+
+
+select trunc(avg(salary))
+from employee;
+
+select emp_name, salary, avg, salary - avg diff
+from employee E cross join (select trunc(avg(salary)) avg
+                                             from employee) A;
+
+
+-------------------------------------------------
+--Self Join
+-------------------------------------------------
+--조인시 같은 테이블을 좌/우측 테이블로 사용.
+--self join에서 별칭은 무조건 필요하다
+--self join은 대상이 자기자신인것 일뿐 여기서도 inner, outer, cross 가능하다
+
+--사번, 사원명, 관리자사번, 관리자명을 조회하라!
+--(ansi 문법)
+select e1.emp_id 사번,
+            e1.emp_name 사원명,
+            e1.manager_id 관리자사번, --혹은 e2.emp_id를 사용해도됨
+            e2.emp_name 관리자명
+from employee e1 join employee e2 on e1.manager_id = e2.emp_id;
+
+--(oracle 문법)
+select E1.emp_id,
+            E1.emp_name, 
+            E1.manager_id,
+            E2.emp_name
+from employee E1, employee E2
+where E1.manager_id = E2.emp_id;
+
+
+-------------------------------------------------
+--Multiple Join
+-------------------------------------------------
+--한번에 좌우 두 테이블씩 조인하여 3개이상의 테이블을 연결함.
+--사원명, 부서명, 지역명
+
+--(ansi문법)사용시 조인하는 순서를 잘 고려할것
+--employee와 location은 공통된 컬럼이 없어서 이렇게 먼저 조인해주면 안된다.
+select * from location;
+
+select e.emp_name 사원명,
+        d.dept_title,
+        l.local_name,
+        J.job_name
+from employee e 
+        join job J
+            on E.job_code = j.job_code
+        left join department d
+            on e.dept_code = d.dept_id
+        left join location L 
+            on d.location_id = l.local_code;
+--where E.emp_name = '송종기';
+
+
+--oracle문법 사용시 조인순서가 하나도 중요하지 않지만(from 쪽), where 에서는 순서를 동일하게 해준다
+--(oracle)
+select *
+from employee E, department D, location L, job J
+where E.dept_code = D.dept_id(+) 
+    and D.location_id = L.local_code(+)
+    and E.job_code = J.job_code;
+--and E.emp_name = '송종기';
+
+--@실습문제
+--직급이 대리, 과장이면서, Asia 지역에 근무하는 사원조회
+--사번, 이름, 직급명, 부서명, 근무지역, 국가
+
+--(ansi 표준방식)
+select e.emp_id 사번,
+           e.emp_name 이름,
+           j.job_name 직급명,
+           d.dept_title 부서명,
+           to_char(e.salary,'fml999,999,999,999') 급여,
+           l.local_name 근무지역,
+           n.national_name 국가
+from employee e
+        left join job j on e.job_code = j.job_code
+        left join department d on e.dept_code = d.dept_id
+        left join location l on d.location_id = l.local_code
+        left join nation n on l.national_code = n.national_code
+where j.job_name in ('대리','과장') and l.local_name like 'ASIA%';
+
+--(oracle 방식)
+select e.emp_id 사번,
+           e.emp_name 이름,
+           j.job_name 직급명,
+           d.dept_title 부서명,
+           to_char(e.salary,'fml999,999,999,999') 급여,
+           l.local_name 근무지역,
+           n.national_name 국가
+from employee e, job j, department d, location l, nation n
+where e.job_code = j.job_code(+)
+   and  e.dept_code = d.dept_id(+)
+   and  d.location_id = l.local_code(+)
+   and  l.national_code = n.national_code(+)
+   and  j.job_name in ('대리','과장') and l.local_name like 'ASIA%';
+
 
 
 
