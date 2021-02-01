@@ -1138,6 +1138,7 @@ from employee
 group by cube(dept_code, job_code)
 order by 1, 2;
 
+
 /*
 
 select (5)
@@ -1438,6 +1439,366 @@ where e.job_code = j.job_code(+)
    and  d.location_id = l.local_code(+)
    and  l.national_code = n.national_code(+)
    and  j.job_name in ('대리','과장') and l.local_name like 'ASIA%';
+
+
+
+
+
+
+
+-------------------------------------------------
+--non_equi Join
+-------------------------------------------------
+-- (=)이 아닌 !=, between ~and ~, in, not in ..... 등등
+
+--employee, sal_grade 테이블을 조인
+--employee테이블의 sa_level컬럼이 없다고 가정.
+--employee.salary컬럼과 sal_grade.min_sal | sal_grade.max_sal을 비교해서 join
+
+select * from employee;
+select * from sal_grade;
+
+select *
+from employee E
+    join sal_grade S
+        on E.salary between S.min_sal and S.max_sal;
+--조건에 맞는 행이있다면 합쳐라(똑같이 한행에 여러개가 붙을수도있음)
+
+select *
+from employee E
+    join department D
+        on E.dept_code != D.dept_id
+order by E.emp_no;
+
+
+--==================================================
+--SET OPERATOR
+--==================================================
+--집합 연산자, entity를 컬럼수가 동일하다는 조건 하에 상하로 연결 한것
+--조건1. select절의 컬럼수가 동일
+--조건2. 컬럼별 자료형이 상호호환 가능해야 한다. ->  문자형(char, varchar2)끼리OK, 날짜형 + 문자열 Error
+--컬럼명이 다른 경우, 첫번째 entity의 컬럼명을 결과집합에 반영
+--order by는 마지막 entity에서 딱 한번만 사용가능
+
+--종류
+--union 합집합
+--union all 합집합
+--intersect 교집합
+--minus 차집합
+
+/*
+
+A={1,3,2,5}
+B={2,4,6}
+
+A union B => {1,2,3,4,5,6} 중복 제거, 첫번째 컬럼 기준 오름차순 정렬
+A union all B => {1,3,2,5,2,4,6} 중복제거도 안하고 정렬도 안함
+A intersect B => {2} 정렬은 되지 않음
+A minus B => {1,3,5}
+
+*/
+
+--------------------------------------
+-- UNION 과 UNION ALL 비교
+--------------------------------------
+--A : D5부서원의 사번, 사원명, 부서코드, 급여(6행)
+select emp_id, emp_name, dept_code, salary
+from employee
+where dept_code = 'D5';
+
+--B : 급여가 300만원이 넘는 사원의 사번, 사원명, 부서코드, 급여(9행)
+select emp_id, emp_name, dept_code, salary
+from employee
+where salary > 3000000;
+
+--A Union B =  D5이거나 salary가 300만 초과인 사람 (6행+9행 -2행 = 13행) 
+-- (-2행)은 겹쳐지는 항목, order by 를 따로 명시 안해주면 1번컬럼으로 정렬
+select emp_id, emp_name, dept_code, salary
+from employee
+where dept_code = 'D5' --세미콜론 조심
+--order by 절은 두번째 테이블에서만 사용 가능
+union
+select emp_id, emp_name, dept_code, salary
+from employee
+where salary > 3000000
+order by dept_code;
+
+--A Union All B = D5이거나 salary가 300만 초과인 사람 (6행+9행=15행)
+--중복제거는 해주지 않고 정렬을 명시하지 않으면 정렬도 해주지 않는다.
+select emp_id, emp_name, dept_code, salary
+from employee
+where dept_code = 'D5' --세미콜론 조심
+--order by 절은 두번째 테이블에서만 사용 가능
+union all
+select emp_id, emp_name, dept_code, salary
+from employee
+where salary > 3000000;
+--order by dept_code;
+
+--A intersect B =  A와 B테이블에 공통적으로 있는것만 출력(2행)
+--order by 를 따로 명시 안해주면 1번컬럼으로 정렬
+select emp_id, emp_name, dept_code, salary
+from employee
+where dept_code = 'D5' --세미콜론 조심
+--order by 절은 두번째 테이블에서만 사용 가능
+intersect
+select emp_id, emp_name, dept_code, salary
+from employee
+where salary > 3000000;
+--order by dept_code;
+
+--A Minus B =  A에서 A와 B의 겹치는 부분을 제외하고 출력(4행 = A에만 있는것)
+--order by 를 따로 명시 안해주면 1번컬럼으로 정렬
+select emp_id, emp_name, dept_code, salary
+from employee
+where dept_code = 'D5' --세미콜론 조심
+--order by 절은 두번째 테이블에서만 사용 가능
+minus
+select emp_id, emp_name, dept_code, salary
+from employee
+where salary > 3000000;
+--order by dept_code;
+
+--union시 컬럼명이 동일하지 않아도 컬럼수가 같고 자료형이 같으면 union가능
+desc employee;
+
+select job_code
+from employee
+
+union
+select sal_level
+from employee;
+
+
+--==========================================================
+--SUB QUERY
+--==========================================================
+--하나의 sql문(main-query) 안에 종속된 또다른 sql문(sub-query)
+--존재하지 않는 값, 조건에 근거한 검색 등을 실행 할 때.
+
+--반드시 소괄호로 묶어서 처리할것
+--sub-query 내에는 order by 문법이 적용되지 않는다!!!
+--연산자 오른쪽에서 사용 할 것. where col = (서브쿼리)
+
+--노옹철 사원의 관리자 이름을 조회
+
+--1. 노옹철 사원행의 manager_id조회
+--2. emp_id가 조회한 manager_id와 동일한 행의 emp_name을 조회
+select manager_id
+from employee
+where emp_name = '노옹철';
+
+select emp_name
+from employee
+where emp_id = '201';
+
+--이렇게 두번 처리했던것을 join으로 처리하면
+select 
+        e.emp_id,
+        e.emp_name,        
+        e.manager_id,
+        e2.emp_name
+from employee e join employee e2 on e.manager_id = e2.emp_id
+where e.emp_name = '노옹철';
+
+--sub_query로 처리하면
+select emp_name
+from employee
+where emp_id = (select manager_id
+                            from employee
+                            where emp_name = '노옹철');
+
+/*
+
+1. 단일행 단일컬럼 서브쿼리
+
+2. 다중행 단일컬럼 서브쿼리
+
+3. 다중열 서브쿼리(단일행/다중행)
+
+4. 상관서브쿼리
+5. 스칼라 서브쿼리
+
+6. inline-view
+
+*/
+------------------------------------------------
+-- 단일행 단일컬럼 서브쿼리
+------------------------------------------------
+--서브쿼리 조회 결과가 1행1열인 경우
+-- 서브쿼리 결과를 하나의 데이터값으로 생각하면 된다
+
+--전체 평균 급여보다 많은 급여를 받는 사원 조회
+select emp_name,
+            salary, 
+            (select trunc(avg(salary))
+                         from employee)  평균급여
+from employee
+where salary > (select avg(salary)
+                         from employee);
+
+--윤은해 사원과 같은 급여를 받는 사원 조회(사원, 이름, 급여)
+select emp_id, emp_name, salary
+from employee
+where salary = (select salary
+                         from employee
+                         where emp_name = '윤은해')
+          and emp_name != '윤은해';
+
+
+--D1, D2 부서원 중에 D5부서의 평균 급여보다 많은 급여를 받는 사원 조회(부서코드, 사번, 사원명, 급여)
+
+select dept_code, emp_id, emp_name, salary
+from employee
+where dept_code in ('D1', 'D2') and
+          salary > (select  avg(salary)
+                         from employee
+                         where dept_code = 'D5');
+
+------------------------------------------------
+-- 다중행 단일컬럼 서브쿼리
+------------------------------------------------
+-- 서브쿼리 조회 결과가 n행1열인 경우
+-- 서브쿼리 결과를 하나의 (데이터집합)으로 생각하면 된다
+-- 연산자 in, not in, any, all, exists 들과 함께 사용가능한 서브쿼리
+
+--송종기, 하이유 사원이 속한 부서원 조회
+select emp_name, dept_code
+from employee
+where dept_code in (select dept_code
+                                from employee
+                                where emp_name in ('송종기','하이유'));
+
+--차태연, 전지연 사원의 급여등급(sal_level)과 같은 사원 조회(사원명, 직급명, 급여등급 조회)
+select e.emp_name 사원명, j.job_name 직급명, e.sal_level 급여등급
+from employee e join job j on e.job_code = j.job_code
+where sal_level in (select sal_level
+                              from employee
+                              where emp_name in ('차태연', '전지연'));
+
+--직급이 대표, 부사장이 아닌 사원 조회(사번, 사원명, 직급코드)
+select emp_id, emp_name, job_code
+from employee
+where job_code not in (select job_code
+                                     from job
+                                     where job_name in ('대표','부사장'));
+
+
+--ASIA1 지역에 근무하는 사원 조회(사원명, 부서코드)                              
+select emp_name, dept_code
+from employee
+where dept_code in(
+                                select dept_id
+                                from department
+                                where location_id in(
+                                                                select local_code
+                                                                from location
+                                                                where local_name = 'ASIA1'
+                                                                )
+                             );
+ 
+ ------------------------------------------------
+-- 다중열(단일컬럼, 다중컬럼) 서브쿼리
+------------------------------------------------
+ --서브쿼리의 리턴된 컬럼이 여러개인 경우.
+ 
+ --퇴사한 사원과 같은 부서,같은 직급의 사원을 조회(사번, 부서코드, 직급코드)
+--방법1. 나눠서 처리
+select emp_id, dept_code, job_code
+from employee
+where dept_code = (
+                                select dept_code
+                                from employee
+                                where quit_yn = 'Y')
+            and job_code = (
+                                    select job_code
+                                    from employee
+                                    where quit_yn = 'Y');
+ 
+--방법2. 합쳐서 처리
+select emp_id, dept_code, job_code
+from employee
+where (dept_code, job_code) =  (
+                                                    select dept_code, job_code
+                                                    from employee
+                                                    where quit_yn='Y'
+                                                );
+
+--manager가 존재하지 않는 사원과 같은 부서코드, 직급코드를 가진 사원 조회
+-- in 연산자는 다중행 다중컬럼 처리 가능
+-- dept_code컬럼에는 null값도 있는데 null값은 비교 및 연산이 불가능 하기때문에 nvl로 예외처리
+select emp_id, emp_name, manager_id, dept_code, job_code
+from employee
+where (nvl(dept_code,'부서없음'), job_code) in (
+                                                    select nvl(dept_code,'부서없음'), job_code
+                                                    from employee
+                                                    where manager_id is null
+                                                )
+order by dept_code, job_code, manager_id nulls first;
+
+--부서별 최대급여를 받는 사원 조회( 사원명, 부서코드, 급여)
+select emp_name, dept_code, salary
+from employee
+where (nvl(dept_code,'부서없음'), salary) in (
+                                                select nvl(dept_code,'부서없음'), max(salary)
+                                                from employee
+                                                group by dept_code
+                                                )
+order by dept_code nulls last;
+
+------------------------------------------------
+-- 상관(상호연관) 서브쿼리
+------------------------------------------------
+--메인쿼리의 값을 서브쿼리에 전달하고, 서브쿼리 수행 후 결과를 다시 메인쿼리에 반환.
+
+--직급별 평균급여 보다 많은 급여를 받는 사원
+
+--(기존에 풀던 방식)
+select emp_id, emp_name,job_code,salary, trunc(temp.avg) "직급별 평균급여"
+from employee e join (select job_code, avg(salary) avg
+                                    from employee
+                                    group by job_code) temp 
+                          using (job_code)
+where e.salary> temp.avg;
+
+
+--상관 서브쿼리로 처리
+select *
+from employee e
+where salary >(직급별 평균 급여);
+
+--직급별 평균 급여보다 많이 받는 사람
+
+
+--매 행 마다 where절을 실행시켜 부서에 해당하는 평균이 넘는지 검사하는 개념
+where e.salary > (
+                        select avg(salary)
+                        from employee
+                        where job_code = E.job_code --메인쿼리 테이블의 별칭이 반드시 필요
+                        --where job_code = 'J1' --J1, J2.....J7까지 고정값으로 처리해줄순 없다...
+                        );
+
+--부서별 평균급여보다 적은 급여를 받는 사원 조회(인턴포함)
+select emp_name, dept_code, salary
+from employee e
+where e.salary < (
+                            select avg(salary)
+                            from employee
+                            where nvl(dept_code,'인턴') = nvl(e.dept_code,'인턴')
+                            )
+order by dept_code nulls first;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
