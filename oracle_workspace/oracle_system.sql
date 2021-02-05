@@ -67,3 +67,6 @@ grant connect, resource to chun;
 select *
 from dba_sys_privs
 where grantee in ('CONNECT', 'RESOURCE');
+
+grant create view to kh;
+grant create view to chun;

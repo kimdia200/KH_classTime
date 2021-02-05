@@ -2786,4 +2786,649 @@ insert into tb_cons_ck
 values('M', 1000);--ORA-02290: check constraint (KH.CK_NUM) violated
 
 
+----------------------------------------------------
+--CREATE
+----------------------------------------------------
+--subquery를 이요한 create는 not null제약조건을 제외한 모든 제약조건, 기본값등을 제거한다.
+
+create table emp_bck
+as
+select *from employee; --값은 모두 복사 되지만, 제약조건은 복사되지 않았음
+
+select * from emp_bck;
+
+--제약조건 검사
+select constraint_name,
+            uc.table_name,
+            ucc.column_name,
+            uc.constraint_type,
+            uc.search_condition
+from user_constraints uc
+    join user_cons_columns ucc
+        using(constraint_name)
+where uc.table_name = 'EMP_BCK';
+
+--기본값 확인
+select *
+from user_tab_cols
+where table_name = 'EMPLOYEE';
+
+select *
+from user_tab_cols
+where table_name = 'EMP_BCK';
+
+
+
+--------------------------------------
+-- ALTER
+--------------------------------------
+--table 관련 alter문으로 컬럼, 제약조건에 대해 수정가능
+/*
+    서브명령어
+    -add 컬럼과 제약조건을 추가 할 수 있다.
+    -modify 컬럼(자료형, 기본값, ... 수정가능), 제약조건은 변경 불가능
+    -rename 컬럼명, 제약조건명을 변경 할 수 있다.
+    -drop 컬럼, 제약조건 삭제 할 수 있음.
+    
+*/
+
+create table tb_alter(
+    no number
+);
+
+--add 컬럼
+--맨 마지막 컬럼으로 추가
+alter table tb_alter add name varchar2(100) not null;
+
+--테이블 명세
+desc tb_alter;
+describe tb_alter;
+
+--add 제약조건
+--not null 제약조건은 추가가 불가능 해서 수정(modify)으로 처리
+--no컬럼을 PK로 제약조건 추가 하고싶다!
+alter table tb_alter
+add constraint pk_tb_alter_no primary key (no);
+
+--제약조건 검사
+select constraint_name,
+            uc.table_name,
+            ucc.column_name,
+            uc.constraint_type,
+            uc.search_condition
+from user_constraints uc
+    join user_cons_columns ucc
+        using(constraint_name)
+where uc.table_name = 'TB_ALTER';
+
+
+--modify 컬럼
+--자료형, 기본값, null여부 변경가능
+--문자열에서 호환가능 타입으로는 변경가능(char-> varchar2, varchar2 -> char)
+
+--name컬럼을 자료형을 varchar2(100) -> varchar2(500),
+--default값 추가, not null->null
+alter table tb_alter
+modify name varchar2(500) default '홍길동' null;
+
+--자료형, null여부 확인
+desc tb_alter;
+--디폴트값 확인
+select *
+from user_tab_cols
+where table_name = 'TB_ALTER';
+
+--행이 있다면, 변경하는데 제한이 있다.
+--존재하는 값보다는 작은 크기로 변경불가.
+--null값이 있는 컬럼을 not null로 변경불가.
+-- modify문 자체가 실행이 되지 않음
+
+--modify 제약조건자체는 변경 불가능
+--제약조건의 이름은 변경가능하다.
+--제약조건을 변경하려면 삭제후 재생성 할 것.
+
+--rename 제약조건
+--기존 제약조건 확인
+select constraint_name,
+            uc.table_name,
+            ucc.column_name,
+            uc.constraint_type,
+            uc.search_condition
+from user_constraints uc
+    join user_cons_columns ucc
+        using(constraint_name)
+where uc.table_name = 'TB_ALTER';
+
+--제약조건 이름 변경
+alter table tb_alter
+rename constraint pk_tb_alter_no to pk_tb_alter_num;
+
+--변경후 제약조건 확인
+select constraint_name,
+            uc.table_name,
+            ucc.column_name,
+            uc.constraint_type,
+            uc.search_condition
+from user_constraints uc
+    join user_cons_columns ucc
+        using(constraint_name)
+where uc.table_name = 'TB_ALTER';
+
+commit;
+--drop 컬럼
+
+--변경전 테이블 명세 확인
+desc tb_alter;
+
+alter table tb_alter
+drop column name;
+
+--변경후 테이블 명세 확인
+desc tb_alter;
+
+
+--drop 제약조건
+alter table tb_alter
+drop constraint pk_tb_alter_num;
+
+--변경후 제약조건 확인
+select constraint_name,
+            uc.table_name,
+            ucc.column_name,
+            uc.constraint_type,
+            uc.search_condition
+from user_constraints uc
+    join user_cons_columns ucc
+        using(constraint_name)
+where uc.table_name = 'TB_ALTER';
+
+
+--테이블 이름 변경
+alter table tb_alter
+rename to tb_alter_new;
+
+rename tb_alter_new to tb_alter;
+
+
+--------------------------------------
+--DROP
+--------------------------------------
+--ALTER의 서브명령어 drop과는 별도
+
+--데이터베이스 객체 (table, user, view 등등.... ) 삭제
+drop table tb_alter_all_new;
+
+
+--=======================================
+-- DCL
+--=======================================
+-- Data Control Language
+-- 권한 부여/회수 관련 명령어 : grant / revoke
+-- TCL Transaction Control Language를 포함한다.
+-- TCL( commit / rollback / savepoint )
+
+-- system 관리자 계정으로 진행
+--qwerty 계정 생성
+create user qwerty
+identified by qwerty
+default tablespace users;
+--접속권한 부여
+-- create session권한 또는 connect를 부여
+grant connect to qwerty;
+grant resource to qwerty;
+--두개를 한번에 부여 할 수 있음
+grant connect, resource to qwerty;
+--두개의 권한을 한번에 회수함
+revoke connect, resource from kh;
+
+--qwerty계정으로 실행
+create table tb_abc(
+    id number
+);
+
+--권한, 롤을 조회
+select *
+from user_sys_privs;  --권한
+
+select * 
+from user_role_privs; --롤
+
+select * 
+from role_sys_privs; --부여받은 롤에 포함된 권한조회
+
+--(다시 kh계정으로 돌아옴)
+create table tb_coffee(
+    cname varchar2(100),
+    price number,
+    brand varchar2(100),
+    constraint pk_tb_coffee_cname primary key (cname)
+);
+
+insert into tb_coffee
+values ('maxim', 2000, '동서식품');
+insert into tb_coffee
+values ('kanu', 3000, '동서식품');
+insert into tb_coffee
+values ('nescafe', 2500, '네슬레');
+
+select * from tb_coffee;
+
+commit;
+
+--qwerty계정으로 전환해서
+--kh 계정이 소유한 tb_coffee를 조회
+select *
+from tb_coffee; --qwerty계정에는 tb_coffee 테이블이 없어서
+
+select *
+from kh.tb_coffee; --이렇게 하면 접근이 가능하지만 kh계정으로 부터 권한을 받아야한다
+
+insert into kh.tb_coffee
+values ('프렌치까페', 5000,'몰라'); --추가권한 없음
+
+
+--kh계정으로 돌아와서
+grant select on tb_coffee to qwerty; --조회권한 부여
+grant insert, update, delete on tb_coffee to qwerty; --추가, 수정, 삭제 권한 부여
+
+
+--qwerty계정으로 다시 접속하고
+select *
+from kh.tb_coffee; --조회가 가능한 것을 확인 할 수 있다.
+--반드시 테이블앞에 소유 계정을 명시해줘야한다
+--현재 접속한 계정내의 테이블일 경우는 보통 생략되어있는것이다.
+
+--qwerty에서 kh테이블의 데이터 추가
+insert into kh.tb_coffee
+values ('프렌치까페', 5000,'몰라');
+
+--이상태에서는 kh계정에서 tb_coffee를 조회할시
+--프렌치 까페가 나오지 않는다 왜일까?
+--qwerty계정에서 commit을 아직 해주지 않아서 !
+
+commit;
+
+-- KH계정으로 다시 올아와서
+select *
+from tb_coffee;
+--조회시 프렌치까페가 추가된걸 볼수 있다.
+
+--qwerty계정에서 kh계정의 tb_coffee로의 권한을 회수 하려면
+revoke insert,update,delete on tb_coffee from qwerty;
+revoke select on tb_coffee from qwerty;
+
+--총정리
+--SQL
+--1. DML = INSERT, UPDATE, DELETE, DQL(SELECT절)
+--Auto Commit 이 안되므로 반드시 TCL을 사용해서 관리
+
+--2. DDL = CREATE, ALTER, DROP, TRUNCATE
+--Auto Commit 됨
+
+--3. DCL = GRANT, REVOKE, TCL(COMMIT, ROLLBACK)
+--Auto Commit 됨
+
+--(주의!!!!. DML작업을 하다가 DDL작업을 하면 자동으로 커밋되니 주의)
+
+
+--==================================================
+-- DATABASE OBJECT 1
+--==================================================
+-- DB를 효율적으로 관리하고, 작동하게 하는 단위
+select *
+from all_objects; -- 현재 계정에서 접근 할 수 있는 객체
+
+select distinct object_type
+from all_objects; -- 현재 계정에서 접근 할 수 있는 객체의 종류
+
+-------------------------------------------
+-- DATA DICTIONARY
+-------------------------------------------
+--일반사용자 관리자로부터 열람권한을 얻어 사용하는 정보조회테이블
+--읽기전용.
+--객체 관련 작업을 하면 자동으로 그 내용이 반영.
+
+--1. user_xxx : 사용자가 소유한 객체에 대한 정보
+--2. all_xxx : user_xxx를 포함. 다른 사용자로부터 사용권한을 부여받은 객체에 대한 정보
+--3. dba_xxx : 관리자전용. 모든 사용자의 모든 객체에 대한 정보
+
+
+--이용가능한 모든 dd 조회
+select * from dict; --dictionary
+
+--*****************************************
+-- user_xxx
+--*****************************************
+--xxx는 객체이름 복수형을 사용한다.
+
+--user_tables
+
+select * from user_tables;
+select * from tabs; -- 동의어(synonym) 
+
+--user_sys_privs : 권한
+--user_role_privs : 롤(권한묶음)
+--role_sys_privs : 사용자가 가진 롤에 포함된 모든 권한
+select * from user_sys_privs;
+select * from user_role_privs;
+select * from role_sys_privs;
+
+--user_sequences
+select * from user_sequences;
+--user_views
+select * from user_views;
+--user_indexes
+select * from user_indexes;
+
+
+--*****************************************
+-- all_xxx
+--*****************************************
+--현재 계정이 소유하거나 사용권한을 부여받은 객체 조회
+
+--all_tables
+select * from all_tables;
+
+--all_indexes
+select * from all_indexes;
+
+--*****************************************
+-- dba_xxx
+--*****************************************
+--dba로 시작하는 객체는 관리자 계정에서 실행해야함
+
+--일반사용자가 실행시,
+--관리자 권한으로 변경해서 밑에 작업할것
+select * from dba_tables; --ORA-00942: table or view does not exist
+
+--특정사용자의 테이블 조회
+select * 
+from dba_tables
+where owner in ('KH', 'QWERTY');
+
+--특정사용자의 권한 조회
+select * 
+from dba_sys_privs
+where grantee = 'KH';
+
+select *
+from dba_role_privs
+where grantee = 'KH';
+
+--테이블 관련 권한 확인
+select * 
+from dba_tab_privs
+where owner = 'KH';
+
+--관리자가 kh.tb_coffee 읽기 권한을 qwerty에게 부여
+grant select, insert, update, delete on kh.tb_coffee to qwerty;
+revoke select, insert, update, delete on kh.tb_coffee from qwerty;
+--(다시 KH계정으로 돌아옴)
+
+
+-------------------------------------------------------------
+-- STORED VIEW
+-------------------------------------------------------------
+--저장뷰.
+--inlineView가 일회성인 반면, storedView는 이를 객체로 저장해서 재사용이 가능하다
+--가상테이블처럼 사용하지만, 실제로 데이터를 가지고 있는 것은 아니다.
+--실제 테이블과 링크 개념이라고 보면 된다.
+
+--뷰객체를 이용해서 제한적인 데이터만 다른 사용자에게 제공하는것이 가능하다.
+create view view_emp
+as 
+select * from employee;
+--ORA-01031: insufficient privileges
+--01031. 00000 -  "insufficient privileges"
+--create view 권한이 없기 때문
+
+--create View권한은 resource 롤에 포함되어 있지 않기때문
+--그렇기 때문에 따로 부여를 받아야한다
+
+--(여기서 sys 계정에서 create view 권한 부여받고왔음)
+
+create view view_emp
+as
+select emp_id,
+            emp_name,
+            substr(emp_no,1,8) ||'******' emp_no,
+            email,
+            phone
+from employee;
+
+select *
+from view_emp; -- 테이블 처럼 사용가능
+
+select *
+from (
+        select emp_id,
+                    emp_name,
+                    substr(emp_no,1,8) ||'******' emp_no,
+                    email,
+                    phone
+        from employee;
+        ); --실행시 이렇게 인라인 뷰처럼 작동하는것
+--따라서 view는 inline view 를 가지고 있는것
+--그래서 view는 데이터가 없다고 하는것이다
+
+
+select * from user_views; --dd에서 조회
+
+--타사용자에게 선별적인 데이터를 제공
+grant select on kh.view_emp to qwerty;
+
+--(계정을 qwerty로 변경)
+select * from kh.employee; --전체 데이터는 접근 불가
+select * from kh.view_emp; --일부 데이터만 접근 가능
+--(계정을 다시 kh로 전환)
+
+--view 특징
+--1. 실제 컬럼뿐 아니라 가공된 컬럼 사용가능
+--2. join을 사용하는 view가능
+--3. or replace 옵션 사용가능
+--4. with read only 옵션
+
+create or replace view view_emp
+as
+select emp_id,
+            emp_name,
+            substr(emp_no,1,8) ||'******' emp_no,
+            email,
+            phone,
+            nvl(dept_title, '인턴') dept_title
+from employee E left join department D
+    on E.dept_code = D.dept_id
+with read only;
+
+select * from view_emp;
+--qwerty에서도 확인가능
+select * from kh.view_emp;
+--따로 권한을 주지 않고 or replace 해줘서 아까 받은 권한으로 사용한것
+--갱신의 용이성
+
+--성별, 나이 등 복잡한 연산이 필요한 컬럼을 미리 view로 지정해두면 편리하다.
+create or replace view view_employee_all
+as
+select E.*,
+            decode(substr(emp_no,8,1), '1','남','3','남','여') gender
+from employee E;
+
+select *
+from view_employee_all
+where gender = '여';
+
+-----------------------------------------------------
+--SEQUENCE
+-----------------------------------------------------
+--정수값을 순차적으로 자동생성하는 객체, 채번기
+/*
+필수
+create sequence 시퀀스명
+
+옵션
+start with 시작값  ----------- 기본값 1
+
+incremnet by 증가값 --------- 기본값 1
+
+maxvalue 최대값 | nomaxvalue 
+기본값 = nomaxvalue, 최대값에 도달하면 다시 시작값(cycle일때) 혹은 에러(no cycle일때)
+
+minvalue 최소값 | nominvalue
+기본값 = nominvalue, 최소값에 도달하면 다시 시작값(cycle) 혹은 에러(no cycle)
+
+cycle | nocycle
+순환여부를 나타내고 기본값은 nocycle
+
+cache 캐싱계수 | nocache
+기본값 cache 20, 시퀀스객체로 부터 20개씩 가져와서 메모리에서 채번
+매번 시퀀스에 접근하지 않고 20번마다 접근하도록 하는것 = 효율 상승
+오류가 발생하여, 숫자를 건너 뛸수도 있다...
+*/
+
+create table tb_names(
+    no number,
+    name varchar2(100) not null,
+    constraint pk_tb_names_no primary key (no)
+);
+
+create sequence seq_names_no
+    start with 1000
+    increment by 1
+    nomaxvalue
+    nominvalue
+    nocycle
+    cache 20;
+
+
+insert into tb_names
+values (seq_names_no.nextval, '홍길동'); 
+--여러번 실행
+
+select *
+from tb_names;
+--결과값 확인
+
+
+select seq_names_no.currval
+from dual; --여러번실행해도 현재 번호 출력 
+
+--dd에서 조회
+select * from user_sequences;
+
+--복합문자열에 시퀀스 사용하기
+--주문번호 kh-20210205-1001
+create table tb_order(
+    order_id varchar2(50),
+    cnt number,
+    constraint pk_tb_order_id primary key(order_id)
+);
+
+create sequence seq_order_id;
+
+
+
+insert into tb_order
+values('kh-' || to_char(sysdate,'yyyymmdd') || '-' || to_char(seq_order_id.nextval,'fm0000'), 100);
+--여러번 실행
+
+select * from tb_order;
+
+--alter, drop도 sequence 사용가능
+--alter문을 통해 시작값, start with값은 절대 변경 할 수 없다. 
+--start with값을 재지정 해주고 싶다면 시퀀스 객체 삭제후 재생성 할 것.
+alter sequence seq_order_id
+increment by 10;
+--이런건 가능 ㅎ
+
+--dd에서 조회
+select * from user_sequences;
+
+
+
+----------------------------------------------
+-- INDEX
+----------------------------------------------
+-- 우리말로 하면 색인.
+--sql문 처리 속도 향상을 위해 컬럼에 대해 생성하는 객체
+--key: 컬럼값, value: 레코드논리적주소값 rowid
+--저장하는 데이터에 대한 별도의 공간이 필요함.
+
+--장점 : 
+--검색속도가 빨라지고, 시스템 부하를 줄여서 성능향상
+
+--단점:
+--인덱스를 위한 추가저장공간이 필요.
+--인덱스를 생성/수정하는 데 별도의 시간이 소요됨.
+--데이터를 추가/삭제 할때는 오히러 부하를 증가시킴
+
+--단순 조회 업무보다 변경작업(insert/ update / delete)가 많다면 
+--인덱스 생성을 주의해야한다.
+
+--인덱스로 사용하면 좋은 컬럼
+-- 1. 선택도(selectivity)가 좋은 컬럼 = 중복데이터가 적은 컬럼
+-- id | 주민번호 | email | 전화번호 > 이름 > 부서코드 >>>>> 성별
+-- pk | uq 제약조건이 사용된 컬럼은 자동으로 인덱스를 생성함 -- 삭제하려면 제약조건을 삭제해야함.
+-- 2. where 절에 자주 사용되어 지는경우, 조인 기준 컬럼인 경우
+-- 3. 입력된 데이터의 변경이 적은 컬럼.
+
+select *
+from user_indexes
+where table_name = 'EMPLOYEE';
+
+-- 경우1. job_code 인덱스가 없는 컬럼
+select *
+from employee
+where job_code = 'J5'; --table full scan
+
+-- 경우2. emp_id 인덱스가 있는 컬럼
+select *
+from employee
+where emp_id = '201';
+
+--경우1 = scan방식 full, cost 3 (f10키로 확인)
+--경우2 = scan방식 index-uniqueScan, cost 1 
+
+
+--emp_name컬럼으로 인덱스를 생성해보자
+--1. emp_name조회
+select *
+from employee
+where emp_name = '송종기'; -- Scan 방식 = full, cost =3
+--2. emp_name에 인덱스 생성
+create index idx_employee_emp_name
+on employee(emp_name);
+--3. emp_name조회
+select *
+from employee
+where emp_name = '송종기'; -- Scan 방식 = Range Scan(unique는 아님) = cost = 2
+
+--결과 . 검색 cost가 3->2로 줄면서 검색 성능이 향상되었다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
