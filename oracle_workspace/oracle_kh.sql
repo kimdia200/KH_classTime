@@ -3406,6 +3406,494 @@ where emp_name = '송종기'; -- Scan 방식 = Range Scan(unique는 아님) = co
 
 
 
+--================================================================
+-- PL / SQL
+--================================================================
+-- Procedural Language / SQL 
+-- SQL의 한계를 보완해서 SQL문 안에서 변수정의 / 저건처리 / 반복처리 등의 문법을 지원
+
+
+-- 유형
+-- 1. 익명블럭(Anonymous Block) : PL / SQL 실행가능한 1회용블럭.
+-- 2. Procedure : 특정 구문을 모아둔 서브프로그램. DB서버에 저장하고, 클라이언트에서 호출 실행.
+-- 3. Function : 반드시 하나의 값을 리턴하는 서브프로그램, DB서버에 저장하고, 클라이언트에 의해 호출/실행.
+
+-- 4. Trigger 
+-- 5. Scheduler
+
+/*
+
+declare         --1.변수선언부(선택)
+
+begin            --2.실행부(필수)
+
+exception     --3.예외처리부(선택)
+
+end;              --4.블럭종료선언(필수) 
+/    --슬래시를 써줘야 끝남, 이부분에 라인주석 달면안된다!
+
+*/
+
+
+--세션별로 설정
+--서버콘솔 출력모드 지정 on
+set serveroutput on;
+
+begin
+    --dbms_output패키지의 put_line프로시져 : 출력문
+    dbms_output.put_line('Hello PL/SQL');
+end;
+/
+
+select *
+from employee;
+-- Sample
+--사원조회
+declare
+    v_id number;
+begin   
+    select emp_id
+    into v_id
+    from employee
+    where emp_name = '&사원명';
+    /*
+    &사원명 = 사용자로부터 사원명이라는 값을 입력받아
+    select 
+    from
+    where절이 실행되어 결과값이
+    into로 v_id에 저장이됨
+    */
+    
+    dbms_output.put_line('사번 = ' || v_id);
+exception
+    when no_data_found then dbms_output.put_line('해당 이름을 가진 사원이 없습니다.');
+    
+end;
+/
+
+
+-------------------------------------
+--  변수선언 / 대입
+-------------------------------------
+-- 변수명  [constant] 자료형 [not null] [ := 초기값];
+
+declare
+    num constant number := 100;
+    name varchar2(100) not null := '홍길동'; --not null은 초기값 지정 필수
+    result number;
+begin
+    dbms_output.put_line('num = ' || num);
+--    num := 200; --값변경 불가
+--    dbms_output.put_line('num = ' || num);
+    name := '&이름';
+    dbms_output.put_line('이름 : ' || name);
+end;
+/
+
+--PL/SQL 자료형
+--1. 기본자료형
+--      문자형 : varchar2, char, clob
+--      숫자형 : number
+--      날짜형 : date
+--      논리형 : boolean (true | false | null)
+--2. 복합자료형
+--      레코드
+--      커서
+--      컬렉션
+
+--참조형은 다른 테이블의 자료형을 차용해서 쓸 수 있다.
+--1. %type
+--2. %rowtype
+--3. record
+
+declare
+--      자료형 직접 지정
+--    v_emp_name varchar2(100);
+--    v_emp_no varchar2(100);
+
+--      테이블의 값의 타입을 그대로 가져옴
+        v_emp_name employee.emp_name%type;
+        v_emp_no employee.emp_no%type;
+    
+begin
+    select emp_name, emp_no
+    into v_emp_name, v_emp_no
+    from employee
+    where emp_id = '&사번';
+    
+    dbms_output.put_line('이름 : ' || v_emp_name);
+    dbms_output.put_line('주민번호 : ' || v_emp_no);
+
+end;
+/
+
+
+--매번 컬럼별 변수를 설정해야하나 너무 귀찮다 싶을때  %rowtype
+declare
+    v_emp employee%rowtype; --테이브르이 한 행 전체를 타입으로 지정함
+
+begin
+    select *
+    into v_emp -- 한줄을 통째로 때려박음
+    from employee
+    where emp_id = '&사번';
+    
+    dbms_output.put_line('사원명 : ' || v_emp.emp_name); --v_emp.컬럼명으로 사용함
+    dbms_output.put_line('부서코드 : ' || v_emp.dept_code);
+end;
+/
+
+
+--record
+-- 사원명, 부서명을 할때 부서명은 employee에 없는데??
+-- 존재하지않는 컬럼 조합을 record로 선언해버림
+
+declare
+    type my_emp_rec is record(
+        emp_id employee.emp_id%type, 
+        emp_name employee.emp_name%type,
+        dept_title department.dept_title%type
+    );
+    
+    my_row my_emp_rec;
+begin
+
+    select E.emp_id,
+                E.emp_name,
+                D.dept_title
+    into my_row
+    from employee E
+        left join department D
+            on E.dept_code = D.dept_id
+    where emp_id = '&사번';
+    
+    --출력
+    dbms_output.put_line('사번 : ' || my_row.emp_id);
+    dbms_output.put_line('사원명 : ' || my_row.emp_name);
+    dbms_output.put_line('부서명 : ' || my_row.dept_title);
+    
+end;
+/
+
+
+--사원명을 입력받고, 사번, 사원명, 직급명, 부서명을 참조형 변수를 통해 출력하세요.
+declare
+    type my_rec_type is record(
+        emp_id employee.emp_id%type, 
+        emp_name employee.emp_name%type,
+        job_name job.job_name%type,
+        dept_title department.dept_title%type
+    );
+    
+    my_row my_rec_type;
+    v_emp_name employee.emp_name%type;
+begin
+        v_emp_name := '&사원명';
+        
+        select e.emp_id, e.emp_name, d.dept_title, j.job_name
+        into my_row
+        from employee e, department d, job j
+        where e.dept_code = d.dept_id(+)
+            and e.job_code = j.job_code(+)
+            and e.emp_name = v_emp_name;
+            
+        --출력
+        dbms_output.put_line('사번 : ' || my_row.emp_id);
+        dbms_output.put_line('사원명 : ' || my_row.emp_name);
+        dbms_output.put_line('직급명 : ' || my_row.job_name);
+        dbms_output.put_line('부서명 : ' || my_row.dept_title);
+end;
+/
+
+-----------------------------------------------
+-- PL/SQL 안의 DML
+-----------------------------------------------
+--이 안에서 commit / rollback / 트랜잭션(더 쪼갤수 없는 작업단위) 처리까지 해줄것.
+--drop table member;
+create table member(
+    id varchar2(30),
+    pwd varchar2(50) not null,
+    name varchar2(100) not null,
+    constraint member_id_pk primary key(id)
+);
+
+desc member;
+
+
+begin
+--    insert into member
+--    values('honggd','1234','홍길동');
+    
+    update member set pwd = 'abcd'
+    where id='honggd';
+    
+    --트랜잭션처리
+    commit;
+end;
+/
+select * from member;
+
+--사용자 입력값을 받아서 id,pwd,name을 새로운 행으로 추가하는 익명블럭을 작성하세요
+--내방법
+begin
+    insert into member
+    values ('&아이디', '&비밀번호','&이름');
+    --트랜잭션처리
+    commit;
+end;
+/
+
+select * from emp_copy;
+desc emp_copy
+-- emp_copy에 사번 마지막번호에 +1 처리한 사번으로 
+-- 이름 주민번호 전화번호 직급코드 급여등급을 등록하는 PL/SQL 익명블럭 작성
+begin
+    insert into emp_copy (emp_id, emp_name, emp_no, phone, job_code, sal_level)
+    values (
+                    (
+                        select max(emp_id)
+                        from emp_copy;
+                    )+1,  '&이름','&주민번호','&전화번호','&직급코드','&급여등급'
+                );
+    commit;
+end;
+/
+--강사님 방법
+-- 어차피 여러가지 명령어를 쓸수있으므로
+--변수를 먼저 구하고 그 변수를 사용하셨음
+declare
+    last_num number;
+begin
+    --1. 사번 마지막 번호 구하기
+    select max(emp_id)
+    into last_num
+    from emp_copy;
+    dbms_output.put_line('last_num = ' || last_num);
+    
+    --2. 사용자입력값으로 insert문 실행
+    insert into emp_copy (emp_id, emp_name, emp_no, phone, job_code, sal_level)
+    values(last_num + 1, '&emp_name', '&emp_no', '&phone', '&job_code', '&sal_level');
+
+    --3. transaction처리
+    commit;
+end;
+/
+
+-------------------------------
+-- 조건문
+-------------------------------
+--1. if 조건식 then... end if;
+--2. if 조건식 then ... else ... end if;
+--3. if 조건식1 then ... elsif 조건식2 then ... end if;
+-- else if 문에 'e'가 없는게 맞는거니까 조심해야한다
+
+declare
+    name varchar2(100) := '&이름';
+begin
+    if name = '홍길동' then
+        dbms_output.put_line('반갑습니다. 홍길동님');
+    else
+        dbms_output.put_line('누구냐 넌?');
+    end if;
+    
+    dbms_output.put_line('------------끝----------');
+end;
+/
+
+declare
+    num number := &숫자;
+begin
+    dbms_output.put_line('입력값 : ' || num);
+    if mod(num, 3) = 0 
+        then dbms_output.put_line('3의 배수를 입력하셨습니다.');
+    elsif mod(num, 3) = 1
+        then dbms_output.put_line('3으로 나눈 나머지가 1입니다.');
+    elsif mod(num, 3) = 2
+        then dbms_output.put_line('3으로 나눈 나머지가 2입니다.');
+    end if;
+    
+end;
+/
+
+
+--사번을 입력받고, 해당사원 직급이 J1라면 '대표' 출력
+--J2라면 '임원'
+--그 외는 평사원 이라고 출력하세요
+
+declare
+    jobCode employee.job_code%type;
+
+begin
+    select job_code
+    into jobCode
+    from employee
+    where emp_id =  '&사번';
+
+    if jobCode = 'J1' 
+        then dbms_output.put_line('대표');
+    elsif jobCode = 'J2'
+        then dbms_output.put_line('임원');
+    else
+        dbms_output.put_line('평사원');
+    end if;
+
+end;
+/
+
+
+-------------------------------
+-- 반복문
+-------------------------------
+--1. 기본 loop - 무한반복(탈출조건 반드시 필요)
+-- loop ~ end loop;
+
+--2. while loop - 조건에 따른 반복
+--3. for loop - 지정횟수만큼 반복실행, 탈출도알아서, 가장세련된방법
+
+declare
+    n number := 1; --증감변수
+
+begin
+    loop
+        dbms_output.put_line(n);
+        n := n+1;
+        
+        --exit구문필수 (java의 break같은 기능)
+        --방법 2가지
+        
+--        if n>100
+--            then exit;
+--        end if;
+
+        exit when n>100;
+    end loop;
+
+end;
+/
+
+--난수 출력
+declare
+    num number := 1;
+    rnd number;
+begin
+    --반복문 10번 실행
+    loop
+        --start 이상, end 미만의 실수형 난수 생성
+        rnd := trunc(dbms_random.value(1,11)); --1~10.99999까지의 난수
+        dbms_output.put_line(num || ' : ' || rnd);
+        num := num+1;
+        exit when num>10;
+    end loop;
+    
+end;
+/
+
+--while loop
+--while 조건 loop ~~~ loop end;
+declare
+    n number := 0;
+
+begin
+    while n<10 loop
+        --짝수만 출력
+        if mod(n,2)=0
+            then dbms_output.put_line(n);
+        end if;
+        
+        n:= n+1;
+    end loop;
+end;
+/
+-- 사용자로 부터 단수(2~9단)을 입력받아 해당단수의 구구단을 출력하기
+declare
+    dan number := &단수;
+    n number:=1;
+begin
+        if dan between 2 and 9 then
+            dbms_output.put_line(dan || '단');
+            while n<10 loop
+                dbms_output.put_line(dan || ' * ' || n || ' = ' ||(dan*n));
+                n := n+1;
+            end loop;
+        else
+            dbms_output.put_line('잘못 입력하셨습니다.');
+        end if;
+end;
+/
+
+--for loop 가장 많이 사용 하니까 잘 알아둘것
+--for ... loop
+--증감변수를 별도로 선언 하지 않아도 됨
+--심지어 증감변수 자동 증가처리됨
+--Default값으로 1씩 증가
+--Reverse 사용시 1씩 감소
+
+begin
+    --증감변수 n을 declare에 선언하지 않고 바로 사용가능
+    --시작값..종료값 (시작값이 종료값보다 작아야함)
+    for n in 1..5 loop --between 1 and 5
+--    for n in reverse 1..5 loop  --5 4 3 2 1 로 출력하고 싶은경우
+        dbms_output.put_line(n);
+    end loop;
+end;
+/
+
+--210 ~ 220번 사이의 사원을 조회 (사번, 이름, 전화번호)
+declare
+    e employee%rowtype;
+
+begin
+    for n in 210..220 loop
+        select *
+        into e
+        from employee
+        where emp_id = n;
+        dbms_output.put_line('사번 : ' || e.emp_id);
+        dbms_output.put_line('이름 : ' || e.emp_name);
+        dbms_output.put_line('전화번호 : ' || e.phone);
+        dbms_output.put_line('');
+    end loop;
+
+end;
+/
+
+--@실습 문제 : tb_number테이블에 난수(0~999) 100개를 저장하는 익명블럭을 생성하세요
+--실행시마다 생성된 모든 난수의 합을 콘솔에 출력할 것.
+
+drop sequence seq_tb_number_no;
+drop table tb_number;
+--채번할 시퀀스 생성
+create sequence seq_tb_number_no
+    start with 1
+    increment by 1
+    nomaxvalue
+    nominvalue
+    nocycle
+    cache 100;
+
+create table tb_number(
+    id number, --pk sequence객체로 부터 채번
+    num number, --난수
+    reg_date date default sysdate,
+    constraint pk_tb_number_id primary key(id)
+);
+
+declare
+    rnd number;
+
+begin
+    for n in 1..100 loop
+        rnd := trunc(dbms_random.value(0,1000));
+        insert into tb_number (id, num)
+        values (seq_tb_number_no.nextval, rnd);
+        
+    end loop;
+
+end;
+/
+
+select *
+from tb_number;
 
 
 
