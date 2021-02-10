@@ -4423,6 +4423,89 @@ desc emp_copy;
 
 
 
+--상품 재고 관리
+--테이블을 두개 만듦
+
+--상품테이블
+--drop table product
+create table product(
+    pcode number, --상품코드
+    pname varchar2(100), --상품명
+    price number, --가격
+    stock_cnt number default 0, --재고
+    constraint pk_product_pcode primary key(pcode)
+);
+
+--재고테이블
+--drop table product_io
+create table product_io (
+    iocode number,
+    pcode number,
+    amount number,
+    status char(1),
+    io_date date default sysdate,
+    constraint pk_product_io_code primary key(iocode),
+    constraint fk_product_io_pcode foreign key (pcode) 
+        references product(pcode),
+    constraint ck_product_io_status check(status in ('I','O'))
+);
+
+--drop sequence seq_product_pcode;
+--drop sequence seq_product_iocode;
+create sequence seq_product_pcode;
+create sequence seq_product_io_iocode
+start with 1000;
+
+insert into product
+values (seq_product_pcode.nextval, '아이폰12', 1500000, 0);
+
+insert into product
+values (seq_product_pcode.nextval, '갤럭시21', 990000, 0);
+
+
+--입출고 데이터가 insert되면, 해당상품의 재고수량을 변경하는 트리거
+create or replace trigger trg_product
+    before
+    insert on product_io
+    for each row
+begin
+    --입고
+    if :new.status = 'I' then
+        update product
+        set stock_cnt = stock_cnt + :new.amount
+        where pcode = :new.pcode;
+    --출고
+    else
+        update product
+        set stock_cnt = stock_cnt - :new.amount
+        where pcode = :new.pcode;
+    end if;
+end;
+/
+
+--입출고 내역
+insert into product_io
+values (seq_product_io_iocode.nextval, 1, 5, 'I' , sysdate);
+insert into product_io
+values (seq_product_io_iocode.nextval, 1, 100, 'I' , sysdate);
+insert into product_io
+values (seq_product_io_iocode.nextval, 1, 30, 'I' , sysdate);
+
+select * from product;
+select * from product_io;
+
+commit;
+
+--1. 원DML문의 대상테이블에 접근 할 수 없다.
+--2. 트리거 안에서는 원 DML문을 제어 할 수 없다.
+
+
+
+
+
+
+
+
 
 
 
