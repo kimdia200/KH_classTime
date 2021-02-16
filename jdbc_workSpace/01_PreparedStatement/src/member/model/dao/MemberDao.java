@@ -101,7 +101,7 @@ public class MemberDao {
 				e.printStackTrace();
 			}
 			try {
-				if (pstmt != null)
+				if (conn != null)
 					conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();

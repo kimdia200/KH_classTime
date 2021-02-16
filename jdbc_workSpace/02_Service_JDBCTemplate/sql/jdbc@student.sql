@@ -68,6 +68,6 @@ select * from member
 where member_name like '%김%';
 
 
-select * from member order by enroll_date desc;
+
 
 
