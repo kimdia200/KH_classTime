@@ -4380,8 +4380,13 @@ update emp_copy
 set salary = salary + 100000
 where dept_code = 'D5';
 
-rollback; --트리거에서 실행된 dml문도 함께 rollback된다
+desc emp_copy;
 
+insert into emp_copy
+values ('255', '김김김', '940206-1111111', 'kimdia200@naver.com','01063534583','D9','J2','S4',2000000,null,201,'2001/01/01',null,'N');
+
+rollback; --트리거에서 실행된 dml문도 함께 rollback된다
+select * from emp_copy;
 select * from emp_copy_salary_log;
 
 

@@ -359,7 +359,7 @@ public class MemberDao {
 //			e.printStackTrace();
 			//예외를 전환 : RuntimeException, 의미가 분명한 커스텀 예외 객체를 던질것
 			//unchecked이기 때문에 따로 throws를 써주지 않아도 자동으로 됨(try~catch안해줬으니까)
-			throw new MemberException("회원 전체 조회", e);
+			throw new MemberException("탈퇴 회원 전체 조회", e);
 		}finally {
 			//5. 자원반납(생성순서 역순)
 			close(rset);
