@@ -95,6 +95,10 @@ public class ProductService {
 	public int input(String productId, int num) {
 		Connection conn = getConnection();
 		int result = dao.input(conn,productId,num);
+		if(result>0)
+			commit(conn);
+		else
+			rollback(conn);
 		close(conn);
 		return result;
 	}
@@ -103,6 +107,10 @@ public class ProductService {
 	public int output(String productId, int num) {
 		Connection conn = getConnection();
 		int result = dao.output(conn,productId,num);
+		if(result>0)
+			commit(conn);
+		else
+			rollback(conn);
 		close(conn);
 		return result;
 	}
