@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<!--
+    1단계
+    html>head+body 를 치면 한번에 만들어준다
+    >는 하위 표시, +는 형제표시    
+
+    2단계
+    ! 치고 탭(엔터)누르면 그냥 metaTag까지 싹다 만들어줌...
+-->
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>목록관련</title>
+</head>
+
+<body>
+    <h1>목록관련</h1>
+    <!--순서 없는 목록 unOrdered list-->
+    <!-- 스타일은 변경및 종류확인을 위해 브라우저에서 f12개발자 모드 활용 (크롬) -->
+    <ul style="list-style-type: armenian;">
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <!--순서 있는 목록 ordered list-->
+    <ol>
+        <li>html</li>
+        <li>css</li>
+        <li>js</li>
+    </ol>
+    <!--중첩된 목록
+        반드시 li는 상위에 ul,ol로 감싸줘야한다
+    -->
+    <ol>
+        <li>안녕
+            <ul>
+                <li>Hello</li>
+                <li>Nihao</li>
+            </ul>
+        </li>
+        <li>잘가
+            <ul>
+                <li>영어
+                    <ul>
+                        <li>ByeBye</li>
+                        <li>Good Bye</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>반가웠어</li>
+    </ol>
+    <!-- ul>li>ol>li*2-->
+    <ul>
+        <li>ㄱ
+            <ol>
+                <li>ㄴ</li>
+                <li>ㄷ</li>
+            </ol>
+        </li>
+    </ul>
+    <!-- 설명 목록 -->
+    <!-- dl>dt+dd -->
+    <dl>
+        <dt>제목</dt>
+        <dd>설명을 적으세요1</dd>
+        <dd>설명을 적으세요2</dd>
+        <dt>다른 제목</dt>
+        <dd>다른 설명을 적으세요1</dd>
+    </dl>
+
+
+</body>
+
+</html>
