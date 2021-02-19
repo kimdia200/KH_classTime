@@ -190,10 +190,15 @@ public class Menu {
 				num = sc.nextInt();
 				sc.nextLine();
 				if(pStock.getStock()<num) {
-					//에러 메시지를 보이라는게 어떤것을 사용하라는것인가
-					//실행중지 하라는건 이 메서드를 중지하라는것인가 프로그램을 중지하라는것인가
-					System.err.println("출고수량이 재고보다 많습니다.");
-					throw new ProductException("출고수량이 재고보다 많습니다");
+					//강사님 에러적용 방식
+					try {
+						throw new ProductException("출고수량이 재고보다 많습니다");
+					} catch (Exception e) {
+						//개발자가 보는것
+						e.printStackTrace();
+						//사용자가 보는것
+						System.err.println("출고수량이 재고보다 많습니다.");
+					}
 				}
 				result = controller.output(pStock.getProductId(),num);
 				if(result>0)
