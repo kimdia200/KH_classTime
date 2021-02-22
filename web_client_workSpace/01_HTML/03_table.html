@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>table</title>
+    <style>
+        /* css에서의 주석은 무조건 이거 하나 */
+        /*
+            여기에 정의를 하면 이 페이지에 있는 태그는 속성을 적용받게됨
+            태그명 입력후 중괄호 안에 type과 값을 넣어줌
+            여러개의 태그를 동시에 처리 할 수도 있음
+        */
+        table {
+            /* 경계 1px, 실선, 블랙 */
+            border: 1px solid black;
+            /* 한줄로 표현 */
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            /* 경계선사이의 여백 */
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>table</h1>
+    <!--
+        table table 관련 최상위 태그
+        thead | tbody | tfoot 행타입태그
+        tr 행
+            th 제목셀, 기본글꼴 bold, 가운데정렬
+            td 내용셀, 왼쪽정렬
+            (th와 td는 반드시 tr안에 존재해야함)
+        기본모양은 경계선이 없음
+        <table border="1"> 1픽셀로 경계선을 주는 옛날방법(사용 지양)
+        현재는 CSS로 주로 처리함
+    -->
+    <table>
+        <thead>
+            <tr>
+                <th>브라우져명</th>
+                <th>제조사</th>
+                <th>홈페이지</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>크롬</td>
+                <td>구글</td>
+                <td><a href="http://google.com">http://google.com</a></td>
+            </tr>
+            <tr>
+                <td>사파리</td>
+                <td>애플</td>
+                <td><a href="http://apple.com">http://apple.com</a></td>
+            </tr>
+            <tr>
+                <td>파이어폭스</td>
+                <td>모질라</td>
+                <td><a href="http://mozilla.org">http://mozilla.org</a></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>총 갯수</td>
+                <!-- colspan = 2개처럼 생각해주세요~ -->
+                <td colspan="2"> 3개</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <hr>
+
+    <table>
+        <tr>
+            <th colspan="4">이력서</th>
+        </tr>
+        <tr>
+            <td colspan="2" rowspan="2" style="width: 130px; height: 150px;">사진</td>
+            <td style="width: 80px;">이름</td>
+            <td style="width: 200px;"></td>
+        </tr>
+        <tr>
+            <td>연락처</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td style="width: 70px; height: 50px;">주소</td>
+            <td colspan="3"></td>
+        </tr>
+        <tr>
+            <td style="height: 100px;">자기소개</td>
+            <td colspan="3"></td>
+        </tr>
+    </table>
+</body>
+
+</html>

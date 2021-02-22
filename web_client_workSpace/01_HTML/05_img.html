@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>img</title>
+    <style>
+        img {
+            width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>이미지관련</h1>
+    <!-- src = 이미지의 주소, alt는 src가 잘못되었을때 대체텍스트 제공 -->
+    <img src="sample/image/flower1.PNG" alt="꽃사진">
+    <!-- 웹상에서의 img주소를 사용해도 됨 -->
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdXEfqB8lHtG57bvIQkSwCUu1pOtfWWQgxQw&usqp=CAU"
+        alt="구글사진">
+
+    <hr>
+    <h2>절댓값 | 상댓값</h2>
+    <div>
+        <!-- px픽셀 절대값이므로, 화면(viewPort)가 변해도 너비/높이값이 변하지 않는다 -->
+        <img src="sample/image/flower1.PNG" alt="꽃사진1" style="width: 250px;">
+        <img src="sample/image/flower2.PNG" alt="꽃사진2" style="width: 250px;">
+        <img src="sample/image/flower3.PNG" alt="꽃사진3" style="width: 250px;">
+        <img src="sample/image/flower4.PNG" alt="꽃사진4" style="width: 250px;">
+    </div>
+
+    <hr>
+    <h2>절댓값 | 상댓값</h2>
+    <div>
+        <!-- %는 상댓값이므로, 화면(viewPort)대비 너비/높이값이 변한다 -->
+        <img src="sample/image/flower1.PNG" alt="꽃사진1" style="width: 23%;">
+        <img src="sample/image/flower2.PNG" alt="꽃사진2" style="width: 23%;">
+        <img src="sample/image/flower3.PNG" alt="꽃사진3" style="width: 23%;">
+        <img src="sample/image/flower4.PNG" alt="꽃사진4" style="width: 23%;">
+    </div>
+
+    <hr>
+    <h2>이미지 링크</h2>
+    <!-- 태그안에서의 title속성 = 마우스오버시 툴팁정도 -->
+    <a href="http://w3schools.com" title="와삼스쿨로 이동하기">
+        <img src="sample/image/tiger.jpg" alt="타이거사진">
+    </a>
+
+    <hr>
+    <h2>image map</h2>
+    <img src="sample/image/river1.PNG" style="width: 500px;" alt="두물머리사진" usemap="#mymap">
+    <map name="mymap">
+        <!-- shape = rect | circle | ploy -->
+        <!-- rect = left top, right bottom좌표 필요-->
+        <area shape="rect" coords="0,0,250,333" href="http://google.com" alt="구글이동">
+        <area shape="rect" coords="250,0,500,333" href="http://naver.com" alt="네이버 이동">
+    </map>
+    <h2>이미지배치</h2>
+  <!-- div>img+p>lorem*3 -->
+  <!-- float속성은 한글 글자처럼 취급 같이 적용됨 left, right만 확인 -->
+  <div>
+    <img src="sample/image/forest1.PNG" style="float: left;">
+    <p><span>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sint doloremque ducimus veritatis, sunt ullam voluptate deserunt aspernatur nobis qui commodi quisquam reprehenderit at ad labore sed porro amet autem quas.</span><span>Est saepe fugiat quasi. Sequi neque nobis quidem iure ex facere vero. Expedita alias aperiam libero quaerat. Sunt iure voluptatibus mollitia nulla dolorem necessitatibus in! Tempora maiores perferendis deleniti doloremque?</span><span>Voluptates explicabo obcaecati sunt veritatis temporibus, earum mollitia, necessitatibus sint dicta fugit dolorum. Perspiciatis rerum modi eaque ipsa soluta aspernatur sapiente? Autem blanditiis, perferendis ducimus similique dolorum aspernatur eligendi itaque.</span><span>Commodi eos facere atque ea hic odit quisquam corporis blanditiis ducimus, eligendi cupiditate explicabo laboriosam modi adipisci illum voluptas? Repellat voluptatibus quo natus? Itaque doloremque, sequi qui accusamus officiis similique.</span><span>Sit, alias, excepturi eveniet repellendus nam saepe reiciendis facilis ipsam temporibus provident dignissimos iusto officiis praesentium quidem consectetur quis repudiandae magni sapiente ab voluptas quas modi. Neque itaque architecto nemo.</span><span>Nisi, qui. Libero maiores eius veniam saepe ratione facere atque laudantium. Illo eum sequi deleniti repellendus? Iure, facilis iste deserunt ad sapiente dolores labore veritatis corrupti ullam nihil harum aut.</span><span>Sit illum dignissimos nihil molestiae? Molestias, suscipit! Veritatis velit perspiciatis eligendi quibusdam nam veniam vitae, non itaque quaerat modi fuga repellat error maxime reprehenderit explicabo quisquam cumque? Adipisci, a impedit!</span><span>Voluptas expedita sunt qui maiores quidem labore dolor, quo quis ratione illo? Nihil tenetur sunt, architecto reprehenderit nobis illum dolore voluptatem? Iure ipsam iusto hic quae, minima porro dolores nostrum!</span><span>Quam, tempora eveniet similique consequuntur aperiam explicabo rerum quas maiores eligendi sint quidem porro facilis aut pariatur blanditiis at. Molestiae adipisci expedita, reiciendis cumque nemo rerum harum aspernatur libero vitae!</span><span>Tempore deserunt laboriosam ullam minus recusandae expedita porro suscipit eos? Itaque odit sint hic dignissimos debitis illo amet totam voluptatem praesentium veritatis ratione ducimus vitae ullam veniam sit, perferendis odio.</span></p>
+  </div>
+  <div>
+    <img src="sample/image/forest1.PNG" style="float: right;">
+    <p><span>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sint doloremque ducimus veritatis, sunt ullam voluptate deserunt aspernatur nobis qui commodi quisquam reprehenderit at ad labore sed porro amet autem quas.</span><span>Est saepe fugiat quasi. Sequi neque nobis quidem iure ex facere vero. Expedita alias aperiam libero quaerat. Sunt iure voluptatibus mollitia nulla dolorem necessitatibus in! Tempora maiores perferendis deleniti doloremque?</span><span>Voluptates explicabo obcaecati sunt veritatis temporibus, earum mollitia, necessitatibus sint dicta fugit dolorum. Perspiciatis rerum modi eaque ipsa soluta aspernatur sapiente? Autem blanditiis, perferendis ducimus similique dolorum aspernatur eligendi itaque.</span><span>Commodi eos facere atque ea hic odit quisquam corporis blanditiis ducimus, eligendi cupiditate explicabo laboriosam modi adipisci illum voluptas? Repellat voluptatibus quo natus? Itaque doloremque, sequi qui accusamus officiis similique.</span><span>Sit, alias, excepturi eveniet repellendus nam saepe reiciendis facilis ipsam temporibus provident dignissimos iusto officiis praesentium quidem consectetur quis repudiandae magni sapiente ab voluptas quas modi. Neque itaque architecto nemo.</span><span>Nisi, qui. Libero maiores eius veniam saepe ratione facere atque laudantium. Illo eum sequi deleniti repellendus? Iure, facilis iste deserunt ad sapiente dolores labore veritatis corrupti ullam nihil harum aut.</span><span>Sit illum dignissimos nihil molestiae? Molestias, suscipit! Veritatis velit perspiciatis eligendi quibusdam nam veniam vitae, non itaque quaerat modi fuga repellat error maxime reprehenderit explicabo quisquam cumque? Adipisci, a impedit!</span><span>Voluptas expedita sunt qui maiores quidem labore dolor, quo quis ratione illo? Nihil tenetur sunt, architecto reprehenderit nobis illum dolore voluptatem? Iure ipsam iusto hic quae, minima porro dolores nostrum!</span><span>Quam, tempora eveniet similique consequuntur aperiam explicabo rerum quas maiores eligendi sint quidem porro facilis aut pariatur blanditiis at. Molestiae adipisci expedita, reiciendis cumque nemo rerum harum aspernatur libero vitae!</span><span>Tempore deserunt laboriosam ullam minus recusandae expedita porro suscipit eos? Itaque odit sint hic dignissimos debitis illo amet totam voluptatem praesentium veritatis ratione ducimus vitae ullam veniam sit, perferendis odio.</span></p>
+  </div>
+
+</body>
+
+</html>

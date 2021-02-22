@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>block | inline</title>
+    <style>
+        div {
+            width: 100px;
+            height: 100px;
+            border: 1px solid rgb(0, 0, 0);
+            background-color: salmon;
+        }
+        span {
+            width: 100px;
+            height: 100px;
+            border: 1px solid rgb(0, 0, 0);
+            background-color: violet;
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+        화면 너비를 전체 사용하므로, 태그를 나열 했을때,
+        줄바꿈 처리되어 새로 배치됨
+    -->
+    <h1>block요소</h1>
+    <!-- div는 bolck요소 이기때문에 한줄에 여러개 나열되지 못하고 한행씩 차지 -->
+    <!-- div{div$}*3 -->
+    <div>div1</div>
+    <div>div2</div>
+    <div>div3</div>
+    
+    <!-- p>lorem -->
+    <!-- lorem ipsum : 채우기 텍스트(Emmet에서 지원하는것, 아무글자나 랜덤으로 생성) -->
+    <p style="background-color: thistle;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam vitae nemo veritatis dolorum natus consectetur nostrum, necessitatibus neque ea ut doloribus at magnam voluptas a beatae, aliquam doloremque amet ipsam.</p>
+
+
+    <!--
+        컨텐츠 영역만을 너비로 사용하므로, 태그 나열시,
+        줄바꿈 되지 않고 옆으로 배치됨
+        width, height값을 따로 부여해도 무시된다
+    -->
+    <h1>인라인요소</h1>
+    <!-- span 짧은 문구를 감쌀 때 주로 사용 -->
+    <!-- span{span$}*3 -->
+    <span>span1</span>
+    <span>span2</span>
+    <span>span3</span>
+    <span style="background-color: bisque;">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illum quis nihil voluptatibus maiores minima tenetur possimus reprehenderit odit, similique labore. Nulla neque excepturi sequi eum obcaecati repudiandae, quidem totam et.</span>
+</body>
+</html>

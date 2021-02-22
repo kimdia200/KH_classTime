@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>form</title>
+  </head>
+  <body>
+    <h1>form관련</h1>
+    <!-- 
+    action : 폼이 제출될 server측 주소. 미작성시, 현재주소로 제출됨.
+    method : GET(기본값) | POST
+      1. GET http://127.0.0.1:5500/08_form.html?userEmail=ssss%40naver.com 
+              url에 덧붙에 전송
+      2. POST http메세지 body영역에 작성. url에 노출되지 않는다. 
+    
+    *input태그의 name속성이 제출되는 key값이다.
+    name속성이 없으면 제출되지 않는다
+  -->
+    <form action="" method="GET">
+      <label for="userEmail">이메일</label>
+      <input type="text" name="userEmail" id="userEmail" />
+      <br />
+      <label for="userName">이름</label>
+      <input type="text" name="userName" id="userName" />
+      <br />
+      <input type="submit" value="제출" />
+    </form>
+
+    <h2>text2관련</h2>
+    <form action="">
+      <!-- 한줄짜리 사용자 입력을 처리하는방법-->
+      <!-- fieldset 바운더리로 감싸주는 태그 -->
+      <!-- legend : fieldset에 이름 부여 -->
+      <!-- placeholder는 안드로이드의 hint와 비슷한듯 -->
+      <!-- vlaue 는 초기값, 사용자가 입력하면 쓸모없어짐-->
+      <!-- readonly : textfield 수정불가 -->
+      <!-- required : not null조건 반드시 입력해야함-->
+      <!-- maxLength : 최대 입력가능한 길이-->
+      <fieldset>
+        <legend>회원정보</legend>
+        <input
+          type="text"
+          name="memberName"
+          id="memberName"
+          placeholder="회원명"
+          value="홍길동"
+          readonly
+          required
+        />
+        <br />
+        <!-- 비밀번호는 get방식으로 보내면 다보이기때문에 절대 그러면 안된다... post방식 이용 -->
+        <input
+          type="password"
+          name="memberPwd"
+          id="memberPwd"
+          maxlength="8"
+          placeholder="비밀번호"
+        />
+      </fieldset>
+
+      <fieldset>
+        <legend>기타정보</legend>
+        <!-- input type search : 타이핑할때 옆에 x가 시각적으로 나타나는것뿐 -->
+        <input
+          type="search"
+          name="searchKeyword"
+          id="searchKeyword"
+          placeholder="검색어를 입력하세요"
+        />
+        <br /><br />
+        <!-- 이메일 형식 검사 -->
+        <input
+          type="email"
+          name="memberEmail"
+          id="memberEmail"
+          placeholder="이메일 입력"
+        />
+        <br /><br />
+        <!-- URL 형식 검사 -->
+        <input
+          type="url"
+          name="memberHomepage"
+          id="memberHomepage"
+          placeholder="홈페이지 url"
+        />
+        <br /><br />
+        <!-- 핸드폰에서 입력할경우 숫자키보드를 제공 -->
+        <input
+          type="tel"
+          name="memberTel"
+          id="memberTel"
+          placeholder="전화번호"
+        />
+      </fieldset>
+      <fieldset>
+        <legend>자기소개</legend>
+        <!-- 여러줄 입력가능한 textarea 태그 -->
+        <!-- textarea는 resize가 가능해서 막아줬음 -->
+        <textarea
+          name="self_introduce"
+          id="self_introduce"
+          cols="30"
+          rows="10"
+          style="resize: none"
+        >
+안녕
+        반가웠어
+    잘가고
+        </textarea>
+      </fieldset>
+
+      <br /><br />
+      <!-- input:summit emmit으로 완성 -->
+      <!-- input타입의 버튼은 총 세종류가 있다-->
+      <input type="submit" value="제출" />
+      <!-- <button type="submit">제출</button>-->
+      <!-- 모두 지워지는게 아니고 리셋되는것, 따라서 초기값이 있다면 초기값으로 리셋됨 -->
+      <input type="reset" value="초기화" />
+      <!-- <button type="reset">초기화</button>-->
+      <input type="button" value="그냥 버튼" />
+      <!-- <button type="button">그냥 버튼</button>-->
+
+      <!-- input type이 아닌 단일 button태그로 버튼을 만들고 타입을 지정하지 않을시 기본값 : summit버튼 -->
+    </form>
+    <h2>숫자관련</h2>
+    <form action="">
+      <fieldset>
+        <legend>숫자</legend>
+        <!-- step을 5로 지정해놨기 때문에 5의 배수만 입력가능하다 -->
+        <input
+          type="number"
+          name="point"
+          id="point"
+          max="100"
+          min="0"
+          step="5"
+          style="width: 100px"
+        />
+        <br /><br />
+        <!-- input:range[max=100][min=1] -->
+        <input type="range" name="amount" id="amount" max="100" min="1" />
+      </fieldset>
+      <button type="submit">제출</button>
+    </form>
+  </body>
+</html>
