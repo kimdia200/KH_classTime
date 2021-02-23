@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hello CSS</title>
+
+    <!-- css파일을 연결하는 작업 -->
+    <link rel="stylesheet" href="./style.css" />
+
+    <!-- 문서내에 style태그 선언은 head부분에 하기 -->
+    <!-- #은 id선택자 -->
+    <style>
+      #p-second {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Hello CSS</h1>
+    <h2>CSS 작성하는 3가지 방법</h2>
+    <!-- 세번째 방법이 가장 추천되는 방법이나, 수업시간에는 원활한 진행을 위해 두번째 방법 위주로 수업 -->
+    <!-- 첫번째 방법은 관리하기가 벅차므로 추천되지 않는 방법 -->
+    <p style="color: burlywood">
+      1. HTML태그의 공통속성 Style에 작성(inline에 작성)
+    </p>
+    <p id="p-second">2. 문서내에 style태그 안에 작성하기</p>
+    <p id="p-third">3. 문서 외부에 css파일을 작성하고, 현재문서와 연결하기</p>
+  </body>
+</html>

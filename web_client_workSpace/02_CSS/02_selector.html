@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Selector</title>
+  </head>
+  <body>
+    <h1>선택자</h1>
+    <div>
+      <ul>
+        <!-- id값은 하나여야하지만, class값은 부여받는것이기 때문에 중복되도 상관없다. -->
+        <li id="li-html5">html5</li>
+        <li>css3</li>
+        <li id="li-js" class="favor">javascript2015</li>
+        <li>jquery</li>
+        <li class="favor">python</li>
+        <li class="favor">node.js</li>
+        <!-- 두개이상의 클래스도 부여할수있다. 구분자는 공백(띄어쓰기) -->
+        <li class="favor special">springFramework</li>
+      </ul>
+    </div>
+
+    <hr />
+
+    <!-- 원래는 head태그 안에 작성하는것이 베스트이지만 수업상 이해를 돕기위해 가까운 근처에 부여 -->
+    <style>
+      /* 태그선택자 */
+      /* li {
+        color: tomato;
+      } */
+      /* h1 {
+        color: violet;
+      } */
+
+      /* 아이디 선택자 */
+      <!-- 태그#id로 해도 됨 ex) li#li-js -->
+      /* #li-js {
+        font-size: 32px;
+        color: magenta;
+      } */
+
+      /* 클래스 선택자 */
+      /* .favor {
+        background-color: thistle;
+      }
+      .special {
+      } */
+      /* 복수개 */
+      /* h1,
+      .favor {
+        text-decoration: underline;
+      } */
+      /* 복수개 이상의 클래스 선택자 */
+      /* .favor.special {
+        color: slateblue;
+        font-size: 48px;
+      } */
+    </style>
+
+    <div class="wrapper">
+      <!-- wrapper의 자식태그(바로밑 태그)=h4,ul,div -->
+      <!-- wrapper의 후손태그=ul-li 2개, div-h4,ul,ul-li 2개 -->
+      <h4>머릿글</h4>
+      <ul id="first-ul">
+        <li>에라이1</li>
+        <li>에라이2</li>
+      </ul>
+      <div id="second-div">
+        <h4>머릿글</h4>
+        <ul>
+          <li>에라이3</li>
+          <li>에라이4</li>
+        </ul>
+      </div>
+    </div>
+    <style>
+      /* 자식 태그 */
+      div.wrapper > h4 {
+        color: slateblue;
+      }
+
+      /*<!-- 자식과 후손 모두 적용 -->*/
+      /* 후손 태그 */
+      div.wrapper h4 {
+        text-decoration: line-through;
+      }
+      /* #first-ul > li */
+      /* .wrapper > ul > li {
+        background-color: tomato;
+      } */
+
+      /*<!-- 모든 li태그에 적용할때-->*/
+
+      /* #first-ul > li, .wrapper > ul */
+      .wrapper ul li {
+        background-color: tomato;
+      }
+    </style>
+
+    <div class="container">
+      <!-- p#p-test${안녕$}*5 -->
+      <p id="p-test1">안녕1</p>
+      <p id="p-test2">안녕2</p>
+      <p id="p-test3">안녕3</p>
+      <p id="p-test4">안녕4</p>
+      <p id="p-test5">안녕5</p>
+      <pre id="pre-test6">안녕6</pre>
+    </div>
+    <style>
+      /*다음형제 요소 하나*/
+      p#p-test2 + p {
+        /* 00f = 0000ff */
+        background-color: #00f;
+        color: #fff;
+      }
+      /* 다음형제요소부터 모두 (*) 또는 선택자일치(p) 하는 태그 */
+      p#p-test2 ~ * {
+        font-size: 32px;
+      }
+
+      /* 이전형제 요소를 가르키는 선택자는 존재하지 않는다 */
+    </style>
+    선택자에대한 자세한 내용은
+    <a href="https://www.w3schools.com/cssref/css_selectors.asp">클릭</a>
+
+    <br /><br />
+
+    <form action="">
+      <fieldset>
+        <legend>속성 관련 선택자</legend>
+        <input type="text" /><br />
+        <input type="text" name="user-name" /><br />
+        <input type="email" name="user-email" /><br />
+        <input type="text" name="petname" /><br />
+      </fieldset>
+    </form>
+    <style>
+      /* name속성이 존재! 하는 태그들은! 아래와같이 적용 한다 */
+      /* [name] {
+        background-color: hotpink;
+      } */
+
+      /* name이 user-name인 태그만! */
+      /* [name="user-name"] {
+        background-color: hotpink;
+      } */
+
+      /* name값에 er이라는 글자가 들어간 것만! */
+      /* [name*="er"] {
+        background-color: hotpink;
+      } */
+
+      /* name속성 값이 user 라는 걸로 시작하면 적용! */
+      /* [name^="user"] {
+        background-color: hotpink;
+      } */
+
+      /* name값이 name으로 끝나면 적용! */
+      /* [name$="name"] {
+        background-color: hotpink;
+      } */
+    </style>
+    <br /><br />
+
+    <h2>가상 선택자</h2>
+    <div class="box click">clicke me!</div>
+    <div class="box over">커서를 이동하세요.</div>
+    <style>
+      .box {
+        /* 위에 마우스를 올리면 손가락 모양으로 바뀌게됨 */
+        cursor: pointer;
+
+        border: 2px solid rebeccapurple;
+        padding: 10px;
+        margin: 10px;
+      }
+
+      /* active = 가상선택자, 클릭하고 있을때 일어나는일 */
+      .click:active {
+        background-color: rebeccapurple;
+        color: #fff;
+      }
+      /* 마우스 오버했을때 벌어지는일 */
+      /* 개발자 도구에서도 가상선택자를 확인 할 수 있다. */
+      .over:hover {
+        color: #f00;
+        border: 4px dashed red;
+      }
+    </style>
+    <br /><br />
+
+    <!-- 링크 함수인 a는 4가지 상태가 있다. -->
+    <a href="http://www.innerbody.com/htm/body.html"
+      >어떤 사이트(방문전 | 방문후 | 커서 | 클릭)</a
+    >
+
+    <style>
+      a:link {
+        color: aqua;
+        text-decoration: none;
+      }
+      a:visited {
+        color: olive;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      a:active {
+        color: tomato;
+      }
+    </style>
+
+    <br /><br />
+    <input type="checkbox" name="smsOk" id="smsOk" />
+    <label for="smsOk">문자수신</label>
+
+    <style>
+      input[type="checkbox"]:checked {
+        width: 200px;
+        height: 200px;
+      }
+
+      /* 체크 되었을때 뒤에있는 라벨도 글씨 크기 변경 (라벨이 뒤에 있기 때문에 가능) */
+      input[type="checkbox"]:checked + label {
+        font-size: 200px;
+      }
+    </style>
+
+    <br /><br />
+    <h2>구조선택자</h2>
+    <div class="test">
+      <pre>test1</pre>
+      <p>test2</p>
+      <p>test3</p>
+      <p>test4</p>
+      <p>test5</p>
+      <p>test6</p>
+      <p>test7</p>
+      <p>test8</p>
+      <p>test9</p>
+      <pre>test10</pre>
+    </div>
+    <style>
+      /* div중 test클래스에 속한 p태그가 첫 번째 자식이면 적용 */
+      /* 조건을 두개 보는것, p태그 이면서 첫번쨰 */
+      div.test p:first-child {
+        background-color: teal;
+        color: white;
+      }
+
+      /* p태그가 마지막 자식이면 */
+      /* 조건을 두개 보는것, p태그 이면서 마지막인 자식 */
+      p:last-child {
+        background-color: springgreen;
+        color: teal;
+      }
+
+      /* 특정 숫자번째의 자식만 적용   1-based index */
+      /* n이라는 변수 사용가능, 2n=짝수, 2n+1=홀수, 2n-1도 가능*/
+      /* p태그 이면서 조건에 해당하는 태그!!! */
+      p:nth-child(2n + 1) {
+        text-decoration: underline;
+      }
+
+      /* 정확하게 자식 p태그들 중에서 첫번째 태그에 적용을 하려 한다면 */
+      /* first-chile랑 구분을 잘 해줘야한다 */
+      p:first-of-type {
+        background-color: royalblue;
+      }
+
+      /* 위와 마찬가지로 잘 구분해야한다 */
+      p:last-of-type {
+        background-color: tomato;
+      }
+
+      /* p태그 중에서 n번째인것을  */
+      p:nth-of-type(3) {
+        background-color: navajowhite;
+      }
+
+      /* 부정선택자 :not(선택자) */
+      /* p태그중 세번째인것을 제외하고 모두 사이즈 30으로! */
+      div.test > :not(p:nth-of-type(3)) {
+        font-size: 30px;
+      }
+
+      /* 최상위 선택자  */
+      :root {
+        background-color: skyblue;
+      }
+    </style>
+  </body>
+</html>

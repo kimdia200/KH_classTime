@@ -142,7 +142,150 @@
         <!-- input:range[max=100][min=1] -->
         <input type="range" name="amount" id="amount" max="100" min="1" />
       </fieldset>
+      <!-- input type submit과 동일함 -->
       <button type="submit">제출</button>
+    </form>
+
+    <h2>날짜/시간 관련</h2>
+    <form action="">
+      <fieldset>
+        <legend>날짜</legend>
+        <!-- 날짜관련 가장 많이 사용하는 input type -->
+        <!-- datePicker -->
+        <label for="birthday">생일</label>
+        <input type="date" name="birthday" id="birthday" />
+
+        <br />
+        <label for="reservation">예약</label>
+        <!--TimePicker-->
+        <!-- 오후2시 10분 선택시  = 14%3A10 , %3A는 :(콜론)을 가르킴 -->
+        <input type="time" name="reservation" id="reservation" />
+        <br />
+        <label for="kakao-reservation">카카오 미용실 예약</label>
+        <!-- datetime보다는 지역시간으로 표현하는 datetime-local을 우선사용 -->
+        <!-- 년월일 시분초 사용가능 -->
+        <!-- 2021년 2월26일 07시 04분선택시 2021-02-26T07%3A04 -->
+        <!-- T는 날짜와 시간을 구분해주는 것 이형식을 알면 초기값을 줄수있음 -->
+        <input
+          type="datetime-local"
+          name="kakao-reservation"
+          id="kakao-reservation"
+        />
+      </fieldset>
+      <input type="submit" value="제출" />
+    </form>
+
+    <h2>선택관련</h2>
+    <form action="">
+      <fieldset>
+        <legend>라디오</legend>
+        <!-- key=name값, value=value값으로 전송이되는걸 확인할수있음 -->
+        <!-- name = 그룹핑, id = 각 라디오 버튼의 이름 -->
+        <input type="radio" name="gender" id="gender-male" value="m" />
+        <label for="gender-male">남</label>
+        <input type="radio" name="gender" id="gender-female" value="f" />
+        <label for="gender_female">여</label>
+      </fieldset>
+      <br />
+      <fieldset>
+        <!-- 복수개 선택시 hobby=music&hobby=game&hobby=fitness 엠퍼센트로 구분하여 전달 -->
+        <!-- 초기값 = checked라고 써서 표현 radio버튼도 동일-->
+        <!-- 라디오박스는 하나를 선택하면 다른것으로 변경하는것은 가능하지만 체크 해제는 불가능하다 -->
+        <!-- 하나이상 체크해야 한다고 하면 required보다는 javaScript로 처리하는것이 좋다고하심 -->
+        <legend>체크박스</legend>
+        <input
+          type="checkbox"
+          name="hobby"
+          id="hobby-music"
+          value="music"
+          checked
+        />
+        <label for="hobby-music">음악감상</label>
+        <input
+          type="checkbox"
+          name="hobby"
+          id="hobby-game"
+          value="game"
+          checked
+        />
+        <label for="hobby-game">게임</label>
+        <input
+          type="checkbox"
+          name="hobby"
+          id="hobby-fitness"
+          value="fitness"
+        />
+        <br />
+        <label for="hobby-fitness">운동</label>
+        <label for="mailOk">메일수신</label>
+        <!--value속성이 없다면, 체크시에 "on"값이 전송된다.-->
+        <input type="checkbox" name="mailOk" id="mailOk" />
+      </fieldset>
+      <br />
+      <fieldset>
+        <legend>select</legend>
+        <label for="nation">국적</label>
+        <!--multimple 속성을 줬을시 
+          최초에 모든값이 표시되고 다중선택이 가능, 다중선택시 아래와 같이 표시됨
+          nation=kor&nation=usa&nation=jap&nation=chn
+          위와같이 표시되
+        -->
+        <select name="nation" id="nation" multiple>
+          <!-- optgroup을 사용해서 구분을 할수 있으며 optgroup는 선택불가능하다 -->
+
+          <!-- 체크박스에서 안내문처럼 사용될수있는 방식은 아래와같이 하면 된다 -->
+          <!-- <option value="" selected disabled hidden>피자를 선택하세요</option> -->
+
+          <optgroup label="America">
+            <option value="usa">미국</option>
+          </optgroup>
+          <optgroup label="Asia">
+            <option value="kor">한국</option>
+            <option value="jap">일본</option>
+            <option value="chn">중국</option>
+          </optgroup>
+        </select>
+        <br />
+        <label for="menu">메뉴선택 : </label>
+        <!-- datalist : select + input:text -->
+        <input type="text" name="menu" id="menu" list="menu-list" />
+        <!-- 맘에드는값이 없다면 직접 입력한 값을 전달 할 수 있음  -->
+        <!-- datalist가 자동완성이 안되어서 자동완성하려면 datal이라고 치면된다 -->
+        <datalist id="menu-list">
+          <option value="된장찌게">된장찌게</option>
+          <option value="김치찌게">김치찌게</option>
+          <option value="순두부찌게">순두부찌게</option>
+        </datalist>
+      </fieldset>
+      <input type="submit" value="제출" />
+    </form>
+
+    <br />
+    <h2>기타</h2>
+    <form action="">
+      <fieldset>
+        <legend>기타</legend>
+        <label for="userColor">컬러 : </label>
+        <!-- input:color#userColor -->
+        <!-- 16진수의 RGB값으로 전송됨-->
+        <!-- 0,0,0(검은색) 전달시 #000000 -> %23000000으로 전송됨(%23= 특수문자 #(샵)을 의미) -->
+        <input type="color" name="userColor" id="userColor" />
+
+        <br />
+        <label for="upFile">파일 업로드</label>
+        <!-- input:file#upFile[name=upFile] -->
+        <!-- 선택한 파일을 선택하여 전송할수 있음(서버측에서 업로드된 파일을 처리할수있을때 다시배움) -->
+        <!-- 실제파일을 전송할때는 Get방식이 아니라 POST방식으로 보내야함 -->
+        <!-- get방식으로 보내면 파일 이름만 날아감 -->
+        <input type="file" name="upFile" id="upFile" />
+        <!-- 웹상에서는 다른 component처럼 보이지는 않치만 key,Value가 모두 전송됨 -->
+        <input type="hidden" name="notVisible" value="저는 안보여요~" />
+        <br />
+        <!-- 모든 input type은 disabled속성을 주면 키와 값이 전송되지 않는다 -->
+        <input type="text" name="userId" id="userId" value="honggd" disabled />
+      </fieldset>
+      <input type="submit" value="전송" />
+      <br />
     </form>
   </body>
 </html>
