@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS - TEXT</title>
+  </head>
+  <body>
+    <h1>Text관련</h1>
+    <p id="sample">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint sunt
+      impedit reprehenderit placeat maxime! Suscipit ex minus veritatis ut.
+      Deserunt similique hic fugit eaque quisquam eius, aliquid necessitatibus
+      molestiae magni.
+    </p>
+    <style>
+      #sample {
+        /* color: springgreen; */
+        /* color: #00ff00; */
+        /* color: rgb(0, 255, 0); */
+        color: rgba(0, 255, 255, 0.609);
+        text-decoration: underline;
+      }
+    </style>
+
+    <hr />
+    <h1 id="shadow">그림자</h1>
+    <style>
+      /* 가로offset 세로offset 번짐정도 color */
+      #shadow:hover {
+        text-shadow: 3px 3px 5px red;
+      }
+    </style>
+
+    <!-- @실습문제 : text-shadow -->
+    <!-- 내가 한것은 HW에 올렸고 이건 강사님 코드 -->
+    <!-- div#bg>span#ts$.common{HTML5}*5 -->
+    <div id="bg">
+      <span id="ts1" class="common">HTML5</span>
+      <span id="ts2" class="common">HTML5</span>
+      <span id="ts3" class="common">HTML5</span>
+      <span id="ts4" class="common">HTML5</span>
+    </div>
+    <style>
+      #bg {
+        background-color: #000;
+      }
+      .common {
+        /* 공통적인 부분 */
+        font-size: 120px;
+        line-height: 120px;
+        font-weight: bold;
+        color: #fff;
+      }
+      #ts1 {
+        color: orangered;
+        text-shadow: 5px 5px 0 orange;
+      }
+      #ts2 {
+        text-shadow: 0 1px 20px #fff;
+      }
+      #ts3 {
+        text-shadow: 1px 1px 20px #6f0; /* #66ff00 */
+      }
+      #ts4 {
+        color: #000;
+        text-shadow: 0 0 4px #ccc, 0 -5px 4px #ff3, 2px -10px 6px #fd3,
+          -2px -15px 11px #f80, 2px -19px 18px #f20;
+      }
+    </style>
+
+    <!-- div.wrapper>p>lorem -->
+    <hr />
+    <div class="wrapper">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas facilis odit
+      aspernatur vel voluptas eaque possimus aliquid eveniet consectetur
+      nostrum! Iure repellendus voluptates rem odit harum quas similique beatae
+      perferendis.
+    </div>
+    <style>
+      div.wrapper {
+        width: 300px;
+        border: 1px solid black;
+        white-space: nowrap; /* 줄바꿈 없음 */
+        overflow: /*hidden*/ scroll; /* 부모영역 밖의 자식요소 처리 */
+        text-overflow: ellipsis; /**영역이 넘칠때 말줄임표(...)로 표시됨*/
+      }
+    </style>
+
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+  </body>
+</html>

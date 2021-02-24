@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS - border</title>
+  </head>
+  <body>
+    <h1>Border</h1>
+    <div class="test"></div>
+    <style>
+      .test {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
+        background-color: lightsteelblue;
+        /* border-width: 1px;
+              border-style: solid;
+              border-color: black; */
+        border: 5px solid black;
+        /*radius 50이 되면 딱 원이 된다 그 이상값은 효과 없음*/
+        /* border-radius: 10px; */
+        /* 각각 따로 값을 줘도됨 왼위 오위 오아 왼아 */
+        /* border-radius: 50% 40% 30% 20%; */
+        /* 생략해주면 반대쪽값을 복사해서 적용함 (대각)*/
+        /* border-radius: 50% 40% 30%; */
+        /* border-radius: 50% 20%; */
+        border-radius: 50%;
+      }
+    </style>
+    <hr />
+    <h2>box-shadow</h2>
+    <div class="box"></div>
+    <style>
+      .box {
+        width: 200px;
+        height: 200px;
+        background-color: lightseagreen;
+        border: 3px solid black;
+        border-radius: 10px;
+        margin: 10px auto;
+        /* 가로offset 세로offset 번짐 그림자크기 컬러*/
+        box-shadow: 5px 5px 10px 5px gray;
+      }
+      .box:hover {
+        box-shadow: 5px 5px 10px 5px red;
+      }
+    </style>
+  </body>
+</html>

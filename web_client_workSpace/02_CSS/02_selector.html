@@ -35,7 +35,7 @@
       } */
 
       /* 아이디 선택자 */
-      <!-- 태그#id로 해도 됨 ex) li#li-js -->
+      /*<!-- 태그#id로 해도 됨 ex) li#li-js -->*/
       /* #li-js {
         font-size: 32px;
         color: magenta;
@@ -158,9 +158,9 @@
       } */
 
       /* name값이 name으로 끝나면 적용! */
-      /* [name$="name"] {
+      [name$="name"] {
         background-color: hotpink;
-      } */
+      }
     </style>
     <br /><br />
 
@@ -289,6 +289,32 @@
       /* 최상위 선택자  */
       :root {
         background-color: skyblue;
+      }
+    </style>
+    <br /><br /><br /><br />
+    <h2>선택자 우선순위</h2>
+    <div class="wrapper">
+      <div id="mydiv" class="test" style="background-color: crimson">
+        우선순위 테스트
+      </div>
+    </div>
+    <style>
+      /* 태그 -> 속성 -> 클래스 -> 아이디 -> 인라인속성 -> !important */
+      /* 우선순위 낮음 -> 높음, 즉 !important가 가장 우선순위 높음 */
+      #mydiv {
+        background-color: thistle;
+      }
+      .test {
+        background-color: bisque;
+        font-size: 24px;
+      }
+      .wrapper .test {
+        font-size: 36px;
+      }
+      div {
+        width: 500px;
+        height: 500px;
+        background-color: aquamarine !important;
       }
     </style>
   </body>

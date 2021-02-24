@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>문단</h1>
+    <div class="wrapper">
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nemo beatae
+        odio illo iure nisi aliquam magnam dolore molestias ipsa. Explicabo
+        quibusdam similique exercitationem ut, nulla dolore. Saepe enim rerum
+        nostrum.
+      </p>
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Qui id
+        recusandae numquam repellat fugit animi nostrum aliquid, asperiores
+        dolore reprehenderit. Velit eos beatae quia fugit iste veritatis
+        consectetur excepturi magni?
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus non
+        voluptate, omnis, facilis rem reiciendis atque ex aliquid maxime
+        repellat iste laborum. Reprehenderit exercitationem dolore temporibus
+        harum perspiciatis autem laborum.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa ad iste,
+        eos dolorum molestias doloremque a aut illo provident laborum veritatis
+        dolores iusto architecto dicta. Totam magni nulla tempore qui.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat
+        maiores possimus esse laborum, at mollitia. Aperiam dolorum deleniti
+        similique. Illum repellendus voluptates possimus. Maxime sit unde harum
+        neque voluptates ipsum.
+      </p>
+    </div>
+    <style>
+      /* 첫번째 글짜만 */
+      /* .wrapper p::first-letter {
+        font-size: 2em;
+      }
+      .wrapper p::first-line {
+        text-decoration: underline;
+      }
+      .wrapper p::before {
+        content: "😉";
+      }
+      .wrapper p::after {
+        content: "🎉";
+      } */
+      /*카운터*/
+      /*부모요소에서 선언*/
+      .wrapper {
+        counter-reset: num;
+      }
+      .wrapper p::before {
+        counter-increment: num;
+        content: counter(num) "." " ";
+      }
+    </style>
+  </body>
+</html>

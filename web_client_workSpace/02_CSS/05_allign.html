@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS - Align</title>
+  </head>
+  <body>
+    <h1>정렬 Align</h1>
+    <div class="wrapper">
+      <!-- h태그는 약간 예외적인데 block요소지만 안의 text는 정렬이된다...암기 -->
+      <h3>허허허(*^▽^*)</h3>
+      <span>안녕하세요(❁´◡`❁)</span>
+      <!-- 
+        가운데 정렬시
+        1. inline 요소 : 부모 block요소에 text-align속성을 지정
+        2. block 요소 : 스스로에게 margin속성을 이용해 지정
+       -->
+    </div>
+    <style>
+      .wrapper {
+        background-color: gold;
+        width: 300px;
+        height: 300px;
+        /* inline 요소 처리 방식으로 자식 span에 대한 정렬을 부모인 div(wrapper클래스)에 적용한것 */
+        text-align: center; /* left, right, center정도만 알고있자 */
+
+        /* block요소 div자체를 가운데 두고싶을때*/
+        /* 방향 top - right - bottom - left */
+        margin: 10px auto; /* auto는 left와 right를 똑같이 한다는뜻 */
+      }
+    </style>
+    <br />
+    <hr />
+    <h2>텍스트정렬</h2>
+    <p id="t-align">
+      <span
+        >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident
+        placeat qui voluptate. Excepturi ad deserunt labore quibusdam, officia
+        officiis eius beatae cum, doloribus eaque nam! Similique consectetur
+        quisquam quo earum.</span
+      >
+    </p>
+    <style>
+      t-align {
+        text-align: center;
+      }
+    </style>
+  </body>
+</html>

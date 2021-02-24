@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>css - list</title>
+  </head>
+  <body>
+    <h1>목록</h1>
+    <nav>
+      <ul id="menu">
+        <li><a href="">html5</a></li>
+        <li><a href="">css3</a></li>
+        <li><a href="">javascript</a></li>
+        <li><a href="">jquery</a></li>
+        <li><a href="">bootstrap</a></li>
+        <li><a href="">foundation</a></li>
+      </ul>
+    </nav>
+    <style>
+      nav {
+        height: 25px;
+        background-color: greenyellow;
+        padding: 5px 0;
+      }
+      ul#menu {
+        list-style-type: none;
+        padding-left: 0px;
+        width: 600px;
+        margin: 0 auto;
+      }
+      ul#menu li {
+        /* float:left를 설정하면 더이상 아래로 배치되지 않고 왼쪽에 짞짝붙어서 정렬됨 */
+        float: left;
+        margin-right: 15px;
+      }
+      ul#menu a {
+        text-decoration: none;
+      }
+      ul#menu li:hover {
+        border-bottom: 4px solid lightslategray;
+        text-shadow: 2px 2px 3px lightgray;
+      }
+    </style>
+  </body>
+</html>

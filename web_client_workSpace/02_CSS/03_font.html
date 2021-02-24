@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>css - font</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Pacifico&family=Reggae+One&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <h1>Font</h1>
+    <h3><a href="https://fonts.google.com/">구글 웹폰트 사이트</a></h3>
+    <p>
+      브라우저를 사용하는 사용자가 로컬에 폰트가 없으면 표시가 안되므로 <br />
+      그런 문제를 해결하기위해 나온것이 웹 폰트이다
+    </p>
+    <br />
+    <div class="wrapper">
+      <p id="ff1">가나다라마바사 abcdefg ABCDEFG 1234567890</p>
+      <p id="ff2">가나다라마바사 abcdefg ABCDEFG 1234567890</p>
+      <p id="ff3">가나다라마바사 abcdefg ABCDEFG 1234567890</p>
+    </div>
+    <style>
+      /* 로컬폰트 사용 */
+      #ff1 {
+        /* 왼쪽일수록 우선순위가 높다, 휴먼모음T 글씨체가 있으면 우선적용하고 없으면 궁서체 */
+        /* 오른쪽 끝에는 generic-family라는 기본서체 */
+        /* serif | sans-serif | cursive | monospaced */
+        font-family: "휴먼모음T", "궁서체";
+
+        /*px = 절댓값단위, 창의 크기에 상관없이 항상 고정*/
+        font-size: 32px;
+      }
+      /* 웹폰트 사용 */
+      #ff2 {
+        font-family: "Reggae One", cursive;
+
+        /* em = 상댓값 단위, 가장 가까운 부모요소 기준. 1em = 부모의 값 */
+        font-size: 2em;
+      }
+      /* 웹폰트 사용 */
+      #ff3 {
+        font-family: "Pacifico", cursive;
+        /* % = 상댓값 단위, 가장 가까운 부모요소 기준, 100% = 부모의값 */
+        font-size: 150%;
+      }
+
+      /* body, 혹은 *에 적용시 모든요소들이 적용받음 */
+      /* cascade 부모태그에 적용한 속성이 자식(후손)태그로 전이되어서 처리됨 */
+      body {
+        font-family: "Fredoka One", cursive;
+      }
+      p {
+        font-size: 32px;
+      }
+      .wrapper {
+        font-size: 24px;
+      }
+    </style>
+
+    <hr />
+    <ul>
+      <li id="li1">글꼴 얇게</li>
+      <li id="li2">글꼴 두껍게</li>
+      <li id="li3">글꼴 더두껍게</li>
+    </ul>
+    <style>
+      li {
+        font-size: 32px;
+      }
+      /* font-weight속성 값으로는 100~900까지 100단위로 숫자를 넣어도된다 */
+      #li1 {
+        font-weight: lighter;
+      }
+      #li2 {
+        font-weight: bold;
+      }
+      #li3 {
+        /* bolder는 부모의 font=weight값보다 100더 높은값으로 적용된다 */
+        font-weight: bolder;
+      }
+    </style>
+
+    <hr />
+    <span id="font">안녕하세요 ABCDEFG abcdefg 1234567890</span>
+    <style>
+      span#font {
+        /* font-style font-variant font-weight font-size/line-height font-family */
+        font: italic bold 24px/30px "Noto Sans KR";
+      }
+    </style>
+  </body>
+</html>
