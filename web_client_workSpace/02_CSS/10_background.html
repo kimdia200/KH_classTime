@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>css-background</title>
+  </head>
+  <body>
+    <h1>Background</h1>
+    <!-- 
+    ! 백그라운드의 종류
+    todo 각각 무엇을 의미하는지 찾아서 적기
+    background - image
+    * 사용방법 background-image: url("경로");
+    * 백그라운드에 이미지 표현
+    background - repeat
+    * 이미지 반복 여부를 물어봄
+    * 따로 명시 안해주면 repeat-x, repeat-y 가 되어 바둑만 배열됨
+    * repeat-x. repeat-y, no-repeat정도 알고있으면 될듯
+    background - position
+    * 이미지의 위치 설정
+    background - size
+    * 사이즈 설정
+    * contain(x/y축 중에 한쪽이 꽉찰때까지 확대/축소)
+    * cover(모두 채울수 있도록 확대/축소, 이미지 짤릴 수 있음)
+    background - attachment
+    * 스크롤시 이미지 위치 
+    * 기본값 scroll, fixed하면 이미지는 위치가 고정되어있다
+    background - clip
+    * 백그라운드 영역의 기준을 어떻게 해줄것인지
+    * 종류 : border-box, padding-box, content-box
+    background - origin
+    * 백그라운드 이미지의 시작부분을 어디의 left top으로 정해줄것인지
+    * attachment가 fixed로 설정되어있으면 이 속성은 무효하다
+    * 종류 : border-box, padding-box, content-box, initial, inherit
+    모아쓰기
+    background: bg-color bg-image position/bg-size bg-repeat bg-origin bg-clip bg-attachment initial|inherit;
+    기본값 친구들은 생략가능
+  -->
+    <!-- ! attachment속성 확인을위해 충분한 스크롤이 나오게 div태그 앞뒤로 br20번씩 -->
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <div id="bg"></div>
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <style>
+      #bg {
+        width: 100%;
+        height: 800px;
+        border: 1px solid black;
+        background: url("./sample/image/bgsample.PNG") center center/cover
+          no-repeat fixed;
+        /* background-image: url("./sample/image/bgsample.PNG");
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        background-attachment: fixed; */
+      }
+    </style>
+  </body>
+</html>

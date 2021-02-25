@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>css - table</title>
+  </head>
+  <body>
+    <h1>table</h1>
+    <table id="tbl-browser">
+      <thead>
+        <tr>
+          <th>브라우져명</th>
+          <th>제조사</th>
+          <th>홈페이지</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto
+            necessitatibus minus numquam deserunt dolores similique porro
+            pariatur totam, consequatur quae minima voluptatibus non ab tenetur
+            alias aspernatur! Quam, adipisci commodi.
+          </td>
+          <td>구글</td>
+          <td><a href="http://google.com">http://google.com</a></td>
+        </tr>
+        <tr>
+          <td>사파리</td>
+          <td>애플</td>
+          <td><a href="http://apple.com">http://apple.com</a></td>
+        </tr>
+        <tr>
+          <td>파이어폭스</td>
+          <td>모질라</td>
+          <td><a href="http://mozilla.org">http://mozilla.org</a></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>총개수</td>
+          <td colspan="2">3</td>
+        </tr>
+      </tfoot>
+    </table>
+    <style>
+      table {
+        border: 4px solid black;
+        /* 원래 기본값 = border-collapse : separate */
+        border-collapse: collapse;
+        margin: 0 auto;
+        width: 500px;
+        height: 500px;
+      }
+      th,
+      td {
+        border: 1px solid black;
+        padding: 10px;
+        text-align: center;
+        /* vertical-align은 테이블에서만 사용되는 태그로 수직의 정렬 */
+        /* 기본값 middle,   top | bottom | middle */
+        vertical-align: middle;
+      }
+    </style>
+    <h2>일반요소의 vertical-align</h2>
+    <div class="test">
+      <span>안녕</span>
+    </div>
+    <style>
+      .test {
+        width: 100px;
+        height: 100px;
+        background-color: steelblue;
+        color: #000;
+        margin: 0 auto;
+        display: table; /* 부모 */
+      }
+      .test span {
+        display: table-cell; /* 자식 요소 */
+        vertical-align: middle;
+      }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>css - display</title>
+  </head>
+  <body>
+    <h1>display</h1>
+    <h2>inline요소</h2>
+    <!-- div.box.box${테스트$}*5 -->
+    <div class="box box1 inline-block">테스트1</div>
+    <div class="box box2 inline-block">테스트2</div>
+    <div class="box box3 inline-block">테스트3</div>
+    <div class="box box4 inline-block">테스트4</div>
+    <div class="box box5 inline-block">테스트5</div>
+    <style>
+      .box {
+        width: 150px;
+        height: 150px;
+        border: 1px solid black;
+        color: #fff;
+      }
+      .box1 {
+        background-color: lightgray;
+      }
+      .box2 {
+        background-color: lightgreen;
+      }
+      .box3 {
+        background-color: lightpink;
+      }
+      .box4 {
+        background-color: lightsalmon;
+      }
+      .box5 {
+        background-color: lightseagreen;
+      }
+
+      /* <!--! 아래와 같이 display속성을 이용해서 변경가능  --> */
+      .inline {
+        display: inline;
+      }
+      .block {
+        display: block;
+      }
+      .inline-block {
+        /* block처럼 width/height 적용. inline요소처러 한행으로 배치 */
+        display: inline-block;
+      }
+    </style>
+    <h2>block요소</h2>
+    <!-- span.box.box${span$}*5 -->
+    <span class="box box1 block">span1</span>
+    <span class="box box2 block">span2</span>
+    <span class="box box3 block">span3</span>
+    <span class="box box4 block">span4</span>
+    <span class="box box5 block">span5</span>
+
+    <hr />
+
+    <h2>숨김처리</h2>
+    <div class="box box1"></div>
+    <hr />
+    <div class="box box2"></div>
+    <hr />
+    <div class="box box3"></div>
+    <hr />
+    <style>
+      .display-none {
+        /* display none는 컨텐츠,영역 자체가 사라짐=다른 컨텐츠로 위치가 메꿔짐 당연히 영역선택 불가 */
+        display: none;
+      }
+      .visivility-hidden {
+        /* visivility-hidden은 컨텐츠는 사라졌지만 영역은 여전히 차지하고있음, 하지만 여전히 영역 선택불가 */
+        visibility: hidden;
+      }
+      /* opacity는 투명도만 조절하는것이기 때문에 컨텐츠가 사라진것처럼 보여도 여전히 존재하고있는것 */
+      .opacity-0 {
+        opacity: 0;
+      }
+    </style>
+  </body>
+</html>

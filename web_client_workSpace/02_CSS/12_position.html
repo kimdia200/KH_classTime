@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>css - position</title>
+  </head>
+  <body>
+    <h1>position</h1>
+    <!-- 
+      ! 포지션의 종류
+      static 기본값. 문서내 작선된 순서대로 배치. offset값 무시.
+      relaticve 문서내 작성된 순서대로 배치 하되 offset값 적용.
+      absolute 가장 가까운 부모 요소를 기준으로 offset값 적용.
+      fixed viewport기준으로 offset값 적용
+     -->
+
+    <!-- todo 1번. static상태이면 offset을 적용받지 않는다 -->
+    <h2>static</h2>
+    <!-- emmet의 기본값은 div라서 그냥 .클래스 적으면 div생성해줌 -->
+    <div class="outer">
+      <div class="first"></div>
+      <div class="second"></div>
+      <div class="third"></div>
+    </div>
+    <style>
+      .outer {
+        background-color: lightgray;
+        border: 1px solid black;
+      }
+      .first {
+        width: 300px;
+        height: 300px;
+        background-color: thistle;
+      }
+      .second {
+        width: 200px;
+        height: 200px;
+        background-color: turquoise;
+        /* offset = 50px, 50px */
+        top: 50px;
+        left: 50px;
+      }
+      .third {
+        width: 100px;
+        height: 100px;
+        background-color: magenta;
+        /* offset = 100px, 100px */
+        top: 100px;
+        left: 100px;
+      }
+    </style>
+
+    <hr />
+
+    <!-- todo 2번. relative이면 이전 요소로부터 offset을 적용받는다 -->
+    <h2>relative</h2>
+    <div class="outer">
+      <div class="first position-relative"></div>
+      <div class="second position-relative"></div>
+      <div class="third position-relative"></div>
+    </div>
+    <style>
+      .position-relative {
+        position: relative;
+      }
+    </style>
+
+    <hr />
+    <br /><br /><br />
+
+    <!-- todo 3번. absolute는 부모요소를 기준으로 offset을 적용받는다 -->
+    <h2>absolute</h2>
+    <div class="outer position-relative">
+      <div class="first"></div>
+      <div class="second position-absolute"></div>
+      <div class="third position-absolute"></div>
+    </div>
+    <style>
+      .position-absolute {
+        position: absolute;
+      }
+    </style>
+    <hr />
+
+    <!-- todo 4번. viewport에 offset기준으로 고정되어있는다 -->
+    <h2>fixed</h2>
+    <div class="third position-fixed"></div>
+    <style>
+      .position-fixed {
+        position: fixed;
+      }
+    </style>
+
+    <hr />
+
+    <!-- todo 5번. z축 기준으로 요소를 배치. position:static에서는 사용불가 -->
+    <!-- ? z-index가 명시 되지 않으면, 문서상 나중에 작성된 것이 z-index가 더 높다 -->
+    <h2>z-index</h2>
+    <!-- div.wrapper>.box.box${테스트$}*3 -->
+    <div class="wrapper position-relative">
+      <div class="box box1 position-absolute">테스트1</div>
+      <div class="box box2 position-absolute">테스트2</div>
+      <div class="box box3 position-absolute">테스트3</div>
+    </div>
+    <style>
+      .box {
+        width: 150px;
+        height: 100px;
+        border: 1px solid black;
+      }
+      .box1 {
+        background-color: skyblue;
+        z-index: 10;
+      }
+      .box2 {
+        background-color: thistle;
+        top: 20px;
+        left: 20px;
+        z-index: 5;
+      }
+      .box3 {
+        background-color: yellowgreen;
+        top: 40px;
+        left: 40px;
+        z-index: 1;
+      }
+    </style>
+
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+  </body>
+</html>
