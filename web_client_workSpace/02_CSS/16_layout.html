@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Css- layout</title>
+    <style>
+      div {
+        padding: 10px;
+      }
+      #container {
+        background-color: #f0f0f0;
+        width: 960px;
+        margin: 0 auto;
+      }
+      #header {
+        background-color: #908886;
+        height: 100px;
+      }
+      #content {
+        background-color: #f5f5f5;
+        width: 640px;
+        height: 400px;
+        /* inline bolock써도 된다고 하심 강사님은 float씀 */
+        float: left;
+      }
+      #sideinfo {
+        background-color: #dcdad9;
+        /* content + sideinfo너비가 합쳐도 960이 안되게(패딩값존재해서) */
+        width: 280px;
+        height: 400px;
+        float: left;
+      }
+      #footer {
+        /* clear는 이전요소의 flow처리를 초기화함 left right두개 모두 썻다면 both, left|right */
+        clear: both;
+        background-color: #555;
+        height: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- html5 이전의 페이지 레이아웃 -->
+    <h1>html5 이전의 페이지 레이아웃</h1>
+    <div id="container">
+      <div id="header">Header</div>
+      <div id="content">content</div>
+      <div id="sideinfo">sideinfo</div>
+      <div id="footer">footer</div>
+    </div>
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <h1>만들고자 하는 layout</h1>
+    <img src="./16_layout.png" alt="" />
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CSS3 애니메이션</title>
+    <style>
+      .prod-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .prod-list li {
+        /*부모요소로 사용될 li태그의 포지션relative*/
+        position: relative;
+        float: left;
+        padding: 0;
+        margin: 10px;
+        overflow: hidden;
+      }
+      /*이미지의 크기는 300*240으로 통일함 */
+      .prod-list img {
+        margin: 0;
+        padding: 0;
+        float: left;
+        z-index: 5;
+        width: 300px;
+        height: 240px;
+      }
+      .prod-list .caption {
+        position: absolute;
+        top: 220px;
+        width: 300px;
+        height: 220px;
+        padding-top: 20px;
+        text-align: center;
+        color: white;
+        opacity: 0;
+        background: rgba(0, 0, 0, 0.5);
+        transition: 0.5s;
+      }
+      .prod-list li:hover .caption {
+        opacity: 1;
+        transform: translateY(-220px);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>신상품 목록</h1>
+    <div id="container">
+      <ul class="prod-list">
+        <li>
+          <img src="sample/test/prod/prod_color_eggs.jpg" />
+          <div class="caption">
+            <h1>칼라달걀</h1>
+            <p>신선한 무항생제 달걀</p>
+            <p>가격 : 12,345원</p>
+          </div>
+        </li>
+        <li>
+          <img src="sample/test/prod/prod_potatoes.jpg" />
+          <div class="caption">
+            <h1>감자</h1>
+            <p>css의 감을 잡자</p>
+            <p>가격 : 12,345원</p>
+          </div>
+        </li>
+        <li>
+          <img src="sample/test/prod/prod_tomato.jpg" />
+          <div class="caption">
+            <h1>방토</h1>
+            <p>건강식품의 끝판왕</p>
+            <p>가격 : 12,345원</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

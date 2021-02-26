@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>css-html</title>
+  </head>
+  <body>
+    <h1>animation</h1>
+    <div class="box"></div>
+    <hr />
+    <div class="wrapper">
+      <img src="./sample/image/hyunta.jpg" alt="" id="hyunta" />
+    </div>
+    <style>
+      .wrapper {
+        text-align: center;
+      }
+      #hyunta {
+        width: 200px;
+        animation-name: my-first-animation;
+        animation-duration: 3s;
+        animation-iteration-count: infinite;
+      }
+      .box {
+        width: 100px;
+        height: 100px;
+        background-color: slateblue;
+        border: 3px solid black;
+        margin: 0 auto;
+        /* 애니메이션 적용 */
+        animation-name: my-first-animation;
+        animation-duration: 5s;
+        animation-iteration-count: infinite;
+        /* animation-direction: reverse; */
+        /* animation-direction: alternate; */
+        animation-timing-function: ease;
+      }
+      /* <!--! animation 속성 */
+      /* @keyframes 이름 : 각각의 상태를 작성 (0% ~ 100%) */
+      /* animation-name : @keyframes의 이름을 지정 */
+      /* animation-delay : 지연시간*/
+      /* animation-direction : normal | reverse | alternate | alternate-reverse*/
+      /* animation-interaction-count : 반복횟수 | infinite */
+      /* animation-duration : 실행시간*/
+      /* animation-timing-function : 속도곡선 */
+      /* animation-fillmode : 시작전후 상태 forwards | backwards | both*/
+      @keyframes my-first-animation {
+        25% {
+          transform: translate(100px, 0);
+        }
+        50% {
+          transform: translate(100px, 100px);
+        }
+        75% {
+          transform: translate(0px, 100px);
+        }
+        100% {
+          transform: translate(0px, 0px);
+          width: 300px;
+          height: 300px;
+        }
+      }
+    </style>
+  </body>
+</html>

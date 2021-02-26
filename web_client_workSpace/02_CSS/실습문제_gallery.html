@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+ <head>
+  <meta charset="UTF-8">
+  <title>갤러리 만들기</title>
+   <style type="text/css">
+	div#gallery{
+		width:450px;
+		height:250px;
+		margin:0 auto;
+		border: 10px solid #1D0C16; /* 굵은테두리*/
+		background: #272229; /* 배경색*/
+		padding:10px;
+	}
+	div#gallery ul li{
+		position:relative;
+		list-style:none;
+		float:left;
+		margin:0 10px 10px 0;
+	}
+	div#gallery ul li img.small{
+		width:120px;
+		height:90px;
+		cursor:pointer;
+	}
+	div#gallery ul li img.pic{
+		position:absolute;
+		left:110px;
+		top:80px;
+		width:320px;
+		height:240px;
+		border:3px solid black;
+		z-index:10;
+		
+		visibility:hidden;
+		/* display:none; */
+		/* opacity:0; */
+
+	}
+	/* 작은사진, 확대사진에 hover시 모두 보여줌. */
+	div#gallery ul li img.small:hover+img.pic, div#gallery ul li img.pic:hover{
+		
+		visibility:visible;
+		/* display:block; */
+		/* opacity:1; */
+		
+	}
+   </style>
+ </head>
+ <body>
+  <h2>사진 갤러리 만들기</h2>
+  <hr/>
+  <div id="gallery">
+	  <ul>
+		  <li> 
+			  <img src="sample/image/flower1.png" class="small" width="120" height="90"> 
+			  <img src="sample/image/flower1.png" class="pic"> 
+		  </li>
+		  <li>
+			  <img src="sample/image/flower2.png" class="small" width="120" height="90"> 
+			  <img src="sample/image/flower2.png" class="pic"> 
+		  </li>
+		  <li>
+			  <img src="sample/image/flower3.png" class="small" width="120" height="90"> 
+			  <img src="sample/image/flower3.png" class="pic"> 
+		  </li>
+		  <li>
+			  <img src="sample/image/flower4.png" class="small" width="120" height="90"> 
+			  <img src="sample/image/flower4.png" class="pic"> 
+		  </li>
+		  <li>
+			  <img src="sample/image/flower5.png" class="small" width="120" height="90">
+			  <img src="sample/image/flower5.png" class="pic"> 
+		  </li>
+		  <li>
+			  <img src="sample/image/forest1.png" class="small" width="120" height="90">
+			  <img src="sample/image/forest1.png" class="pic"> 
+		  </li>
+	  </ul>
+  </div>
+ </body>
+</html>

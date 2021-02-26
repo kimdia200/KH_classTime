@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>html5 - layout</title>
+  </head>
+  <body>
+    <div id="back">
+      <header id="header">
+        <h1>Header</h1>
+        <nav id="nav">
+          <ol id="menu">
+            <li class="hover">Home</li>
+            <li>|</li>
+            <li class="hover">HTML5</li>
+            <li>|</li>
+            <li class="hover">CSS3</li>
+            <li>|</li>
+            <li class="hover">JQuery</li>
+            <li>|</li>
+            <li class="hover">Mobile</li>
+            <li>|</li>
+            <li class="hover">Profile</li>
+          </ol>
+        </nav>
+      </header>
+      <section id="section">
+        <article id="art1">
+          <h1>Article1</h1>
+          <!-- lorem하나 생성 -->
+          <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero culpa
+            quo ipsum doloremque animi nihil tempore nesciunt labore perferendis
+            non ratione consequatur ut qui, eaque dolorem neque, alias esse
+            enim.
+          </p>
+        </article>
+        <article id="art2">
+          <h1>Article2</h1>
+          <!-- lorem하나 생성 -->
+          <p>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt
+            blanditiis dolore exercitationem totam quaerat nemo reiciendis aut
+            sint corrupti eum, iste perspiciatis numquam minus ut voluptas
+            veritatis illo dignissimos suscipit.
+          </p>
+        </article>
+      </section>
+      <aside id="aside">
+        <h5>Aside</h5>
+      </aside>
+      <footer id="footer">
+        <h5>Footer</h5>
+        <p>
+          &lt;Copyright 2017. <strong>KH정보교육원</strong>. All rights
+          reserved.&gt;
+        </p>
+      </footer>
+    </div>
+  </body>
+  <style>
+    div {
+      padding: 10px;
+    }
+    #back {
+      width: 960px;
+      background-color: lightgreen;
+      margin: 0 auto;
+    }
+    #header {
+      background-color: #908886;
+      height: 100px;
+      position: relative;
+      padding: 10px;
+    }
+    #nav {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+    #menu {
+      list-style: none;
+    }
+    #menu li {
+      font-size: 16px;
+      float: left;
+      margin: 5px;
+    }
+    .hover:hover {
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #section {
+      background-color: #f5f5f5;
+      width: 640px;
+      height: 700px;
+      padding: 10px;
+      float: left;
+    }
+    #aside {
+      background-color: #dcdad9;
+      width: 280px;
+      height: 700px;
+      float: left;
+      padding: 10px;
+    }
+    #footer {
+      clear: both;
+      background-color: #555;
+      height: 100px;
+      padding-left: 10px;
+    }
+    #footer > p {
+      font-size: 16px;
+      margin: 0 auto;
+      text-align: center;
+    }
+  </style>
+</html>
