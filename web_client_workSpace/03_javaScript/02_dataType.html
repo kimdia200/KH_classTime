@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS - Data Type</title>
+  </head>
+  <body>
+    <h1>Data Type</h1>
+    <input type="button" value="실행1" onclick="test1()" />
+    <script>
+      function test1() {
+        //변수 선언시 var키워드 사용
+        //선언만 했을경우 타입이 정해져있지 않음
+        var i;
+        console.log(i, typeof i); //undifined undifined
+        //값대입이 일어날 경우 타입이 결정됨
+
+        i = 100; //숫자형 변수
+        console.log(i, typeof i);
+
+        i = "ㅋㅋㅋㅋㅋㅋㅋ"; //문자열 변수 (쌍따옴표, 홀따옴표 택1)
+        console.log(i, typeof i);
+
+        i = true;
+        console.log(i, typeof i); //boolean
+
+        //객체
+        //배열도 하나의 객체
+        //대괄호로 표현
+        //list<Object>와 비슷, 크기/타입 제한에 관해서
+        i = [1, 2, 3];
+        console.log(i, typeof i);
+
+        //속성명 : 속성값
+        i = {
+          name: "홍길동",
+          age: 30,
+          hobby: ["축구", "농구", "야구"],
+        };
+        console.log(i, typeof i);
+
+        //충격적인것 함수도 변수에 담길수있음
+        //자바스크립트 함수 파라미터 에는 자료형을 역시! 명시하지 않는다
+        i = function (x, y) {
+          return x + y;
+        };
+        console.log(i(3, 7), typeof i);
+
+        i = new Date();
+        console.log(i, typeof i); // object
+      }
+    </script>
+  </body>
+</html>

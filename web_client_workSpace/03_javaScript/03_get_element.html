@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>get Element</title>
+  </head>
+  <body>
+    <h1>Get Element</h1>
+    <!-- ul>li#myli$.group{요소$}*5 -->
+    <ul>
+      <li id="myli1" class="group">요소1</li>
+      <li id="myli2">요소2</li>
+      <li id="myli3" class="group">요소3</li>
+      <li id="myli4">요소4</li>
+      <li id="myli5" class="group">요소5</li>
+    </ul>
+    <input type="button" value="id" onclick="test1();" />
+    <input type="button" value="tag name" onclick="test2();" />
+    <input type="button" value="class name" onclick="test3();" />
+    <script>
+      function test1() {
+        var li = document.getElementById("myli1");
+        //id값이 없을경우 객체는 null들어감
+        //js 에서 null = object타입중 하나(그냥 아무것도 없다는 표현방식)
+
+        //태그객체
+        console.log(li);
+        //객체구조로 열람
+        console.dir(li);
+        //객체 속성 변경
+        li.style.color = "red";
+        li.style.backgroundColor = "magenta";
+      }
+
+      /*
+      <!-- ! getElementsByTagName은 복수개의 요소를 가진 배열객체(짜가)를 리턴한다.
+      */
+      function test2() {
+        //여러개를 읽을때는 Elements(복수형)
+        var liArr = document.getElementsByTagName("li");
+        console.log(liArr);
+        // console.log(liArr[0]);
+        // console.log(liArr[1]);
+        // console.log(liArr[2]);
+        // console.log(liArr[3]);
+        // console.log(liArr[4]);
+
+        var b = 50;
+
+        for (var i = 0; i < liArr.length; i++) {
+          console.log(liArr[i]);
+          liArr[i].style.color = "rgb(130, 220, " + b + ")";
+          b += 50;
+        }
+      }
+    </script>
+  </body>
+</html>
