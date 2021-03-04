@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Variable | Scope</h1>
+    <input type="button" value="전역변수 | 지역변수" onclick="test1()" />
+    <input type="button" value="scope" onclick="test2()" />
+    <input type="button" value="개선" onclick="test3()" />
+    <script>
+      //함수 밖 script태그에 작성된 var변수는 전역변수로 등록된다.
+      //최상위 객체 window의 속성으로 등록된다.
+      //개발자도구의 console에서 window를 치면 확인 가능!!!
+      var a;
+      a = 100; //변수의 타입이 결정
+
+      /**
+       * 함수 안에 var변수는 지역변수로 등록된다.
+       * 함수 밖에서는 절대 접근 할 수 없다.
+       */
+      function test1() {
+        //참고로 var는 강제성이 별로 없어서 중복선언을 해도 문제되지 않는다
+        var a = "아";
+        var a = true; //중복선언, 오류도 안나, 값도 덮어씌워버려....
+        var b = 123;
+        //var선언을 해주지 않아도 사용이 가능하지만
+        //이렇게 해줄경우 전역변수로 window안으로 등록이된다...
+        c = "zzz";
+
+        //지역변수 사용
+        console.log("a = " + a);
+        console.log("b = " + b);
+        console.log("c = " + c);
+        //전역변수와 지역변수가 이름이 같을때
+        //방법1. window.a
+        //방법2. this.a
+        console.log("전역변수 a = " + window.a);
+        // this용법2) 일반함수 안에서 this는 window객체를 가르킨다
+        console.log("전역변수 a = " + this.a);
+      }
+
+      /**
+       * scope = 유효범위
+       * c-family언어가 가진 block단위로 작동하는 block scope가 아닌
+       * javascript에서는 function scope를 가진다.
+       *
+       */
+      function test2() {
+        var x = 10;
+
+        if (true) {
+          var x = 100;
+        }
+
+        //자바에서는 x = 10이 나오겠지만
+        //JS에서는 x=100이 나온다
+        //if문 안의 var x는  if문 밖의 var x와 동일하다
+        //function단위로 scope가 적용되기 때문이다.
+        console.log("x = " + x);
+
+        for (var i = 0; i < 10; i++) {}
+        //자바에서는 for문 안의 i가 for문안에서만 사용되고 사라졌겠지만
+        //JS에서는 function scope이기 때문에 사용가능!!!!
+        console.log("i = " + i);
+
+        var k = 123.456;
+        if (true) {
+          var k = 456.789;
+        }
+        console.log("k = " + k);
+      }
+
+      /**
+       * use strict : 엄격모드 사용
+       *
+       * ES6에서 부터 지원되기 시작한 것
+       * let - block scope를 가진 변수 키워드
+       * const - block scope를 가진 상수 키워드
+       */
+      function test3() {
+        "use strict";
+        //엄격 모드를 사용 하지 않았다면 window에 foo객체가 보관됬겠지만
+        //use strict를 사용하고 var 키워드를 사용 하지 않았다면
+        //foo에서 에러가 난다
+        // foo = 100;
+        // console.log("foo = " + foo);
+        var x = 777;
+        console.log("x = " + x);
+
+        let y = 888;
+        //중복선언시 아예 문법 에러가 발생함
+        // let y = 888;
+
+        //상수 = final
+        //밑에서 값을 다시 초기화 해주는것은 상수의 개념이 아니기떄문에
+        //에러를 발생시켜준다
+        const bar = "상수";
+        // bar = "상수2";
+      }
+    </script>
+  </body>
+</html>

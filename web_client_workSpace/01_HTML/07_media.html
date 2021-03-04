@@ -1,35 +1,34 @@
-
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>media</title>
-</head>
-<body>
-  <h1>미디어관련</h1>
-  <h2>audio</h2>
-  <!--
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>media</title>
+  </head>
+  <body>
+    <h1>미디어관련</h1>
+    <h2>audio</h2>
+    <!--
     autoplay : 자동재생
     loop : 반복재생
     muted : 음소거
     preload : 재생전에 미리 다운로드할지 여부(auto | metadata | none)
   -->
-  <audio src="sample/audio/major.mp3" controls autoplay muted>
-    <!-- fallback -->
-    당신의 브라우져는 audio태그를 사용할 수 없습니다. 
-  </audio>
+    <audio src="sample/audio/major.mp3" controls autoplay muted>
+      <!-- fallback -->
+      당신의 브라우져는 audio태그를 사용할 수 없습니다.
+    </audio>
 
-  <!-- 여러개의 source파일을 제공해서 device별로 최적화된 파일재생 -->
-  <audio controls>
-    <source src="sample/audio/major.mp3"/>
-    <!-- fallback -->
-    당신의 브라우져는 audio태그를 사용할 수 없습니다. 
-  </audio>
+    <!-- 여러개의 source파일을 제공해서 device별로 최적화된 파일재생 -->
+    <audio controls>
+      <source src="sample/audio/major.mp3" />
+      <!-- fallback -->
+      당신의 브라우져는 audio태그를 사용할 수 없습니다.
+    </audio>
 
-  <h2>video</h2>
-  <!--
+    <h2>video</h2>
+    <!--
     autoplay : 자동재생
     loop : 반복재생
     muted : 음소거
@@ -37,28 +36,28 @@
     width | height
     poster : 비디오재생전에 노출할 이미지
   -->
-  <video src="sample/video/small.mp4" controls>
-    당신의 브라우져는 video태그를 지원하지 않습니다.
-  </video>
+    <video src="sample/video/small.mp4" controls>
+      당신의 브라우져는 video태그를 지원하지 않습니다.
+    </video>
 
-  <video controls>
-    <!-- 
+    <video controls>
+      <!-- 
       web browser : mp4 - webm - ogg순으로 재생
       mobile : mp4 - 3gp 순으로 재생
     -->
-    <source src="sample/video/small.webm" type="video/webm">
-    <source src="sample/video/small.ogv" type="video/ogg">
-    <source src="sample/video/small.mp4" type="video/mp4">
-  </video>
+      <source src="sample/video/small.webm" type="video/webm" />
+      <source src="sample/video/small.ogv" type="video/ogg" />
+      <source src="sample/video/small.mp4" type="video/mp4" />
+    </video>
 
-  <h2>유투브 영상 가져오기</h2>
-  <iframe 
-    width="560" 
-    height="315" 
-    src="https://www.youtube.com/embed/i5uf906kDjo" 
-    frameborder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-    allowfullscreen></iframe>
-
-</body>
+    <h2>유투브 영상 가져오기</h2>
+    <iframe
+      width="560"
+      height="315"
+      src="https://www.youtube.com/embed/i5uf906kDjo"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+  </body>
 </html>

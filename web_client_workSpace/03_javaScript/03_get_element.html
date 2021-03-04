@@ -20,6 +20,13 @@
     <input type="button" value="tag name" onclick="test2();" />
     <input type="button" value="class name" onclick="test3();" />
     <script>
+      /* 
+      document객체 :
+      작성한 html5의 태그를 파싱해서 변환된 js object를 가지고 있는 객체
+      
+      다른이름으로는 DOM
+      Document Object Model  객체모델
+      */
       function test1() {
         var li = document.getElementById("myli1");
         //id값이 없을경우 객체는 null들어감
@@ -54,6 +61,273 @@
           liArr[i].style.color = "rgb(130, 220, " + b + ")";
           b += 50;
         }
+      }
+
+      /*
+       * document.getElementsByClassName("클래스명") 으로 호출할것
+       */
+      function test3() {
+        //var 객체에 group이라는 클래스를 갖고있는 객체들을 받아옴
+        var groups = document.getElementsByClassName("group");
+        //groups라는 객체를 조회
+        console.log(groups);
+
+        for (var i = 0; i < groups.length; i++) {
+          var li = groups[i];
+          li.style.color = "springgreen";
+        }
+      }
+    </script>
+
+    <fieldset style="margin-top: 30px">
+      <legend>취미</legend>
+      <input type="checkbox" name="hobby" id="hobby1" value="음악감상" />
+      <label for="hobby1">음악감상</label>
+
+      <input type="checkbox" name="hobby" id="hobby2" value="영화시청" />
+      <label for="hobby2">영화시청</label>
+
+      <input type="checkbox" name="hobby" id="hobby3" value="게임" />
+      <label for="hobby3">게임</label>
+      <br /><br />
+      <input type="button" value="name" onclick="test4()" />
+    </fieldset>
+    <script>
+      function test4() {
+        var hobbies = document.getElementsByName("hobby");
+        console.log(hobbies);
+
+        //이제 체크된 요소들을 확인해보자
+        for (var i = 0; i < hobbies.length; i++) {
+          var hobby = hobbies[i];
+          //체크여부 확인
+          if (hobby.checked) {
+            //체크되어있다면 value값을 콘솔창에 찍어준다
+            console.log(hobby.value);
+          }
+        }
+      }
+    </script>
+
+    <!-- 수업도중 실습문제!!! -->
+    <fieldset>
+      <legend>이메일 입력</legend>
+      <input
+        type="email"
+        name="userEmail"
+        id="userEmail"
+        placeholder="이메일을 입력하세요."
+      />
+      <input type="button" value="확인" onclick="test53()" />
+    </fieldset>
+
+    <!-- #userEmail을 입력하고 확인을 눌렀을때 사용자 입력값을 경고창에 출력하세요 -->
+    <script>
+      // 아이디로 접근
+      function test51() {
+        var email = document.getElementById("userEmail");
+        console.log(emails);
+        if (email.value.length == 0) {
+          alert("값이 없습니다");
+        } else {
+          alert(email.value);
+        }
+      }
+      //태그명으로 접근
+      function test52() {
+        var emails = document.getElementsByTagName("input");
+        //이렇게 받으면 input태그 들이 다들어오기때문에 여기서 또 찾아줘야함
+        console.log(emails);
+        //<!-- ! 아니 이걸 이렇게 고정값으로 찾는다고???-->
+        //<!-- ! 인덱스는 반복문돌려서 해당 값의 id가 뭔지 이런식으로 조회가능!!!-->
+        var index;
+        for (var i = 0; i < emails.length; i++) {
+          if (emails[i].id == "userEmail") {
+            index = i;
+          }
+        }
+
+        var email = emails[index];
+        if (email.value.length == 0) {
+          alert("값이 없습니다");
+        } else {
+          alert(email.value);
+        }
+      }
+      //name값으로 접근
+      function test53() {
+        var emails = document.getElementsByName("userEmail");
+        //이렇게 받으면 input태그 들이 다들어오기때문에 여기서 또 찾아줘야함
+        console.log(emails);
+        var email = emails[0];
+        if (email.value.length == 0) {
+          alert("값이 없습니다");
+        } else {
+          alert(email.value);
+
+          //속성은 getter/setter처리 가능, public 변수라고 생각하면될듯?
+          //위에서는 getter의 역할로 사용
+
+          //아래에서는 setter의 역할로 사용
+          emails[0].value = ""; //초기화 setter
+        }
+      }
+    </script>
+
+    <fieldset>
+      <legend>수량</legend>
+      <input
+        type="range"
+        name="amount"
+        id="amount"
+        min="1"
+        max="100"
+        oninput="test6()"
+      />
+      <!-- oninput = 사용자가 입력할때 마다 test6을 호출한다 -->
+      <!-- onchange = 값이 바뀔때 작동 -->
+      <span id="result"></span>
+    </fieldset>
+    <script>
+      function test6() {
+        // var amount = document.getElementById("amount");
+        // var result = document.getElementById("result");
+        // innerHTML = 시작태그와 종료태그 사이의 내용
+
+        //위의 document.~~~~~를 생략해도 id속성으로 변수선언 없이 객체에 접근가능
+        //단 위의 내용은 아직까지는 비표준임
+        result.innerHTML = amount.value;
+      }
+    </script>
+
+    <table>
+      <tr>
+        <th colspan="3">수강신청</th>
+      </tr>
+      <tr>
+        <td colspan="3">
+          <input
+            type="checkbox"
+            name="checkAll"
+            id="checkAll"
+            onclick="test7()"
+          />
+          <label for="checkAll">모두 선택/해제</label>
+        </td>
+      </tr>
+      <tr>
+        <td class="serious">
+          <!-- (this용법.1) 태그 inline이벤트속성에 명시된 this는 태그객체 자신을 가르킨다 -->
+          <input
+            type="checkbox"
+            name="subject"
+            id="subject0"
+            onclick="test8(this)"
+          />
+          <label for="subject0">국어</label>
+        </td>
+        <td class="serious">
+          <input
+            type="checkbox"
+            name="subject"
+            id="subject1"
+            onclick="test8(this)"
+          />
+          <label for="subject1">영어</label>
+        </td>
+        <td class="serious">
+          <input
+            type="checkbox"
+            name="subject"
+            id="subject2"
+            onclick="test8(this)"
+          />
+          <label for="subject2">수학</label>
+        </td>
+      </tr>
+    </table>
+    <style>
+      table {
+        border: 1px solid black;
+        border-collapse: collapse;
+        margin: 30px 0px;
+      }
+      th,
+      td {
+        border: 1px solid black;
+        padding: 10px;
+        text-align: center;
+      }
+      td.on {
+        background-color: royalblue;
+        color: white;
+      }
+      td.serious {
+        font-family: "궁서", cursive;
+      }
+    </style>
+    <script>
+      /*
+      * [name=subject]를 전체선택/해제
+
+      css선택자로 요소접근하기
+      * - document.querySelector(선택자): 선택자와 일치하는 하나의 요소를 리턴
+      * - 여러개일경우 첫번째의 단 하나만 가져옴
+      * - document.querySelectorAll(선택자) : 선택자와 일치하는 모든 요소를 유사배열로 리턴
+       */
+      function test7() {
+        // var subjects = document.getElementsByName("subject");
+        var subjects = document.querySelectorAll("[name=subject]");
+        var checkAll = document.querySelector("#checkAll");
+        console.log(subjects);
+        console.log(checkAll);
+
+        for (var i = 0; i < subjects.length; i++) {
+          //checked : 체크여부(true = 체크, false = 체크 안됨)
+          subjects[i].checked = checkAll.checked;
+        }
+      }
+
+      /**
+       * 개별체크박스를 통해 전체선택 체크박스 제어하기
+       */
+      function test8(chk) {
+        //추가적으로 td의 부모를 제어해보자
+        console.log(chk);
+        console.dir(chk);
+        var parentTd = chk.parentNode;
+        console.log(parentTd);
+        //부모노드에 클래스를 제어
+        //기존 serious 클래스값이 제거되지 않도록 처리
+        //하지만 이방식은 비효율적
+        // if (chk.checked) {
+        //   parentTd.className = "serious on";
+        // } else {
+        //   parentTd.className = "serious";
+        // }
+        // if (chk.checked) {
+        //   parentTd.classList.add("on");
+        // } else {
+        //   parentTd.classList.remove("on");
+        // }
+
+        //java에서는 불가능한 삼항연산자에서 메서드를 사용가능
+        chk.checked
+          ? parentTd.classList.add("on")
+          : parentTd.classList.remove("on");
+
+        //전체 체크박스 제어
+        //전체갯수
+        var subjects = document.querySelectorAll("[name=subject]");
+        //체크된것
+        var current = document.querySelectorAll("[name=subject]:checked");
+
+        // if (subjects.length == current.length) {
+        //   checkAll.checked = true;
+        // } else {
+        //   checkAll.checked = false;
+        // }
+        checkAll.checked = subjects.length == current.length;
       }
     </script>
   </body>

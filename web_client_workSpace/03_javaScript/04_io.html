@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Input / Output</title>
+    <script>
+      function init() {
+        alert("dom작업이 완료되었습니다.");
+        // document.write("<h1>새로쓰기</h1>");
+      }
+    </script>
+  </head>
+  <body onload="init()">
+    <!-- HTML 문서내 태그는 브라우져가 모두 DOM documnet로 등록한다. -->
+    <!-- 모든 태그가 등록되고 나면 load이벤트가 발생한다 -->
+    <h1>Input / Output</h1>
+    <input type="button" value="confirm" onclick="test1()" />
+    <input type="button" value="prompt" onclick="test2()" />
+    <script>
+      /**
+       * confirm다이얼로그, 확인 = true, 취소 = false
+       * 확인/취소 버튼을 통해 논리식 처리를 지원
+       */
+      function test1() {
+        var bool = confirm("이 파일을 삭제 하시겠습니까?");
+        console.log(bool);
+        if (bool) {
+          //파일삭제 로직
+          alert("파일을 삭제했습니다");
+        }
+      }
+
+      /**
+       * prompt는 사용자로 부터 문자열 입력값을 처리가능하다
+       */
+      function test2() {
+        var name = prompt("당신의 이름은 무엇입니까?");
+        console.log(name);
+
+        //취소버튼 = null전달, 아무것도 입력안하면 ""전달
+        // if (name == null || name.length == 0) {
+
+        //자바스크립트에만 있는것으로 값이 존재하면 true,
+        //값이없으면(null, undifined,"",0) false
+        //빈문자열도 값이 없는것으로 간주되어 false처리된다
+        if (!name) {
+          alert("이름을 제대로 입력하세요");
+        } else {
+          alert("당신의 이름은 [" + name + "]입니다.");
+        }
+      }
+    </script>
+
+    <h2>InnerHTML / InnerText / OuterHTML</h2>
+    <input type="button" value="innerHTML" onclick="test3()" />
+    <input type="button" value="InnerText" onclick="test4()" />
+    <input type="button" value="OuterHTML" onclick="test5()" />
+    <div class="wrapper"></div>
+    <script>
+      /**
+       * InnerHTML : 실제 태그의 content부분. 텍스트, 자식태그
+       * - getter : html이 포함된 content를 리턴
+       * - setter : 주어진 문자열을 html로 파싱해서 처리
+       */
+      function test3() {
+        var str = prompt(".wrapper태그 내용을 입력하세요");
+        console.log(str);
+        // <h1>안녕</h1> 을 입력할거임
+        var wrapper = document.querySelector(".wrapper");
+        wrapper.innerHTML = str;
+        console.log(wrapper.innerHTML);
+      }
+
+      /**
+       * InnerText : 태그안의 content, 텍스트
+       * -getter : html태그무시, 텍스트만 가져옴
+       * -setter : html태그로 parsing처리 없고, 단순 텍스트로 처리
+       */
+      function test4() {
+        var wrapper = document.querySelector(".wrapper");
+        //div안이 <h1>안녕</h1>일경우, 안녕만 가져옴
+        console.log(wrapper.innerText);
+        var str = prompt(".wrapper텍스트 내용을 입력하세요");
+        console.log(str);
+        // <h1>안녕</h1> 을 입력할거임
+        wrapper.innerText = str;
+        console.log(wrapper.innerText);
+      }
+      /**
+       * outerHTML 컨텐츠뿐 아니라 태그 자신도 포함
+       */
+      function test5() {
+        var wrapper = document.querySelector(".wrapper");
+        console.log(wrapper.outerHTML);
+
+        wrapper.outerHTML = "<mark class='wrapper'>안녕, 나 새로 왔어</mark>";
+      }
+    </script>
+  </body>
+</html>

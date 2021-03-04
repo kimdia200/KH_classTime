@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js casting</title>
+  </head>
+  <body>
+    <h1>casting</h1>
+    <input type="button" value="실행" onclick="test1()" />
+    <script>
+      function test1() {
+        // (+)연산자는 숫자형보다 문자형이 우선시된다
+        console.log(3 + 7 + "7"); //107
+        console.log(typeof (3 + 7 + "7")); //String
+
+        //(-,*,/,%)연산자는 문자형보다 숫자형이 우선시된다.
+        console.log(7 - "7"); //7-7 = 0
+        console.log(7 * "7"); //7*7 = 49
+        console.log(7 / "7"); //7/7 = 1
+        console.log(7 % "4"); //7%4 = 3
+
+        //숫자형으로 바꿔서 연산이 안되는경우 에러발생
+        console.log(7 % "a"); //NaN(Not a Number) 숫자로 자동형변환이 불가한 우항
+        console.log(typeof (7 % "a")); //number타입(숫자를 기대했지만 숫자가 아니여서)
+        //NaN - Number
+        //null - Object
+      }
+    </script>
+
+    <h2>Number | parseInt | parseDouble</h2>
+    <input type="button" value="실행" onclick="test2()" />
+    <script>
+      var test2 = function () {
+        var num = "1234.567";
+        console.log(Number(num)); //숫자형으로 변환, 변환불가한 문자 존재시 NaN리턴
+        console.log(parseInt(num)); //정수형으로 변환, 문자가 있어도 좌측부터 최대한 변환
+        console.log(parseFloat(num)); //실수형으로 변환, 문자가 있어도 좌측부터 최대한 변환
+        console.log(typeof Number(num));
+        console.log(typeof parseInt(num));
+        console.log(typeof parseFloat(num));
+        var num = "5678.999원";
+        console.log(Number(num)); //숫자형으로 변환, 변환불가한 문자 존재시 NaN리턴
+        console.log(parseInt(num)); //정수형으로 변환, 문자가 있어도 좌측부터 최대한 변환
+        console.log(parseFloat(num)); //실수형으로 변환, 문자가 있어도 좌측부터 최대한 변환
+        var num = "(원)5678.999";
+        console.log(parseInt(num)); //맨왼쪽에 문자로 시작해서 변환불가
+        console.log(parseFloat(num)); //맨왼쪽에 문자로 시작해서 변환불가
+      };
+    </script>
+    <br />
+    <input type="number" id="num1" placeholder="숫자1" />
+    <input type="number" id="num2" placeholder="숫자2" />
+    <input type="button" value="합계산" onclick="test3()" />
+    <script>
+      /**
+       * #num1, #num2의 값을 더해서 출력하세요
+       */
+      function test3() {
+        // input태그의 value는 type속성과 관계없이 모두 String이다.
+        console.log(Number(num1.value) + Number(num2.value));
+      }
+    </script>
+  </body>
+</html>

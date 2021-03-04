@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js api</title>
+  </head>
+  <body>
+    <h1>String</h1>
+    <input type="button" value="실행" onclick="test1()" />
+    <input type="button" value="실습문제" onclick="test2()" />
+    <script>
+      /**
+       * String 내장객체 : 문자열 관련 메서드를 제공하고있음
+       */
+      var test1 = function () {
+        var str = "Samsung Apple Xiomi";
+        console.log(str.length); //length 속성
+        console.log(str.toUpperCase);
+        console.log(str.toLowerCase);
+        console.log(str.indexOf("ms"));
+        console.log(str.lastIndexOf("i"));
+        console.log(str.charAt(8));
+        console.log(str[8]); //문자열 -> 문자 배열 취급 하기에 가능한일
+
+        //문자열 일부를 리턴
+        //substring(start[, end+1])
+        console.log(str.substring(2, 4)); //ms
+        console.log(str.substring(2)); //msung Apple Xiomi
+
+        //substr(start[, length])
+        console.log(str.substr(2, 2)); //ms
+        console.log(str.substr(2)); ////msung Apple Xiomi
+
+        var arr = str.split(" ");
+        console.log(arr);
+      };
+
+      /**
+       * 실습문제 test2(), countChar()
+       * 두개의 인자 문자열과 문자를 입력받고,
+       * 문자열에서 문자가 몇번 출현하는지 출력하는 함수를 생성
+       */
+      var test2 = function () {
+        console.log(countChar("hahaha", "a"));
+        console.log(countChar("abccba", "c"));
+        console.log(countChar("abcde", "x"));
+      };
+      var countChar = function (str, ch) {
+        var count = 0;
+        for (var i = 0; i < str.length; i++) {
+          //str.charat(i)를 사용해도됨!
+          if (str[i] == ch) count++;
+        }
+        return count;
+      };
+    </script>
+
+    <h1>Math</h1>
+    <input type="button" value="실행" onclick="test3()" />
+    <input type="button" value="@실습문제" onclick="test4()" />
+    <ul id="test-rnd">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+    <script>
+      var test3 = function () {
+        //반올림, 올림, 버림
+        var num = 123.456;
+        console.log(Math.round(num)); //123
+        console.log(Math.round(num * 100) / 100); //소수점 두번째까지 123.46
+        console.log(Math.ceil(num)); //124
+        console.log(Math.ceil(num * 10) / 10); //소수점 첫번째 까지 123.5
+        console.log(Math.floor(num)); //123
+        console.log(Math.floor(num * 10) / 10); //소수점 첫번째 까지 123.4
+
+        console.log(Math.random()); //0.0<= Math.random()<1.0 실수
+        console.log(Math.floor(Math.random() * 10 + 1)); //1~10사이의 정수인 난수
+      };
+
+      /**
+       * 실습문제 버튼을 클릭했을때
+       * #test-rnd 하위의 li태그에 1~100사이의 난수를 대입 하세요.
+       * 단, 난수가 짝수라면 글짜색을 예쁘게(?) 할것.
+       */
+
+      var test4 = function () {
+        var li = document.querySelectorAll("#test-rnd > li");
+        console.log(li);
+        for (var i = 0; i < li.length; i++) {
+          var rnd = Math.floor(Math.random() * 100 + 1);
+          li[i].innerHTML = rnd;
+          console.dir(li[i]);
+          if (rnd % 2 == 0) {
+            li[i].style.color = "tomato";
+          } else {
+            li[i].style.color = "black";
+          }
+        }
+      };
+    </script>
+
+    <h1>Date</h1>
+    <input type="button" value="실행" onclick="test5()" />
+    <script>
+      /**
+       * Date는 객체생성시점의 날짜/시각정보를 가진 객체
+       */
+      var test5 = function () {
+        var now = new Date(); //new 연산자 지원
+        console.log(now);
+
+        var time1 = new Date(2000, 0, 1); //월은 0-base 인덱스, 2000년 1월1일
+        console.log(time1);
+
+        var time2 = new Date(2000, 0, 1, 15, 30, 50); //2000/1/1 15시 30분 50초
+        console.log(time2);
+
+        var time3 = new Date("2000/03/01 15:34:20"); //문자열도 시간으로 바꿔줌
+        console.log(time3);
+
+        //시분초 각자 출력해보기
+        displayDateTime(now); //2000/03/01(화) 15:34:20 이렇게 출력해보기
+      };
+
+      var displayDateTime = function (dateTime) {
+        var y = dateTime.getFullYear();
+        var m = get2digit(dateTime.getMonth() + 1);
+        var d = get2digit(dateTime.getDate());
+        var day = dateTime.getDay();
+        var h = get2digit(dateTime.getHours());
+        var mi = get2digit(dateTime.getMinutes());
+        var s = get2digit(dateTime.getSeconds());
+        // if (m < 9) m = "0" + m;
+        // if (d < 10) d = "0" + d;
+        // if (h < 10) h = "0" + h;
+        // if (mi < 10) mi = "0" + mi;
+        // if (s < 10) s = "0" + s;
+        var days = "일월화수목금토";
+        day = days[day];
+        alert(
+          y + "/" + m + "/" + d + "(" + day + ") " + h + ":" + mi + ":" + s
+        );
+      };
+      var get2digit = function (n) {
+        return n.toString().padStart(2, "0");
+      };
+    </script>
+  </body>
+</html>

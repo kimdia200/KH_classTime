@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js Hoisting</title>
+  </head>
+  <body>
+    <h1>Hoisting</h1>
+    <h4>명사 : 끌어올리기; 들어올려 나르기</h4>
+
+    <script>
+      //hoisting되면 실제로는 안보이지만 script태그의 맨위로 올라온다고 생각
+      //var a; //var 키워드로 선언된 변수는 hoisting된다
+      //function foo; //함수선언식 hoisting 된다.
+      //var bar; //var키워드로 선언된 변수는 hoisting된다.
+
+      //변수부분
+      //1번. hoisting이 적용되어 undifined 가 콘솔창에 뜸
+      console.log(a);
+      var a = "안녕"; //var 키워드로 선언된 변수는 hoisting된다.
+
+      //2번. undifined가 아닌 오류가 발생함
+      // console.log(b);
+      // b = "잘가"; //var키워드를 사용하지 않고 선언된 변수는 hoisitng되지 않는다.
+
+      //함수부분
+      foo();
+      /**
+       * 함수 선언식은 hoisting될수있다.
+       * 함수는 hoisting될경우 변수와 다르게 정상적으로 실행까지 된다.
+       */
+      function foo() {
+        console.log("foo");
+      }
+
+      /**
+       * 함수 표현식
+       * bar 변수에 익명 함수를 대입
+       */
+      //변수+함수 혼합
+      bar();
+      var bar = function () {
+        console.log("bar");
+      };
+    </script>
+  </body>
+</html>
