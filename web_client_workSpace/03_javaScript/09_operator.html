@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js Operator연산자</title>
+  </head>
+  <body>
+    <h1>Operator</h1>
+    <h6>기본적으로 자바와 거의 동일하다</h6>
+    <h2>엄격비교연산자</h2>
+    <input type="button" value="실행" onclick="test1()" />
+    <script>
+      var test1 = function () {
+        /**
+         * 일반 동등 비교 연산자
+         * == 타입이 달라도 형변환후 값이 같으면 true
+         * != 타입이 달라도 형변환후 값이 다르면 true
+         *
+         * 엄격 동등 비교 연산자
+         * === 타입, 값 모두 일치해야 true, 하나라도 다르면 false
+         * !== 타입, 값 하나라도 다르면 true, 그렇지 않으면 false
+         */
+        console.log(3 == "3"); //true
+        console.log(3 != "3"); //false 형변환 이후 같으므로 false
+
+        console.log(3 === "3"); //false 타입이다름
+        console.log(3 === 3); //true 타입도 같고 값도 같음
+        console.log("3" === "3"); //true 타입도 같고 값도 같음
+        console.log(3 === Number("3")); //true 타입도 같고 값도 같음
+
+        console.log(3 !== "3"); //true 타입이 다름
+        console.log(3 !== 3); //false 타입도 같고, 값도 같음
+        console.log("3" !== "3"); //flase 타입도 같고, 값도 같음
+      };
+    </script>
+
+    <h2>짧은 조건문</h2>
+    <input type="button" value="실행" onclick="test2()" />
+    <script>
+      var test2 = function () {
+        var num = prompt("정수를 입력하세요.");
+
+        //짝수,홀수를 판단하는 조건문
+        // num % 2 == 0 ? alert("짝수입니다.") : alert("홀수입니다.");
+
+        //짧은 조건문
+        //a(조건식) && b(실행문) ------ a가 참일때 b실행
+        //a || b : a가 거짓일때 b실행
+        //if else를 옮긴다기 보다는 if문 하나있을때 사용하기 적합
+        num % 2 == 0 && alert("짝수");
+        num % 2 == 0 || alert("홀수");
+
+        //return 구문은 짧은 조건문에서 사용 할 수 없다.
+        //return문을 사용해야한다면 if문을 사용 할 것!
+      };
+    </script>
+  </body>
+</html>

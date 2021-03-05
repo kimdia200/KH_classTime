@@ -62,5 +62,76 @@
         console.log(Number(num1.value) + Number(num2.value));
       }
     </script>
+    <h2>NaN | infinity</h2>
+    <input type="button" value="실행" onclick="test4()" />
+    <script>
+      var test4 = function () {
+        console.log(10 / 0); //결과값 = Infinity(무한) -
+        console.log(typeof (10 / 0)); //타입은 Number
+        //자바였다면 ArithmeticException. by zero이 나온다
+
+        console.log(10 / "a"); //NaN
+        console.log(typeof (10 / "a")); //Number
+
+        //사용자 입력값은 무조건 string
+        var num = prompt("숫자를 입력하세요."); //123입력시 string 123
+        console.log("num의 타입 = " + typeof num);
+
+        //isNaN의 원리는 숫자로 온전히 변환이 되면~ number라고 쳐주는것
+        if (isNaN(num)) alert("숫자가 아닙니다.");
+        else alert("숫자입니다");
+      };
+    </script>
+
+    <h2>논리형으로의 형변환</h2>
+    <input type="button" value="실행" onclick="test5()" />
+    <script>
+      /**
+       *  변수, 리터럴(값)이 boolean형으로 형변환 가능
+       *
+       * 값이 존재하는 것은 true로 치환 : 123, -100, 3.14, '안녕', 'ㅋㅋㅋ', new Date()
+       * 값이 존재하지 않는것은 false로 치환 : 0, 0.0, "", '', undefined, null, NaN
+       *
+       */
+      var test5 = function () {
+        console.log(Boolean(123)); //true
+        console.log(Boolean(-100)); //true
+        console.log(Boolean(3.14)); //true
+        console.log(Boolean("안녕")); //true
+        console.log(Boolean("ㅋㅋㅋ")); //true
+        console.log(Boolean(new Date())); //true
+
+        console.log("구분선");
+
+        console.log(Boolean(0)); //false
+        console.log(Boolean(0.0)); //false
+        console.log(Boolean("")); //false
+        console.log(Boolean(undefined)); //false
+        console.log(Boolean(null)); //false
+        console.log(Boolean(NaN)); //false
+
+        var name = prompt("이름을 입력하세요.");
+        //경우1. "홍길동" 확인
+        //경우2 "" 아무것도 입력안하고 확인
+        //경우3 취소누른경우
+        if (name) {
+          alert("반갑습니다! [" + name + "]님!");
+          var result = document.getElementById("result");
+          console.log(result);
+
+          if (result) {
+            console.log("#result가 존재함!");
+            result.innerText = "반갑습니다! [" + name + "]님!";
+          } else {
+            console.log("#result가 존재하지 않음!");
+            document.querySelector("body").innerHTML +=
+              "<h1>반갑습니다! [" + name + "]님!</h1>";
+          }
+        } else {
+          alert("입력된 값이 없습니다.");
+        }
+      };
+    </script>
+    <!-- <h1 id="result"></h1> -->
   </body>
 </html>
