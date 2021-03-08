@@ -147,7 +147,18 @@
     <input type="button" value="slice" onclick="test11()" />
     <input type="button" value="splice" onclick="test12()" />
     <input type="button" value="@실습문제" onclick="test13()" />
+    <input type="button" value="forEach" onclick="test14()" />
     <ul id="hobby-list"></ul>
+
+    <hr />
+    <ul id="drink">
+      <li>coke</li>
+      <li>juice</li>
+      <li>coffee</li>
+      <li>beer</li>
+      <li>wine</li>
+    </ul>
+    <input type="button" value="@실습문제2" onclick="test15()" />
     <script>
       var test4 = function () {
         var arr = ["apple", "melon", "banana", "melon"];
@@ -329,6 +340,50 @@
         }
         var ul = document.getElementById("hobby-list");
         ul.innerHTML = str;
+
+        //forEach함수 배열 요소마다 콜백 함수를 실행
+        //f("농구",0)
+        //f("수영",1)
+        //f("캠핑",2)
+        //f("낚시",3)
+      };
+
+      var test14 = function () {
+        /**
+         * 배열 만들어주는 메서드라고 생각해주면된다~
+         * arr.forEach(CallbackFunction(element, index){
+         *         요소마다 실행구문
+         * })
+         *
+         * 유사배열도 사용가능하다!(for..in문과 다른점)
+         */
+        var arr = [1, 2, 3, 4, 5];
+        var sum = 0;
+        arr.forEach(function (elem, i) {
+          console.log(i, elem); //일부러 뒤집어서도 출력해보심
+          sum += elem;
+        });
+        // alert(sum);
+
+        //버튼 태그들을 배열로 모아보고싶다?!
+        var btnValues = [];
+        document
+          .querySelectorAll("input[type=button")
+          .forEach(function (elem, i) {
+            console.log(i, elem);
+            btnValues.push(elem.value);
+          });
+        console.log(btnValues);
+      };
+
+      // @실습문제
+      //배열 drink에 #drink태그의 자식 li태그 텍스트를 추가할 것.
+      var test15 = function () {
+        var drink = [];
+        document.querySelectorAll("#drink li").forEach(function (elem, i) {
+          drink.push(elem.innerText);
+        });
+        console.log(drink);
       };
     </script>
   </body>

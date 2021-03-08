@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js - closure</title>
+  </head>
+  <body>
+    <!-- closure = 닫힘 -->
+    <h1>Function - closure</h1>
+    <h2>자유변수</h2>
+    <input type="button" value="globalCounter" onclick="test1()" />
+    <input type="button" value="clsureCounter" onclick="test2()" />
+    <script>
+      /**
+       * 자유변수 : 함수 지역범위에 정의되지 않은 변수
+       * hi가 자유변수
+       * 자유변수는 전역일수도 지역일수도 있다, 전역지역과 자유변수는 개념이 다르다
+       */
+      var hi = "안녕";
+      function greet(name) {
+        var word = "반가워";
+        console.log(hi + name + word);
+      }
+      greet("윤수");
+    </script>
+
+    <h2>closure</h2>
+    <script>
+      /**
+       * 함수 실행에 필요한 모든 자원(지역변수, 자유변수)을 가지고 외부로부터 닫혀있는 함수.
+       */
+      function funcX() {
+        var num = 100;
+        return function () {
+          console.log("num=", num); //num = var num =100을 참조하고있다
+        };
+      }
+      var num = 200;
+      var myf = funcX();
+      myf(); //num=100
+      //메모리 개념으로 이해하려고 해보자
+
+      //전역변수 cnt, 전역변수는 잘못 건드리면 큰일난다(ex. 변수공유)
+      var cnt = 0;
+      function test1() {
+        console.log("globalCounter = " + ++cnt);
+      }
+
+      //위의 전역변수 cnt를 보완해서 closure로!
+      //이렇게하면 아래의 자유변수 cnt는 다른 것들의 영향을 안받아서 안전
+      // java처럼 private과 같은 접근제한자가 없기때문에 이렇게 변수 보호
+      var test2 = makeClosureCounter();
+      function makeClosureCounter() {
+        var cnt = 0;
+        return function () {
+          console.log("closureCounter : " + ++cnt);
+        };
+      }
+      console.dir(test2); //여기에서 scope부분 보면 closuer- cnt는 readonly와 같음
+      console.log(test2);
+    </script>
+
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <!-- 강사님 그림 첨부 -->
+    <img src="2021-03-08-20-33-09.png" alt="" />
+  </body>
+</html>

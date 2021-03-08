@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js function</title>
+  </head>
+  <body>
+    <h1>Function</h1>
+    <h2>함수 작성</h2>
+    <script>
+      //방법 1 함수 선언식으로 작성
+      function foo() {}
+
+      //방법 2 함수 표현식
+      //변수에 익명 함수를 담는 방식으로 처리
+      //far라고 이름을 붙여줄순있지만 far로는 호출이 안된다
+      // 어차피 bar로 호출해야함
+      var bar = function far() {};
+      bar();
+      // far(); //이건 사용 불가능... Uncaught ReferenceError : far in no defined
+
+      // 방법3 즉시 실행함수(Immediately Invoked Function Expression = IIFE 이피)
+      // 선언과 동시에 실행됨
+      (function () {
+        console.log("hello iife!");
+      })();
+      (function () {
+        console.log("bye iife!");
+      })();
+      // 즉시실행 함수도 인자를 받을수있나?
+      (function (name) {
+        console.log("안녕~" + name);
+      })(); //콘솔창 : 안녕~ undifined
+      (function (name) {
+        console.log("안녕~" + name);
+      })("철수"); //콘솔창 : 안녕~ 철수
+    </script>
+
+    <h2>매개변수 | 배개인자</h2>
+    <input
+      type="button"
+      value="실행"
+      onclick="test1(); test1(123); test1(true); test1('안','녕'); test1(true,false)"
+    />
+    <input type="button" value="가산기" onclick="test2()" />
+    <script>
+      /**
+       * 매개변수 parameter
+       * 함수선언부의 매개인자가 담길 공간(변수)
+       *
+       * 매개인자 argument
+       * 함수호출부에서 전달될 값(value)
+       *
+       * JAVA와 다른점은 함수이름만 같다면 실행은 된다
+       * 즉, 매개변수와 매개인자의 개수가 달라도 문제되지 않는다.
+       */
+      function test1(x) {
+        console.log("x=" + x);
+
+        //매개인자 유사배열 arguments참조
+        console.log(arguments);
+        for (var i = 0; i < arguments.length; i++) {
+          console.log(arguments[i]);
+        }
+      }
+
+      function test2() {
+        /**
+         * 매개인자의 합을 출력하는 가산기함수 add를 작성
+         * 가산기를 만들어볼게요~
+         * ex. add(1,2,3,4,5,6,7,8,9,10), add(12,34,45,67)
+         */
+
+        console.log(add(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+        console.log(add(12.34, 45.67));
+        console.log(add("a", "b", "c", "d"));
+      }
+      function add() {
+        var sum = 0;
+        if (isNaN(arguments[i])) {
+          sum = "";
+        }
+        for (var i = 0; i < arguments.length; i++) {
+          sum += arguments[i];
+        }
+        return sum;
+      }
+    </script>
+
+    <h2>함수 특징</h2>
+    <input type="button" value="return value" onclick="test3()" />
+    <input type="button" value="중첩 함수" onclick="test4(10,5)" />
+    <script>
+      /**
+       *  함수의 return구문이 없다면 undifined를 리턴
+       */
+      function test3() {
+        var k = koo();
+        console.log(k);
+      }
+      function koo() {
+        // return 100;
+      }
+
+      /**
+       * a^2 + b^2 = c^2
+       * 밑변  높이  빗변
+       */
+      function test4(a, b) {
+        function power(n) {
+          return n ** 2; // **(별두개) = 제곱을 의미
+        }
+
+        //Math.sqrt = 제곱근 구해주는함수 = 루트씌우는것
+        var c = Math.sqrt(power(a) + power(b)); //(10,5) = 11.1803....
+        console.log(c);
+      }
+    </script>
+
+    <h2>함수 고급</h2>
+    <input type="button" value="매개인자" onclick="test5()" />
+    <input type="button" value="리턴값" onclick="test6()" />
+    <input type="button" value="999" onclick="soo()(999)" />
+    <script>
+      /**
+       * 자바스크립트에서 함수는 값으로 취급됨
+       * 변수에 대입(함수표현식) 할 수 있고,
+       * 함수의 인자로 전달(콜백함수)되거나
+       * 리턴값으로 사용될수있음
+       */
+      function test5() {
+        var f = function (n) {
+          if (arguments.length == 0) console.log("hello, javascript!");
+          else console.log(n + ": hello, " + names[n - 1] + "!");
+        };
+        //exec함수야 f함수를 대신 실행해줘~
+        exec(f);
+      }
+
+      //좀더 고급 응용 버전
+      // function test5() {
+      //   exec(function (n) {
+      //     console.log(n + ": hello, " + names[n - 1] + "!");
+      //   });
+      // }
+
+      /**
+       * 1: hello, html!
+       * 2: hello, css!
+       * ....
+       * 10: hello, spring!
+       */
+      var names = [
+        "html",
+        "css",
+        "js",
+        "jquery",
+        "java",
+        "oracle",
+        "mybatis",
+        "maven",
+        "lombok",
+        "spring",
+      ];
+
+      function exec(a) {
+        console.log(a);
+        console.log("매개인자의 타입 : " + typeof a);
+
+        //10번해주기
+        for (var i = 0; i < 10; i++) {
+          //names선언전에 했던거임!
+          //1: hello, javascript!
+          //2: hello, javascript!
+          //3: hello, javascript!
+          //4: hello, javascript!
+          //...
+          //10: hello, javascript!
+          a(i + 1); //함수 호출
+        }
+      }
+
+      function test6() {
+        // var f = makeFunction();
+        // // console.log(f, typeof f);
+        // f("js"); //hello js~~
+
+        makeFunction()("js");
+
+        var sayHello = makeFunction("hello");
+        sayHello("js");
+        var sayGoodbye = makeFunction("good bye");
+        sayGoodbye("js");
+      }
+
+      function makeFunction(say) {
+        if (arguments.length == 0)
+          return function (name) {
+            console.log("hello " + name + "~~");
+          };
+        else
+          return function (name) {
+            console.log(say + " " + name + "~~");
+          };
+      }
+
+      function soo() {
+        return function (n) {
+          alert(n);
+        };
+      }
+
+      /**
+       * @수업도중 깜짝 스코프 문제
+       */
+
+      //1
+      var z = 50;
+      function varTest() {
+        var z = 55;
+        z += 45;
+        console.log("varTest() : z=", z);
+      }
+      varTest(); //varTest() : z=100 출력
+      console.log("z=", z); //z=100 출력
+
+      //2
+      var y = 99;
+      function varTest2() {
+        var x = 100;
+        var y = 9;
+        z = 1;
+        console.log("varTest2() : x+y+z=", x + y + z);
+      }
+      varTest2(); //varTest2() : x+y+z=110 출력
+      console.log("y+z=", y + z); //y(99)+z(1) = 100출력
+      // console.log("x+y+z=", x + y + z); //x는 varTest2()에서만 선언되어 undefined
+
+      //3
+      //전역에서 실행한 for문의 내부변수 i
+      for (var i = 1; i <= 10; i++) {
+        console.log(i); // 1~10까지 출력
+      }
+      function getNum() {
+        console.log("getNum() : i=", i);
+      }
+      getNum(); //i=11출력
+
+      //4, Closer라는 개념으로 아직 안배웠음
+      function funcX() {
+        var num = 100;
+        return function () {
+          console.log("num=", num); //
+        };
+      }
+      var num = 200;
+      var myf = funcX();
+      // var myf = function () {
+      //   console.log("num=", 100);
+      // }; //이렇게 들어간것이 아니다
+
+      myf(); //num=100
+      console.log(myf);
+      // <!-- ! 12.html에서 다룸
+    </script>
+  </body>
+</html>
