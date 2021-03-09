@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js object</title>
+  </head>
+  <body>
+    <h1>Object</h1>
+    <h2>객체생성</h2>
+    <input type="button" value="실행" onclick="test1()" />
+    <script>
+      /**
+       * (속성명:속성값)으로 구성된 요소를 관리 하는 객체
+       * 속성명 : 식별자(문자열, 숫자로도 작성가능)
+       * 속성값 : 모든 타입 가능
+       */
+      function test1() {
+        // 방법1. 리터럴을 이용해서 객체를 만듦
+        var obj1 = {
+          name: "홍길동",
+          age: 33,
+          married: true,
+          hobby: ["축구", "농구", "야구"],
+          pet: {
+            name: "바둑이",
+            breed: "말티즈",
+          },
+          123: 123, //숫자 속성명 가능
+          "foo-bar": "ㅋㅋㅋㅋ", //도중에 하이픈이 들어가거나 공백이 있다면 문자열표시로 감싸줘야함
+        };
+        // 방법2. new연산자를 이용해서 만듦
+        var obj2 = new Object();
+
+        //dot notation
+        obj2.pname = "말린 망고";
+        obj2.price = 3000;
+        obj2.ingredient = ["망고", "설탕"];
+        //bracket notation, 단 속성명은 문자열로 전달되어야 한다.
+        obj2["origin"] = "필리핀";
+        // ty-pe라는 속성을 추가 하고싶을 경우 dot노테이션은 처리를 할수가 없다
+        // obj2.ty-pe = "피클";
+        obj2["ty-pe"] = "피클";
+
+        console.log(obj1);
+        console.log(obj2);
+        //obj1의 hobby의 야구
+        console.log(obj1.hobby[2]);
+        //obj1의 pet의 말티즈
+        console.log(obj1.pet.breed);
+
+        console.log(obj2["ty-pe"]);
+        var arr = [
+          1,
+          2,
+          3,
+          [{ a: 1 }, { b: 2 }, { c: { 가: 1, 나: 2, 다: 3 } }],
+        ];
+        console.log(arr[3][2].c.다);
+        console.log(arr[3][2]["c"]["다"]);
+      }
+    </script>
+
+    <h2>메소드</h2>
+    <input type="button" value="실행" onclick="test2()" />
+    <script>
+      /**
+       * 메서드는 함수에 포함된다(함수가 더 큰개념)
+       * 객체의 속성값이 function인 경우를 메서드라고 한다
+       */
+
+      function test2() {
+        var pet = {
+          petName: "바둑이",
+          eat: function (food) {
+            //Uncaught ReferenceError : petName is not defined
+            //객체내의 petName이 아닌 외부변수중에서 petName을 찾는다
+            // console.log(petName + "가" + food + "를 먹는다, 냠냠!");
+
+            //(this용법3) 메서드에서 this는 현재객체를 가리킨다.
+            console.log(this.petName + "가 " + food + "를 먹는다, 냠냠!");
+          },
+        };
+        console.log(pet);
+        console.log(pet.eat);
+        pet.eat("개껌");
+
+        //bracket notation
+        pet["eat"]("갈비");
+
+        var propName = "eat";
+        pet[propName]("개우유");
+      }
+    </script>
+
+    <h2>속성 순회</h2>
+    <input type="button" value="실행" onclick="test3()" />
+    <input type="button" value="게임시작" onclick="test4()" />
+    <input type="button" value="게임종료" onclick="test4_1()" />
+    <input type="button" value="플레이타임 확인" onclick="test4_2()" />
+    <input type="button" value="동적제어" onclick="test5()" />
+    <input type="button" value="toString(override)" onclick="test6()" />
+    <script>
+      /**
+       * 단순 for문이 아닌 for in문을 사용해서 모든 속성을 순회가능
+       */
+      function test3() {
+        var game = {
+          title: "DIABLO",
+          price: 9900,
+          lang: ["ko", "eng", "cn"],
+          run: function () {
+            console.log(this.title + "을 실행합니다.");
+            this["start-time"] = new Date();
+          },
+
+          shutdown: function () {
+            console.log(this.title + "을 종료합니다.");
+            this["end-time"] = new Date();
+          },
+        };
+
+        //객체를 for in문 처리하면 i값에 속성값이 들어간다.
+        for (var i = 0 in game) {
+          console.log(i + " : " + game[i]);
+        }
+        //@깜짞문제
+        //game객체에 run메서드를 실행하면, start-time 속성에 현재시각을 기록하세요.
+        //game객체에 shutdown메서드를 실행하면, end-time속성에 끝낸시각을 기록하세요
+        game.run();
+        game.shutdown();
+        for (var i = 0 in game) {
+          console.log(i + " : " + game[i]);
+        }
+      }
+
+      /**
+       * 문제! 게임실행과, 게임종료 버튼을 누르고
+       * 플레이 타임(분)을 구해서 출력
+       */
+
+      var game = {
+        title: "DIABLO",
+        price: 9900,
+        lang: ["ko", "eng", "cn"],
+        run: function () {
+          console.log(this.title + "을 실행합니다.");
+          this["start-time"] = new Date();
+        },
+
+        shutdown: function () {
+          console.log(this.title + "을 종료합니다.");
+          this["end-time"] = new Date();
+        },
+      };
+
+      function test4() {
+        //짧은조건문, 현재 game객체가 있으면~ 실행
+        game && game.run();
+      }
+      function test4_1() {
+        //짧은조건문, 현재 game객체가 있으면~ 실행
+        game && game.shutdown();
+      }
+      function test4_2() {
+        if (game["start-time"] == undefined || game["end-time"] == undefined) {
+          console.log("시작시간 또는 종료시간이 입력되어있지 않음");
+          return;
+        }
+        console.log("게임시작 시간 :" + game["start-time"]);
+        console.log("게임종료 시간 :" + game["end-time"]);
+        //date객체 - date객체 는 자동으로 밀리초를 리턴해준다
+        // <!-- ! 아래와같이 .getTime() 함수 두번 쓰지 않아도 될듯?
+        var mill = game["end-time"].getTime() - game["start-time"].getTime();
+        //플레이타임(분) 출력 (소수점 1번째 자리까지 출력해준다.)
+        console.log(
+          "playTime =" + Math.floor((mill / 1000 / 60) * 10) / 10 + "분"
+        );
+      }
+
+      /**
+       * typeof 어쩌구   ->  어쩌구의 타입 리턴
+       * 어쩌구 instanceof Date 어쩌구는 데이트타입인가? true, false리턴
+       */
+
+      /**
+       * 객체 생성이후, 자유롭게 속성을 추가하거나 삭제 할 수 있다.
+       */
+      function test5() {
+        var student = new Object();
+        student.name = "홍길동";
+        student.class = "M";
+        student.no = 33;
+        console.log(student);
+
+        //객체의 속성도 제거가 가능하다
+        delete student.no;
+        console.log(student);
+      }
+
+      /**
+       * toString Override
+       *
+       * javascript는 prototype기반으로 상속모델을 제공한다.
+       */
+      function test6() {
+        var notebook = {
+          title: "오늘의 일기",
+          content: "오늘은 자바스크립트와 즐거운 하루를 보냈다.",
+          date: new Date(),
+          toString: function () {
+            // return (
+            //   "title : "+this.title+", content : "+this.content +", date : "+this.date
+            // );
+
+            var str = "";
+            for (var key in this) {
+              //아래처럼 하면 toString()도 나와서 지저분함
+              // str += key + " : " + this[key] + " ";
+
+              //위의문제 수정후 코드
+              key != "toString" && (str += key + " : " + this[key] + " ");
+            }
+            return str;
+          },
+        };
+        //객체가 나오는것
+        console.log(notebook);
+
+        //문자열 + 객체 = 문자열 + 문자열,즉 객체가 문자열로 변환되어 출력됨
+        //아래거는 notebook : [Object Object] 라고나옴
+        // 즉 notebook변수가 [Object Object]라고 자동으로 toString된것
+        console.log("notebook : " + notebook);
+
+        //[_proto_]속성에 toString()메서드가 있음...
+        //notebook변수가 notebook.toString()된것
+        console.log("notebook : " + notebook.toString());
+      }
+    </script>
+    <br />
+  </body>
+</html>

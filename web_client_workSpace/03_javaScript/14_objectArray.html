@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js objectArray</title>
+  </head>
+  <body>
+    <h1>Object Array</h1>
+    <h2>객체배열</h2>
+    <input type="button" value="실행" onclick="test1()" />
+    <script>
+      function test1() {
+        var pets = [
+          {
+            name: "구리구리",
+            breed: "푸들",
+            weight: 4.5,
+          },
+          {
+            name: "까망이",
+            breed: "도베르만",
+            weight: 15.5,
+          },
+          {
+            name: "하양이",
+            breed: "비숑",
+            weight: 2.5,
+          },
+        ];
+        //전체 정보 출력
+        console.log(pets);
+
+        //이름만 출력해보기
+        //다시 상기, for in문에서 객체를 돌리면 속성값이 i에서 돌아가고
+        //배열을 돌리면 인덱스값이 i에서 돌아간다.
+        for (var i in pets) {
+          console.log(pets[i].name);
+        }
+
+        //bark라는 함수를 추가해보자
+        for (var i in pets) {
+          pets[i].bark = function () {
+            return this.weight > 10 ? "멍!멍!" : "멍...멍...";
+          };
+          //bark함수가 추가되었나 확인
+          console.log(pets[i].name + "(이)가 " + pets[i].bark() + "짖는다");
+        }
+      }
+    </script>
+
+    <h2>생성자 함수</h2>
+    <input type="button" value="실행" onclick="test2()" />
+    <script>
+      /**
+       * bark()함수는 모든 객체가 겹치므로
+       * 상속의 개념으로 작성해준것
+       * 자바에서의 상속 = js에서 prototype에 작성~
+       *
+       */
+      function Pet(name, breed, weight) {
+        this.name = name;
+        this.breed = breed;
+        this.weight = weight;
+        // this.bark = function(){
+        //   return  this.weight > 10 ? '멍멍' : '왈왈';
+        // };
+      }
+      //Pet의 prototype객체에 중복된 속성/메소드를 작성한다.
+      //이렇게 중복되는것을 prototype에 작성하면 메모리공간을 공유하면서 효율적으로
+      // 메모리를 사용한다.
+      Pet.prototype.bark = function () {
+        return this.weight > 2 ? "멍멍" : "왈왈";
+      };
+
+      /**
+       * 객체를 리터럴로 일일이 입력하면 너무너무 귀찮다....
+       * 생성자를 이용하면 훨씬 쉽다.
+       */
+      function test2() {
+        //생성자 함수는 함수명이 대문자로 시작함
+        //(this용법4) 생성자함수 안의 this는 현재객체를 가리킨다.
+        // function Pet(name, breed, weight) {
+        //   //객체의 속성입력 구분자가 위에서는 콤마(,) 였지만
+        //   // 생성자 함수에서는 세미콜론(;) 으로 구분
+        //   this.name = name;
+        //   this.breed = breed;
+        //   this.weight = weight;
+        //   this.bark = function () {
+        //     return this.weight > 10 ? "멍멍" : "왈왈";
+        //   };
+        // }
+        //이건 내가한거
+        var pets = [];
+        pets.push(new Pet("코코", "코숏", 5.5));
+        pets.push(new Pet("보리", "치즈", 3.5));
+        pets.push(new Pet("길냥이", "몰라", 1.5));
+
+        //이건 강사님이 한거
+        var pets = [
+          new Pet("코코", "코숏", 5.5),
+          new Pet("보리", "치즈", 3.5),
+          new Pet("길냥이", "몰라", 1.5),
+        ];
+        console.log(pets);
+        for (var i in pets) {
+          console.log(pets[i].name + "(이)가 " + pets[i].bark() + "짖는다");
+        }
+      }
+    </script>
+  </body>
+</html>
