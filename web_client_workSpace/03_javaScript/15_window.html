@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js window</title>
+    <style>
+      #clock {
+        font-size: 3em;
+        text-shadow: 3px 3px 7px black;
+      }
+      #countDown {
+        font-size: 15em;
+        border: 3px solid black;
+        padding: 10px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body onload="test5()">
+    <h1>window</h1>
+    <h2>웹페이지 구조</h2>
+    <!-- BOM = Browser Object Model -->
+    <!-- frames는 쓸일이없고
+        XMLHTTPRequest는 추후 제대로 다룸
+    -->
+    <img src="./images/windowObjects.png" alt="" />
+    <!-- 
+      브라우저창에
+      javascript:alert('aaa');라고치면 바로 실행됨
+      javascript:window:alert('aaa');라고쳐도 바로실행
+      alert는 사실 window(전역)소속이였다!
+      window라고 콘솔에 치면 모든 소속정보 확인가능 = console.log(window);
+      html파일 마다 window존재
+    -->
+
+    <h2>Method</h2>
+    <input type="button" value="open" onclick="test1()" />
+    <input type="button" value="popup 닫기" onclick="test2()" />
+    <input type="button" value="setTimeout" onclick="test3()" />
+    <input type="button" value="@실습문제" onclick="test4()" />
+    <input type="button" value="setInterval" onclick="test5()" />
+    <input type="button" value="setInterval" onclick="test6()" />
+    <hr />
+    <div id="clock"></div>
+    <hr />
+    <div id="countDown">10</div>
+    <script>
+      var w;
+      /**
+      * open 새로운 window생성
+      - 새탭
+      - 팝업창
+      (원하는 형태로 생성)
+
+      open(url, name[, specs])
+      name : 팝업창이름, _self    (셀프로하면 현재창에서 열림)
+            newWindow popup
+      specs : 문자열
+      */
+      function test1() {
+        //새탭
+        // open("13_object.html", "newWindow");
+
+        //팝업
+        w = open(
+          "13_object.html",
+          "newWindow",
+          "width = 800, height=300 top=200 left=500"
+        );
+
+        console.log(w);
+        console.log(window == w);
+        //false가 나옴
+        //w는 새 팝업창의 window이고
+        //window는 현재 작업을 수행했던 창의 window이기 때문
+        setTimeout(() => {
+          w.alert("어디에 뜨나요???"); //w에서 alert실행
+        }, 1000);
+        // setTimeout = 시간지연 함수
+      }
+
+      //새창에서 열린 alert없애기
+      function test2() {
+        w && w.close();
+      }
+
+      /**
+       * setTimeout(callbackFunction, millis);
+       * millis(밀리초)이후에 callbackFunction함수 실행
+       * 동기적(위에서 아래로, 좌에서 우로 순서대로 처리)
+       * timeoutAPI의 메서드는 비동기적으로 처리된다.
+       * 브라우저는 무조건 단일 쓰레드
+       */
+      function test3() {
+        //읽는 순간 3초있다해야지 하고(eventQueue에 담아둠) 바로 넘어감
+        //그래서 '안녕'이 먼저 나오고 '반갑습니다' 가 나중에 나옴
+        setTimeout(function () {
+          alert("반갑습니당.");
+        }, 3000);
+
+        alert("안녕");
+      }
+
+      /**
+       * 팝업창을 하나 열고, <h1>3초 팝업</h1>
+       * 3초 이후에 자동으로 창이 닫히도록 하세요
+       */
+      function test4() {
+        var temp = open(
+          "",
+          "popup",
+          "width = 800, height=300 top=200 left=500"
+        );
+        // temp.document.querySelector("body").innerHTML = "<h1>3초 팝업</h1>";
+        temp.document.write("<h1>3초 팝업</h1>");
+        setTimeout(() => {
+          temp.close();
+        }, 3000);
+      }
+
+      /**
+       * setInterval(callbackFunction, millis)
+       * millis초마다 callbackFunction을 실행
+       */
+      function test5() {
+        // var num = 1;
+        // setInterval(function () {
+        //   console.log(num++);
+        // }, 1000);   //1000초후에 최초 실행하고 무한반복
+
+        foo();
+        //div#clock에 시계를 만들어서 구현해보자
+        setInterval(function () {
+          foo();
+        }, 1000);
+      }
+      var foo = function () {
+        var now = new Date();
+        var strFormat = getTimeFormatStr(now);
+        document.querySelector("#clock").innerHTML = strFormat;
+      };
+
+      function getTimeFormatStr(time) {
+        var f = function (n) {
+          return n >= 10 ? n : "0" + n;
+        };
+        var hh = f(time.getHours());
+        var mi = f(time.getMinutes());
+        var ss = f(time.getSeconds());
+        return hh + ":" + mi + ":" + ss;
+      }
+      //위의 시간 표시 함수test5를 바로실행하고싶다면
+      //script영역에 바로 test5를 해도되지만
+      //body태그에 onload를 이요하여 하는게 더 좋아보임
+
+      /**
+       * @실습문제
+       * #countDown 을 10부터 계속 -1되계(1초단위)
+       */
+      function test6() {
+        var n = countDown.innerText;
+        var cnt = setInterval(() => {
+          countDown.innerText = --n;
+          if (n == 0) {
+            //clearInterval로 멈출수있음
+            clearInterval(cnt);
+            countDown.innerText = "펑~~!";
+          }
+        }, 1000);
+      }
+    </script>
+
+    <h2>BOM</h2>
+    <h3>Browser Object Model</h3>
+    <input type="button" value="navigator" onclick="test7()" />
+    <input type="button" value="location" onclick="test8()" />
+    <input type="button" value="history" onclick="test9()" />
+    <input type="button" value="screen" onclick="test10()" />
+    <script>
+      /**
+       * navigator : 현재 실행중인 browser에 대한 정보를 가진 객체
+       * navigator.userAgent 중요한 이거 못들었어...
+       */
+      function test7() {
+        console.log(navigator);
+        console.log(navigator.userAgent);
+      }
+
+      /**
+       * location : 주소창 관련 정보를 가진 객체
+       *
+       */
+      function test8() {
+        console.log(location);
+
+        //페이지 새로고침
+        location.reload();
+
+        //페이지 이동가능
+        location.href = "https://naver.com";
+      }
+
+      /**
+       * history : 방문기록 관련 정보를 가진 객체
+       */
+      function test9() {
+        console.log(history);
+
+        // 이전페이지로 가기
+        history.back();
+
+        //다음페이지로 가기
+        history.forward();
+
+        //go(n) : 1 | 0 | -1
+        //양수는 다음페이지, 음수는 이전페이지, 0=현재페이지(새로고침)
+        //n은 몇개를 뛰어넘을건지
+      }
+
+      /**
+       * screen : 브라우저가 아닌 모니터(hardWare) 관련 정보를 가진 객체
+       *
+       * width
+       * height
+       *
+       * availWidth
+       * availHeight
+       * avail이 들어가면 윈도우작업표시줄이 뺸 길이가 나온다
+       * 작업표시줄도 상하좌우로 옮길수 있으니까 항상 height만 준다고 생각은 금물
+       */
+      function test10() {
+        console.log(screen);
+        var left = screen.availWidth / 2 - 150;
+        var top = screen.availHeight / 2 - 150;
+        //만약 더블모니터라면
+        // var left = screen.availWidth / 2 - 150 + screen.availWidth;
+        // var top = screen.availHeight / 2 - 150 + screen.availHeight;
+        open(
+          "",
+          "popup",
+          "width=300, height=300, left=" + left + ", top=" + top
+        );
+      }
+    </script>
+
+    <h2>DOM</h2>
+    <input type="button" value="Node" onclick="test11()" />
+    <div class="img-wrapper"></div>
+    <script>
+      /**
+       * Node 객체 : 모든 DOM객체가 Node객체를 상속받는다
+       * _proto_ - _proto_ - .... Object까지 나온다
+       * 그중에 상위 상속 객체중 Node라는게 있는데 거기서 쓸수있는게 많다
+       * 부모태그를 찾는다던지, 자식태그를 찾는다던지 f()함수가 아닌것은 속성이다
+       *
+       * - firstChild | lastChild | childNodes...
+       * - contains() | appendChild() | removeChild()...
+       * 따로 정리하면 좋을거같음
+       *
+       */
+      function test11() {
+        var h2 = document.querySelector("h2:last-of-type");
+        console.dir(h2);
+
+        //img 태그 동적생성
+        var img = document.createElement("img");
+        img.src = "images/windowObjects.png";
+        img.style = "width: 200px;";
+        //현재 <img src="images/windowObjects.png" style="width: 200px;" />만들어지고 생성만 안된것
+
+        //innerHTML로 추가해도 똑같긴함
+        //   document.querySelector(".img-wrapper").innerHTML
+        // += '<img src="images/windowObjects.png" style="width: 200px;">';
+
+        document.querySelector(".img-wrapper").appendChild(img);
+
+        console.log(img);
+      }
+    </script>
+  </body>
+</html>
