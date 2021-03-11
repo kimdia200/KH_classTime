@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js - regExp</title>
+    <style>
+      #area {
+        margin: 30px 10px;
+      }
+      mark {
+        background-color: pink;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Regular Expression</h1>
+    <input type="button" value="기본" onclick="test1();" />
+    <input type="button" value="flag: g | i | m" onclick="test2()" />
+    <input type="button" value="anchor" onclick="test3()" />
+    <input type="button" value="@실습문제" onclick="test4()" />
+    <input type="button" value=". (포인트)" onclick="test5()" />
+    <input type="button" value="[]" onclick="test6()" />
+    <input type="button" value="@실습문제" onclick="test7()" />
+    <input type="button" value="\d \w \s" onclick="test8()" />
+    <input type="button" value="( | )" onclick="test9()" />
+    <input type="button" value="escaping" onclick="test10()" />
+    <input type="button" value="* + ?" onclick="test11()" />
+    <input type="button" value="{n,m}" onclick="test12()" />
+    <input type="button" value="@실습문제" onclick="test13()" />
+    <div id="area"></div>
+    <script>
+      /**
+       * 정규표현식
+       * 특정규칙을 가진 문자열 집합에 대한 형식 언어
+       * 유효성 검사, 검색, 문자열치환 처리등을 효율적으로 할 수 있다
+       * 간결한 코드를 만드는 표현식 숙지가 쉽지 않다
+       * 언어독립적
+       */
+      function test1() {
+        //객체 생성
+        var re1 = /a/;
+        var re2 = new RegExp(/[0-9]/);
+        var re3 = new RegExp(/[a-z]/);
+
+        //test() : Boolean
+        console.log(re1.test("abcde")); //true
+        console.log(re1.test("bcdef")); //false
+
+        console.log(re2.test("honggd123")); //true
+        console.log(re2.test("honggd")); //false
+
+        console.log(re3.test("가나다ABc123")); //true
+        console.log(re3.test("가나다ABC123")); //false
+
+        //exec():[Object,Object...], 검사 결과를 배열안의 객체로 나타내줌
+        console.log(re1.exec("abced")); //["a", index: 0, input: "abced", groups: undefined]
+
+        //문자열
+        //match :
+        console.log("cba".match(re1));
+        //search : 존재하면 인덱스값, 아니면 -1
+        console.log("skldfjlsdf".search(re1));
+        //replace : 존재한다면 바꿔줘라
+        console.log("1a2a3a4a5a6a7a8a9a".replace(/a/g, "A")); //정규표현식 뒤에 g를 붙이면 여러건도 처리해달라는 의미
+        //split
+        console.log("사과,배 양파, 마늘".split(/, /));
+        console.log("사과,배 양파, 마늘".replace(/ /g, "").split(/, /));
+        console.log("사과,배, 양파, 마늘".replace(/ /g, "").split(/,/));
+        console.log("사과,배 양파, 마늘".split(/[, ]+/));
+      }
+
+      function test2() {
+        /**
+         * flag 문자
+         * g : global 전역비교를 수행. 이게 없으면 첫 매칭만 처리, 있으면 여러건 처리
+         * i : ignore 영문자 중에 대소문자를 구분하지 않고 비교를 수행
+         * m : multi-line 여러줄이(\n) 있는 경우 줄단위 비교를 수행
+         */
+        var str = "Javascript jQuery Ajax";
+        //$%는 매칭된 text를 가리키는 wildcard, 아래에서는 $& = a
+        area.innerHTML = str.replace(/a/gi, "<mark>$&</mark>");
+        //정규표현식을 인자로 만들어서 사용할 경우
+        area.innerHTML = str.replace(new RegExp("a", "gi"), "<mark>$&</mark>");
+        //객체를 만들어서 사용
+        var ss = new RegExp("a", "gi");
+        area.innerHTML = str.replace(ss, "<mark>$&</mark>");
+      }
+
+      function test3() {
+        /**
+         * anchor 문자
+         * ^ 문자열시작
+         * $ 문자열끝
+         */
+
+        var str = "Javascript xxxx jQuery Ajax";
+        area.innerHTML = "";
+        area.innerHTML += str.replace(/j/gi, "<mark>$&</mark>") + "<br>";
+        area.innerHTML += str.replace(/^j/gi, "<mark>$&</mark>") + "<br>"; //위의것과 비교
+        area.innerHTML += str.replace(/x/gi, "<mark>$&</mark>") + "<br>";
+        area.innerHTML += str.replace(/x$/gi, "<mark>$&</mark>") + "<br>"; //위의것과 비교
+
+        var str2 = "Javascript\nxxx\njQuery\nAjax";
+        area.innerHTML += str2.replace(/x$/gim, "<mark>$&</mark>") + "<br>";
+        console.log(str);
+        console.log(str2);
+      }
+
+      function test4() {
+        /**
+         * 사용자로부터 문자열을 입력받고
+         * k로 시작하면서 h로 끝나는 경우에는 잘하셨습니다
+         * 아닌경우, 적합한 문자가 아닙니다. 경고창을 띄우세요
+         *
+         */
+
+        var str = prompt("문자열을 입력하세요");
+        var reg1 = /^k/;
+        var reg2 = /h$/;
+        if (reg1.test(str) && reg2.test(str)) {
+          alert("잘하셨습니다.");
+        } else {
+          alert("적합한 문자가 아닙니다.");
+        }
+      }
+
+      function test5() {
+        var re1 = /^...$/;
+        area.innerHTML = "re1<br>";
+        area.innerHTML += re1.test("ab") + "<br>"; //false
+        area.innerHTML += re1.test("abc") + "<br>"; //true
+        area.innerHTML += re1.test("abcd") + "<br>"; //false
+        area.innerHTML += re1.test("a b") + "<br>"; //true
+        area.innerHTML += re1.test("   ") + "<br>"; //true
+
+        var re2 = /a.b/g;
+        area.innerHTML += "<br>re2<br>";
+        area.innerHTML +=
+          "ab aab aaab".replace(re2, "<mark>$&</mark>") + "<br>";
+
+        var re3 = /in..$/g; //in이후 두글자로 끝나는 문자열검사.
+        area.innerHTML += "<br>re3<br>";
+        area.innerHTML += "goingo".replace(re3, "<mark>$&</mark>") + "<br>";
+        area.innerHTML += "goin".replace(re3, "<mark>$&</mark>") + "<br>";
+        area.innerHTML += "gointo".replace(re3, "<mark>$&</mark>") + "<br>";
+        area.innerHTML += "going".replace(re3, "<mark>$&</mark>") + "<br>";
+
+        var re4 = /^c...k$/; //c로 시작하고 k로 끝나는 총5글자인 문자열검사
+        area.innerHTML += "<br>re4<br>";
+        area.innerHTML += "ck".replace(re4, "<mark>$&</mark>") + "<br>";
+        area.innerHTML += "cbk".replace(re4, "<mark>$&</mark>") + "<br>";
+        area.innerHTML += "cbak".replace(re4, "<mark>$&</mark>") + "<br>";
+        area.innerHTML += "cbawk".replace(re4, "<mark>$&</mark>") + "<br>";
+        area.innerHTML += "cbawak".replace(re4, "<mark>$&</mark>") + "<br>";
+      }
+
+      function test6() {
+        /**
+         * []
+         * 한글자를 의미하며, 문자의 범위를 나타냄
+         *
+         * 대괄호 안에 사용된 ^(캐럿) 은 특정문자를 제외 한다는 의미
+         */
+
+        var s = "javascript jquery Ajax 12345";
+        area.innerHTML = "";
+        area.innerHTML += s.replace(/[ajq]/g, "<mark>$&</mark>") + "<br>"; //a또는 j 또는 q
+        area.innerHTML += s.replace(/[^ajq]/g, "<mark>$&</mark>") + "<br>"; //(a또는 j 또는 q)가 아닌문자
+
+        area.innerHTML +=
+          s.replace(/[ABCDEFGHIJKLMNOPQRSTUVWXYZ]/g, "<mark>$&</mark>") +
+          "<br>"; //알파벳 대문자
+        area.innerHTML += s.replace(/[A-Z]/g, "<mark>$&</mark>") + "<br>"; //위와같음
+
+        //알파벳(대소문자모두), 숫자, 공백
+        area.innerHTML +=
+          s.replace(/[A-Za-z0-9 ]/g, "<mark>$&</mark>") + "<br>"; // i 플래그를 써도 되고 이렇게 써도된다.
+
+        area.innerHTML +=
+          s.replace(/[0123456789]/g, "<mark>$&</mark>") + "<br>"; //숫자.
+        area.innerHTML += s.replace(/[0-9]/g, "<mark>$&</mark>") + "<br>";
+
+        //한글의 범위 ㄱ-힣  --------- ㄱ-ㅎ(자음부), ㅏ-ㅣ(모음부), 가-힣(온전한글자)
+        var hangul = "안녕하세요, James입니다. I Love 서울";
+        area.innerHTML +=
+          hangul.replace(/[ㄱ-힣]/g, "<mark>$&</mark>") + "<br>";
+        var hangul2 = "ㅏㅏ..ㅐㅐㅐ.ㄱㄶ...음....ㅣㅣㅣㅘ";
+        area.innerHTML +=
+          hangul2.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, "<mark>$&</mark>") + "<br>";
+      }
+
+      /**
+       * 1. 사용자로부터 숫자로 시작되지 않는 id를 검사
+       * 2. 숫자 4자리인 비밀번호여부검사
+       *
+       * 유효하지 않은 경우 alert창 띄우기
+       */
+
+      function test7() {
+        var reg_id = /^[0-9]/;
+        var id = prompt("id를 입력하세요");
+        if (reg_id.test(id)) {
+          alert("id는 숫자로 시작할 수 없습니다.");
+          return;
+        }
+
+        var reg_pwd = /^[0-9][0-9][0-9][0-9]$/;
+        var pwd = prompt("비밀번호를 입력하세요");
+        if (!reg_pwd.test(pwd)) {
+          alert("비밀번호는 숫자4자리여야 합니다.");
+          return;
+        }
+      }
+
+      function test8() {
+        /**
+         * meta문자
+         * \d decimal(숫자)
+         * \w word 영문자, 숫자 , _(언더스코어)
+         * \s space(공백문자), 탭(tab), 개행문자(\n)
+         *
+         * 파생형(대문자)
+         * \D 숫자가 아닌 문자
+         * \W 영문자, 숫자, _가 아닌문자
+         * \S 공백문자, 탭, 개행문자가 아닌 문자
+         */
+        var s =
+          "A1 B2 c3 d_4 e:5 ` ffGG6767---!@#$%^&*()     (탭세번)가\n나\n\다\n";
+        area.innerHTML = "";
+
+        //숫자만
+        area.innerHTML +=
+          "\\d : " + s.replace(/\d/g, "<mark>$&</mark>") + "<br>";
+        //영문자, 숫자, _(언더스코어)만
+        area.innerHTML +=
+          "\\w : " + s.replace(/\w/g, "<mark>$&</mark>") + "<br>";
+        //공백문자, 탭, 개행문자만
+        area.innerHTML +=
+          "\\s : " + s.replace(/\s/g, "<mark>$&</mark>") + "<br>";
+        area.innerHTML += "<br>";
+
+        //숫자를 제외하고
+        area.innerHTML +=
+          "\\D : " + s.replace(/\D/g, "<mark>$&</mark>") + "<br>";
+        //영문자, 숫자, _(언더스코어) 제외하고
+        area.innerHTML +=
+          "\\W : " + s.replace(/\W/g, "<mark>$&</mark>") + "<br>";
+        //공백문자, 탭, 개행문자 제외하고
+        area.innerHTML +=
+          "\\S : " + s.replace(/\S/g, "<mark>$&</mark>") + "<br>";
+
+        area.innerHTML += "<br>";
+
+        //위의 내용을 meta 문자 사용하지 않고
+
+        //숫자만
+        area.innerHTML +=
+          "\\d -> [0-9] : " + s.replace(/[0-9]/g, "<mark>$&</mark>") + "<br>";
+        //영문자, 숫자, _(언더스코어)만
+        area.innerHTML +=
+          "\\w -> [a-zA-Z0-9_] : " +
+          s.replace(/[a-zA-Z0-9_]/g, "<mark>$&</mark>") +
+          "<br>";
+        //공백문자, 탭, 개행문자만
+        area.innerHTML +=
+          "\\s -> [ \t\n] : " +
+          s.replace(/[ \t\n]/g, "<mark>$&</mark>") +
+          "<br>";
+        area.innerHTML += "<br>";
+
+        //숫자를 제외
+        area.innerHTML +=
+          "\\D -> ^[0-9] : " + s.replace(/[^0-9]/g, "<mark>$&</mark>") + "<br>";
+        //영문자, 숫자, _(언더스코어)를 제외
+        area.innerHTML +=
+          "\\W -> ^[a-zA-Z0-9_] : " +
+          s.replace(/[^a-zA-Z0-9_]/g, "<mark>$&</mark>") +
+          "<br>";
+        //공백문자, 탭, 개행문자를 제외
+        area.innerHTML +=
+          "\\S -> ^[ \t\n] : " +
+          s.replace(/[^ \t\n]/g, "<mark>$&</mark>") +
+          "<br>";
+      }
+
+      function test9() {
+        /**
+         * grouping
+         * | = or라는뜼
+         */
+        var s =
+          "월요일에는 월요병, 화요일은 화가 부글부글" +
+          "수요일은 술이 확 땡긴다. 목요일이 목이 컥 막히고, 금요일은 금방 올거 같지 않다.";
+
+        area.innerHTML = "";
+
+        area.innerHTML += "(수요일|목요일|금요일)<br>";
+        area.innerHTML += s.replace(
+          /(수요일|목요일|금요일)/g,
+          "<mark>$&</mark>"
+        );
+        area.innerHTML += "<br><br>[수목금]요일<br>";
+        area.innerHTML += s.replace(/[수목금]요일/g, "<mark>$&</mark>");
+
+        area.innerHTML += "<br><br>(수|목|금)요일<br>";
+        area.innerHTML += s.replace(/(수|목|금)요일/g, "<mark>$&</mark>");
+      }
+
+      function test10() {
+        /**
+         * escaping
+         * 메타문자를 실제문자값으로 사용하려면, \ 역슬래시를 통해처리한다
+         * []안에서는 escaping필요없음. ^은 첫째자리 사용하지 말것
+         */
+
+        var s = "$12$ \\-\\ $25$";
+        area.innerHTML = "";
+
+        //아래와같이 &를 썻을때는 wildCard의 의미를 갖기때문에 아무것도 마크되지않는다
+        area.innerHTML += s.replace(/$/g, "<mark>$&</mark>") + "<br>";
+
+        //문자그대로의 $를 찾고싶다면 escaping처리 (역슬래시 붙여줌)
+        area.innerHTML += s.replace(/\$/g, "<mark>$&</mark>") + "<br>";
+
+        //시작하는 $하나만 걸려라
+        area.innerHTML += s.replace(/^\$/, "<mark>$&</mark>") + "<br>";
+
+        //끝나는 $하나만
+        area.innerHTML += s.replace(/\$$/, "<mark>$&</mark>") + "<br>";
+      }
+
+      function test11() {
+        /**
+         * 수량자
+         *
+         * a* a가 0개이상 여러개
+         * a+ a가 1개이상
+         * a? a가 0 또는 1개
+         */
+
+        var s = "aabc abc bc";
+
+        area.innerHTML = "";
+
+        area.innerHTML += "<br>/a*b/<br>";
+        area.innerHTML += s.replace(/a*b/g, "<mark>$&</mark>") + "<br>";
+
+        area.innerHTML += "<br>/a+b/<br>";
+        area.innerHTML += s.replace(/a+b/g, "<mark>$&</mark>") + "<br>";
+
+        area.innerHTML += "<br>/a?b/<br>";
+        area.innerHTML += s.replace(/a?b/g, "<mark>$&</mark>") + "<br>";
+      }
+
+      function test12() {
+        /**
+         * 수량표현
+         * a{5} a가5개
+         * a{2,5} a가 2~5개
+         * a{3,} a가 3개 이상
+         * a{,4} a가 4개 이하~~~이런건 없서용~
+         */
+
+        var s = "aa aba abba";
+
+        area.innerHTML = "aa aba abba" + "<br>";
+
+        area.innerHTML += "<br>ab{2}a<br>";
+        area.innerHTML += s.replace(/ab{2}a/g, "<mark>$&</mark>") + "<br>";
+
+        area.innerHTML += "<br>ab{1,2}a<br>";
+        area.innerHTML += s.replace(/ab{1,2}a/g, "<mark>$&</mark>") + "<br>";
+
+        area.innerHTML += "<br>ab{2,}a<br>";
+        area.innerHTML += s.replace(/ab{2,}a/g, "<mark>$&</mark>") + "<br>";
+
+        //test11응용 해서 변경
+        area.innerHTML += "<br>ab*a -> ab{0,}a<br>";
+        area.innerHTML += s.replace(/ab{0,}a/g, "<mark>$&</mark>") + "<br>";
+
+        area.innerHTML += "<br>ab+a -> ab{1,}a<br>";
+        area.innerHTML += s.replace(/ab{1,}a/g, "<mark>$&</mark>") + "<br>";
+
+        area.innerHTML += "<br>ab?a -> ab{0,1}a<br>";
+        area.innerHTML += s.replace(/ab{0,1}a/g, "<mark>$&</mark>") + "<br>";
+      }
+      function test13() {
+        //숫자로 시작하고, 영문자가 3글자이상 나오고, .로 끝나는 문자열을 검사하는 정규식 작성
+        //false : 100 1cbㅋㅋㅋ. 아아아아.
+        re = /^\d[a-zA-Z]{3,}.*\.$/;
+
+        ["1abc안녕하세요.", "3xyzkkk.", "1ABC."].forEach(function (s) {
+          console.log(re.test(s)); // true
+        });
+
+        [
+          "100",
+          "1cbㅋㅋㅋ.",
+          "아아아아.",
+          "1가나다abc.",
+          "123abc다나가.",
+        ].forEach(function (s) {
+          console.log(re.test(s)); // false
+        });
+      }
+    </script>
+  </body>
+</html>

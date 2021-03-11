@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-text="html" onclick="displayMsg(event, this)">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -20,7 +20,7 @@
       };
     </script>
   </head>
-  <body>
+  <body data-text="body" onclick="displayMsg(event,this)">
     <h1>Event</h1>
     <a href="https://www.w3schools.com/jsref/dom_obj_event.asp"
       >W3Schools - HTML DOM Events
@@ -177,6 +177,49 @@
         //위의 유효성 검사를 모두 통과했다면 submit
         return true;
       };
+    </script>
+
+    <h2>Event Propagation (이벤트전파) - Bubbling</h2>
+    <div class="boxx box1" data-text="box1" onclick="displayMsg(event,this)">
+      <div class="boxx box2" data-text="box2" onclick="displayMsg(event, this)">
+        <div
+          class="boxx box3"
+          data-text="box3"
+          onclick="displayMsg(event,this)"
+        ></div>
+      </div>
+    </div>
+
+    <style>
+      .boxx {
+        border: 1px solid black;
+        padding: 20px;
+      }
+      .box1 {
+        background-color: yellowgreen;
+      }
+      .box2 {
+        background-color: green;
+      }
+      .box3 {
+        background-color: springgreen;
+      }
+    </style>
+    <script>
+      /**
+       * body,html에도 data-text와 displayMSg를 넣어줬음
+       * box3클릭시 box3, box2, box1, body, html출력
+       * box2클릭시 box2, box1, body, html 출력
+       * box1 클릭시 box1, body, html...
+       * 이런식으로 계속 부모 객체들도 영향을 받는다
+       * 이런걸 !!! 전파 !!! 라고한다.
+       */
+      function displayMsg(event, boxx) {
+        console.log(boxx.dataset.text);
+        console.dir(boxx);
+        //이러한 부모요소까지의 전파를 막기위해서
+        event.stopPropagation();
+      }
     </script>
   </body>
 </html>
