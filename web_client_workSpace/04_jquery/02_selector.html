@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>jquery - selector</title>
+    <script src="js/jquery-3.6.0.js"></script>
+  </head>
+  <body>
+    <h1>Selector</h1>
+    <!-- ul>li.foo#bar${안녕$}*5 -->
+    <ul>
+      <li class="foo" id="bar1">안녕1</li>
+      <li class="foo" id="bar2">안녕2</li>
+      <li class="foo" id="bar3">안녕3</li>
+      <li id="bar4">안녕4</li>
+      <li id="bar5">안녕5</li>
+    </ul>
+    <input type="button" value="tag" onclick="test1();" />
+    <script>
+      /**
+       * tag
+       * class
+       * id
+       */
+      function test1() {
+        // var $lis = $("ul > li");
+        // console.log($lis); // jquery객체
+        // $lis.css("color", "springgreen");
+
+        // var lis = document.querySelectorAll("ul > li")
+        // for(var i = 0; i < lis.length; i++)
+        //   lis[i].style.color = "deeppink";
+
+        // $(".foo").css("font-size", "2em");
+
+        var $bar1 = $("#bar1");
+        var $bar1_;
+        console.log($bar1);
+        console.log(($bar1_ = $bar1.css("text-decoration", "underline")));
+        console.log($bar1 == $bar1_); // true
+
+        // method chaining
+        $("#bar1")
+          .css("font-size", "3em")
+          .css("background-color", "deeppink")
+          .css("color", "#fff");
+      }
+    </script>
+
+    <hr />
+    <!-- fieldset>legend{메뉴} -->
+    <fieldset>
+      <legend>메뉴</legend>
+      <!-- (input:checkbox[name=menu]#menu$+label[for=menu$])*4 -->
+      <input type="checkbox" name="menu" id="menu1" value="햄버거" />
+      <label for="menu1">햄버거</label>
+      <input type="checkbox" name="menu" id="menu2" value="핫도그" />
+      <label for="menu2">핫도그</label>
+      <input type="checkbox" name="menu" id="menu3" value="피자" />
+      <label for="menu3">피자</label>
+      <input type="checkbox" id="menuAll" />
+      <label for="menuAll">전체선택/해제 </label>
+      <input type="button" value="get | set" id="checkGetSet" />
+      <input type="button" value="확인" id="checkValue" />
+    </fieldset>
+
+    <script>
+      console.log($("[name=menu]"));
+      console.log($("[name]"));
+
+      //jquery 이벤트 핸들링
+      $("[name=menu]").change(function (e) {
+        // console.log(e);
+        // console.log(e.target);
+        // console.log(this);
+        // console.log(this.checked);
+
+        //jquery객체 사용
+        //prop = property, boolean리턴
+        console.log($(this).prop("checked"));
+
+        //val = value를 리턴
+        console.log($(e.target).val());
+      });
+
+      /**
+       * [name=menu] 전체선택/해제처리
+       */
+      $("#menuAll").change(function () {
+        $("[name=menu").prop("checked", this.checked);
+      });
+
+      /**
+       * #checkGetSet click event handling
+       * 이벤트 별로 다있음 click, mouseover....
+       * 복수개의 요소를 가진 jquery 객체는
+       * getter : 첫번째 인자의 속성 값을 가져옴
+       * setter : 모든 인자의 속성값에 적용
+       */
+      $("#checkGetSet").click(function () {
+        console.log($("[name=menu]").prop("checked")); //getter, 첫번째 인자에값을 가져오는걸 확인
+        $("[name=menu]").prop("checked", true); //setter, 모든인자에 적용되는것을 확인
+      });
+    </script>
+    <img
+      src="./images/flower1.PNG"
+      alt=""
+      style="margin: 50px 20px; width: 300px"
+    />
+    <script>
+      /**
+       * attr함수
+       * html 태그상에 기록된 속성을 가져오거나 설정 할 경우
+       */
+      $("img").click(function () {
+        console.log($(this).attr("src"));
+        $(this).attr("src", "./images/flower2.PNG");
+        $("[name=menu]").attr("checked", "true"); //이것도 되는거보면 굳이 prop으로 리턴값을 boolean받을필요있나
+      });
+    </script>
+
+    <script>
+      $("#checkValue").click(function () {
+        //jquery객체 요소 순회
+        //elem은 순수 js tag객체
+
+        //name=menu인것을 돌면서 checked상태이면 콘솔에 값표시
+        //   $("[name=menu]").each(function (index, elem) {
+        //     // console.log(index, elem);
+        //     // console.log(this);
+
+        //     var $elem = $(elem);
+        //     if ($elem.prop("checked")) console.log($elem.val());
+        //   });
+        //
+
+        //위에거 업그레이드해서 선택자 자체에서 두개를 걸어거림
+        $("[name=menu]:checked").each(function (index, elem) {
+          console.log(elem.value); //JS객체
+          console.log($(elem).val()); //JQuery객체
+        });
+      });
+    </script>
+
+    <div class="wrapper">
+      <p>안녕1</p>
+      <p>안녕2</p>
+      <p>안녕3</p>
+      <p>안녕4</p>
+      <p>안녕5</p>
+      <p>안녕6</p>
+      <p>안녕7</p>
+      <p>안녕8</p>
+      <p>안녕9</p>
+      <p>안녕10</p>
+      <input type="button" value=":eq()" onclick="test2();" />
+      <input type="button" value=":gt()  :lt()" onclick="test3();" />
+      <input type="button" value=":contains()" onclick="test4()" />
+      <input type="button" value=":has()" onclick="test5()" />
+      <input type="button" value=":not()" onclick="test6()" />
+    </div>
+
+    <script>
+      /**
+       * 지금부터는 JS에는 없고 JQuery에만 있는 선택자
+       */
+
+      /**
+       * :eq(index)
+       */
+      function test2() {
+        $(".wrapper p:eq(3)").css("font-size", "2em").css("color", "deeppink");
+      }
+
+      /**
+       * :gt(index)
+       * :lt(index)
+       */
+      function test3() {
+        //css에 객체로 통째로 전달해도됨
+        $(".wrapper p:gt(3)").css({ "font-size": "2em", color: "deeppink" });
+      }
+
+      /**
+       * :contains()
+       * 특정 text를 가진 태그 조회
+       */
+      function test4() {
+        $(".wrapper p:contains('안녕8')").css(
+          "text-decoration",
+          "line-through"
+        );
+      }
+
+      /**
+       * :has(selector)
+       */
+      function test5() {
+        $(".wrapper p:has(a)").css("background-color", "lightgray");
+      }
+
+      /**
+       * :not(selector)
+       */
+      function test6() {
+        $(".wrapper p:not(:first-child)").css("color", "green");
+      }
+    </script>
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+  </body>
+</html>

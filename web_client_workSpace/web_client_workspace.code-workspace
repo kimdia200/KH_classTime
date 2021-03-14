@@ -17,7 +17,7 @@
 		}
 	],
 	"settings": {
-		"liveServer.settings.multiRootWorkspaceName": "03_javaScript",
+		"liveServer.settings.multiRootWorkspaceName": "04_jquery",
 		"liveServer.settings.port": 5501
 	}
 }

@@ -29,6 +29,14 @@
     <input type="button" value="* + ?" onclick="test11()" />
     <input type="button" value="{n,m}" onclick="test12()" />
     <input type="button" value="@실습문제" onclick="test13()" />
+    <input type="button" value="look around" onclick="test14()" />
+    <form action="">
+      <fieldset>
+        <legend>아이디 유효성 검사</legend>
+        <input type="text" name="userId" id="userId" placeholder="아이디" />
+        <input type="submit" value="제출" />
+      </fieldset>
+    </form>
     <div id="area"></div>
     <script>
       /**
@@ -405,6 +413,68 @@
           console.log(re.test(s)); // false
         });
       }
+      /**
+       * Look Around : 문자열 검사후 최종패턴에는 포함되지 않는다.
+       *
+       * 1. look ahead
+       *    - 000(?=(re)) : 000다음 re일치. 000만 최종반환
+       *    - 000(?!(re)) : 000다음 re불일치. 000만 최종반환
+       *
+       * 2. look behind
+       *    - (?<=(re))000 : 000이전 re일치. 000만 최종반환
+       *    - (?<!(re))000 : 000이전 re불일치. 000만 최종반환
+       */
+      function test14() {
+        var s = "hello world hello Tom hello Jane";
+
+        area.innerHTML = "<br>s=" + s + "<br>";
+
+        area.innerHTML += "<br>/hello(?=( world))/g<br>";
+        area.innerHTML +=
+          s.replace(/hello(?=( world))/g, "<mark>$&</mark>") + "<br>";
+        area.innerHTML += "<br>/hello(?!( world))/g<br>";
+        area.innerHTML +=
+          s.replace(/hello(?!( world))/g, "<mark>$&</mark>") + "<br>";
+
+        s = "hello world lotte world t world";
+        area.innerHTML += "<hr><br>s=" + s + "<br>";
+        area.innerHTML += "<br>/(?<=hello )world/g<br>";
+        area.innerHTML +=
+          s.replace(/(?<=hello )world/g, "<mark>$&</mark>") + "<br>";
+        area.innerHTML += "<br>/(? < !hello )world/g<br>";
+        area.innerHTML += s.replace(/(?<!hello )world/g, "<mark>$&</mark>");
+      }
+
+      /**
+       * userId가 8~12자리, 영문자/숫자/특수문자 하나이상포함, 영문자로 시작할때만 유효하다.
+       * 유효하지 않다면 폼이 제출되어서는 안된다.
+       */
+      document.querySelector("form").onsubmit = function () {
+        var val = userId.value;
+        console.log(val);
+
+        //1.userId가 8~12자리
+        if (/^.{8,12}$/.test(val) == false) {
+          alert("아이디는 8~12자리여야 합니다.");
+          return false;
+        }
+        //2.영문자/숫자/특수문자 *!^/@$ 하나이상 포함
+        if (
+          (/[a-zA-Z]/.test(val) && /[0-9]/.test(val) && /[*!^/@$]/.test(val)) ==
+          false
+        ) {
+          alert(
+            "아이디는 영문자/숫자/특수문자 *!^/@$ 하나이상 포함해야 합니다."
+          );
+          return false;
+        }
+
+        //3.영문자로 시작
+        if (/^[a-zA-Z]/.test(val) == false) {
+          alert("아이디는 영문자로 시작해야 합니다.");
+          return false;
+        }
+      };
     </script>
   </body>
 </html>

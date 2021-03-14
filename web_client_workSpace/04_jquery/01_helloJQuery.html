@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>jquery - hello</title>
+    <!-- 1. 서버컴퓨터에 다운로드 후, 현재 페이지 로딩과 동시에 실행 -->
+    <!-- <script src="./js/jquery-3.6.0.js"></script> -->
+    <!-- 2. CDN Content Delivery Network 인터넷상의 서버에서 직접 다운로드 받아옴 -->
+    <!-- 
+      링크 : https://code.jquery.com/
+      uncompressed = devmode
+      production = 공급용
+    -->
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- 3. 버전상관없이 최신버전이 계속 적용되는방법 -->
+    <!-- <script src="https://code.jquery.com/jquery-latest.js"></script> -->
+    <script>
+      //jquery load함수1 !
+      //$ 대신 jQuery라고 써도된다
+      $(document).ready(function () {
+        // alert("jquery를 load했습니다.");
+      });
+      //jquery load함수2
+      $(function () {
+        // alert("jquery를 load했습니다2");
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Hello JQuery</h1>
+
+    <!-- ul>li.foo#bar${안녕$}*5 -->
+    <ul>
+      <li class="foo" id="bar1">안녕1</li>
+      <li class="foo" id="bar2">안녕2</li>
+      <li class="foo" id="bar3">안녕3</li>
+      <li id="bar4">안녕4</li>
+      <li id="bar5">안녕5</li>
+    </ul>
+    <input type="button" value="tag" onclick="test1()" />
+
+    <script>
+      /**
+       * tag
+       */
+      function test1() {
+        //변수에 $를 붙여주는건 제이쿼리 객체라는 통상적인 약속
+        var $lis = $("ul>li");
+        console.log($lis); //jquery객체, 유사배열
+        $lis.css("color", "springgreen");
+
+        $(".foo").css("font-size", "2em");
+
+        var $bar1 = $("#bar1");
+        console.log($bar1);
+        //css함수는 return값으로 자기자신을 리턴한다
+        console.log(($bar1_ = $bar1.css("text-decoration", "underline")));
+        //따라서 아래 결과값은 true가 나오며
+        console.log($bar1 == $bar1_);
+
+        //이런 특성을 이용해서 이렇게 작성 할 수 있다.
+        $bar1
+          .css("font-size", "3em")
+          .css("background-color", "deeppink")
+          .css("color", "#fff");
+      }
+
+      function test1_1() {
+        /**
+         * 기존방법은 하나하나 배열 요소에 접근해서 속성을 변경해줘야하지만
+         * JQuery는 일일이 찾아가서 바꿔주므로 더 간단하게 사용 할 수 있다.
+         */
+        document.querySelectorAll("li").forEach(function (elem, i) {
+          elem.style.color = "deeppink";
+        });
+      }
+    </script>
+  </body>
+</html>
