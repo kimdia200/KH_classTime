@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JQuery - filter</title>
+    <script src="./js/jquery-3.6.0.js"></script>
+  </head>
+  <body>
+    <h1>Filter</h1>
+    <input type="button" value="filter" onclick="test1()" />
+    <input type="button" value="first | last | eq | not" onclick="test2()" />
+    <!-- div.wrapper>p.test{안녕$}*10 -->
+    <div class="wrapper">
+      <p class="test">안녕1</p>
+      <p class="test">안녕2</p>
+      <p class="test">안녕3</p>
+      <p class="test">안녕4</p>
+      <p class="test">안녕5</p>
+      <p class="test">안녕6</p>
+      <p class="test">안녕7</p>
+      <p>안녕8</p>
+      <p>안녕9</p>
+      <p>안녕10</p>
+    </div>
+    <script>
+      //.wrapper 하위 모든 p태그 컬러주기
+      /**
+       * filter(selector)
+       * 현재 jquery객체의 요소중에서 selector에 부합하는 요소만 추려서 다시 jquery 객체로 반환
+       * ! 원본값이 변경되지는 않았음
+       */
+      function test1() {
+        var $p = $(".wrapper p");
+        console.log($p); //안녕1~10
+        console.log($p.filter(".test")); //안녕1~7
+        // $p.css("color", "tomato");
+
+        //.wrapper의 p객채중 .test가 있는것만
+        // $p.filter(".test").css("color", "tomato");
+
+        // $p.filter(":even"); // 짝수 인덱스 요소만 반환 0 2 4 6 8 10...
+        // $p.filter(":odd"); // 홀수 인덱스 요소만 반환 1 3 5 7 9 ....
+
+        //콜백 함수를 통한 Filtering
+        //true일때 작동, false일때 작동안함
+        // $p.filter(function (index, elem) {
+        //   return index % 2 == 0;
+        // }).css("color", "tomato");
+
+        //p태그안의 text중 안녕을 제외한 숫자가 짝수인경우만 css적용하기
+        $p.filter(function () {
+          return /[02468]$/.test(this.innerText);
+        }).css("color", "tomato");
+
+        //강사님 버전
+        $p.filter(function () {
+          //1. textContext가져오기
+          var text = this.innerText;
+
+          //2. 문자열에서 숫자만 추리기: replace
+          text = text.replace(/[^\d]/g, "");
+
+          //3. 숫자 짝수 여부 리턴하기
+          return num % 2 == 0;
+        }).css("color", "red");
+      }
+
+      /**
+       * first()
+       * last()
+       * eq(index)
+       * not(selector)
+       */
+      function test2() {
+        var $p = $(".wrapper p");
+        $p.first().css("color", "tomato");
+
+        $p.last().css("color", "green");
+
+        $p.eq(3).css("color", "blue");
+
+        $p.not(".test").css("background-color", "gray");
+
+        // ! 참고
+        console.log($p.first()); //jquery 객체
+        console.log($p[0]); //javascript 객체
+      }
+    </script>
+  </body>
+</html>

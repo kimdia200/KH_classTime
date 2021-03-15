@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./js/jquery-3.6.0.js"></script>
+    <style>
+      .wrap * {
+        border: 1px solid lightgray;
+        display: block;
+        padding: 5px;
+        margin: 15px;
+        color: gray;
+      }
+      .type {
+        width: 500px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Traversing</h1>
+
+    <div class="wrap">
+      <div class="type">
+        div.type (great-grandparent)
+        <ul>
+          ul (grandparent)
+          <li>
+            li (direct parent)
+            <span>span1</span>
+          </li>
+          <li>
+            li (direct parent)
+            <span>span2</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="type">
+        div.type (grandparent)
+        <p>
+          p (direct parent)
+          <span>span3</span>
+        </p>
+      </div>
+
+      <!-- @실습문제 li2-2를 찾아서 효과주기 -->
+      <div class="type test">
+        div.test
+        <ul>
+          ul1
+          <li>li1-1</li>
+          <li>
+            li1-2
+            <ul>
+              ul2
+              <li>li2-1</li>
+              <li>li2-2</li>
+              <li>
+                li2-3
+                <ul>
+                  ul3
+                  <li>
+                    li3
+                    <span id="fromMe">fromMe</span>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>조상</h2>
+    <input type="button" value="parent" onclick="test1()" />
+    <input type="button" value="parents" onclick="test2()" />
+    <input type="button" value="parentsUntil" onclick="test3()" />
+
+    <script>
+      var red = {
+        color: "red",
+        border: "2px solid red",
+      };
+
+      /**
+       * parent([selector]) 직계 부모요소
+       */
+      function test1() {
+        // $("span").css(red);
+        // $("span").parent().css(red);
+        // $("span").parent().parent().css(red);
+        $("span").parent().parent("div").css(red);
+      }
+
+      /**
+       * parents('[selector]') 모든 조상요소를 다 가리킨다
+       */
+      function test2() {
+        // $("span").parents().css(red);
+        $("span").parents("ul").css(red);
+      }
+
+      /**
+       * parentsUntil(selector), 위의것들과 달리 선택자가 반드시 존재해야함
+       * 특정 조상요소 직전까지의 모든 조상요소
+       */
+      function test3() {
+        $("span").parentsUntil("div").css(red);
+      }
+    </script>
+
+    <h2>자식</h2>
+    <input type="button" value="children" onclick="test4()" />
+    <input type="button" value="find" onclick="test5()" />
+    <input type="button" value="@실습문제" onclick="test6()" />
+    <script>
+      /**
+       * children([selector]) : 직계 자식 요소만 포함
+       */
+      function test4() {
+        var $wrap = $("div.wrap");
+        // $wrap.children().css(red);
+        $wrap.children().children("ul").css(red);
+      }
+
+      /**
+       * find(selector) : 모든 후손요소중 selector와 일치하는 요소
+       */
+      function test5() {
+        var $wrap = $("div.wrap");
+
+        $wrap.find("span").css(red);
+      }
+
+      /**
+       * 실습문제 li2-2 찾아서 셀렉트하기
+       */
+      function test6() {
+        var $wrap = $("div.wrap");
+
+        // $wrap
+        //   .children(".test")
+        //   .children()
+        //   .children()
+        //   .last()
+        //   .children()
+        //   .children()
+        //   .eq(1)
+        //   .css(red);
+
+        $wrap.find("li:eq(5)").css(red);
+      }
+    </script>
+
+    <h2>형제</h2>
+    <input type="button" value="siblings" onclick="test7()" />
+    <input type="button" value="next | nextAll | nextUntil" onclick="test8()" />
+    <input type="button" value="prev | prevAll | prevUntil" onclick="test9()" />
+    <div class="wrap">
+      <p>p</p>
+      <span>span</span>
+      <h1>h1</h1>
+      <h2 id="start">h2</h2>
+      <h3>h3</h3>
+      <h4>h4</h4>
+      <p>p</p>
+    </div>
+    <script>
+      /**
+       * siblings([selector]) : 현재 요소를 제외한 형제요소를 모두 반환
+       */
+      function test7() {
+        // var $elem = $("#start").siblings();
+        var $elem = $("#start").siblings("p");
+        console.log($elem);
+        $elem.css(red);
+      }
+
+      /**
+       * next()
+       * nextAll([selector])
+       * nextUntil(selector) : selector 에 해당하는 요소는 포함되지 않는다
+       */
+
+      function test8() {
+        // var $elem = $("#start").next();
+        // var $elem = $("#start").nextAll();
+        var $elem = $("#start").nextUntil("p");
+
+        console.log($elem);
+        $elem.css(red);
+      }
+
+      /**
+       * prev()
+       * prevAll([selector])
+       * prevUntil(selector) : 마찬가지로 selector에 해당하는 요소는 포함되지 않는다.
+       */
+      function test9() {
+        // var $elem = $("#start").prev();
+        // var $elem = $("#start").prevAll();
+        var $elem = $("#start").prevUntil("p");
+
+        console.log($elem);
+        $elem.css(red);
+      }
+    </script>
+  </body>
+</html>

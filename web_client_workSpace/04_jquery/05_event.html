@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>jquery - event</title>
+    <style>
+      .outer {
+        width: 200px;
+        height: 200px;
+        background-color: orange;
+        padding: 50px;
+        margin: 20px auto;
+      }
+      .inner {
+        width: 100%;
+        height: 100%;
+        background-color: orchid;
+      }
+      .border {
+        border: 2px solid black;
+      }
+    </style>
+    <script src="./js/jquery-3.6.0.js"></script>
+  </head>
+  <body>
+    <h1>Event</h1>
+    <h2>mouseover & mouseout | mouseenter & mouseleave</h2>
+    <div class="outer">
+      <div class="inner"></div>
+    </div>
+
+    <script>
+      /**
+       * ! mouseover
+       * ! mouseout
+       * ! 자식요소 접근시에도 이벤트 발생
+       * ! 자식요소에서 다시 현재요소로 재진입시에도 이벤트 발생
+       */
+      // $(".outer")
+      //   .mouseover(function () {
+      //     console.log(s"mouseover");
+      //   })
+      //   .mouseout(function () {
+      //     console.log("mouseout");
+      //   });
+
+      /**
+       * ! mouseEnter
+       * ! mouseLeave
+       * ! 자식요소 접근시에는 이벤트 발생 안함.
+       */
+      // $(".outer")
+      //   .mouseenter(function () {
+      //     console.log("mouseenter");
+      //   })
+      //   .mouseleave(function () {
+      //     console.log("mouseleave");
+      //   });
+
+      /**
+       * ! hover
+       * ! hover = mouseEnter + mouseLeaver 로서 한번에 두개를 바인딩한다.
+       * hover 이벤트는 존재하지 않는다, 단지 메서드일뿐
+       */
+      $(".outer").hover(
+        function () {
+          //mouseenter event handler
+          console.log("hover : mouseenter");
+          $(this).addClass("border");
+        },
+        function () {
+          //mouse leave event hadler
+          console.log("hover : mouseleave");
+          $(this).removeClass("border");
+        }
+      );
+    </script>
+
+    <h2>key Event</h2>
+    <form action="javascript:alert('폼 제출 성공');" id="memoFrm">
+      <fieldset>
+        <legend>메모</legend>
+        <p><span id="counter">0</span>/30</p>
+        <textarea name="memo" id="memo" cols="30" rows="10"></textarea>
+        <input type="submit" value="제출" />
+      </fieldset>
+    </form>
+    <script>
+      var max = 30;
+
+      $("#memoFrm").submit(function (e) {
+        var $memo = $(this).find("textarea");
+        if ($memo.val().length > max) {
+          // return false;
+          e.preventDefault(); //서밋막는 다른방법
+        }
+        // else return true; //return true하지 않아도 작동함 ㅋ
+      });
+
+      $("#memo").keyup(function () {
+        var $textarea = $(this);
+        $("#counter").text($textarea.val().length);
+
+        if ($textarea.val().length > max) {
+          $("#counter").css("color", "red");
+        } else {
+          $("#counter").css("color", "black");
+        }
+      });
+    </script>
+
+    <h2>on | off</h2>
+    <div class="box"></div>
+    <input type="button" value="off" onclick="$('.box').off('click');" />
+    <style>
+      .box {
+        width: 300px;
+        height: 300px;
+        background-color: teal;
+        color: white;
+        text-align: center;
+        line-height: 300px;
+      }
+    </style>
+    <script>
+      /**
+       * on으로 추가하고 off로 삭제 가능
+       */
+      $(".box").on("click", function () {
+        //jquery의 html메서드 = javascript의 innerHTML
+        $(this).html("<h1>안녕</h1>");
+      });
+
+      // $(".box").mouseleave(function () {
+      //   $(this).html("");
+      // });
+
+      $(".box").on("mouseleave", function () {
+        $(this).html("");
+      });
+
+      $(".box").on("dblClick", function (e) {
+        //click 이벤트 핸들러 제거
+        $(this).off("click");
+      });
+    </script>
+
+    <h2>bubbling을 통한 event handling</h2>
+    <div class="wrap">
+      <h2>안녕</h2>
+    </div>
+    <script>
+      //이렇게 만들면 새로 h2요소를 만들면 리스너가 달리지 않는다
+      //왜나하면 script는 처음에 웹 로딩될떄 한번 쓱 지나가니까
+      // $(".wrap h2").on("click", function (e) {
+      //   //자식요소를 마지막에 추가
+      //   $(".wrap").append("<h2>안녕</h2>");
+      // });
+
+      /**
+       * 자식요소에서 발생한 이벤트를 부모에서 핸들링
+       * 기존요소 / 새로추가된 요소 모두 잘 작동함.
+       *
+       * on(event, selector, handler)
+       *
+       * 자식요소로 전파되어서
+       */
+      $(".wrap").on("click", "h2", function () {
+        $(".wrap").append("<h2>안녕</h2>");
+      });
+    </script>
+
+    <h2>trigger</h2>
+    <div class="trg">
+      <h1>0</h1>
+    </div>
+    <input type="button" value="카운터 증가" onclick="test1()" />
+    <script>
+      // var cnt = 0;
+      // $(".trg").on("click", function (e) {
+      //   $(this)
+      //     .children("h1")
+      //     .text(++cnt);
+      // });
+
+      // ! 위의 코드를 클로져 사용한버전
+      (function () {
+        var cnt = 0;
+        $(".trg").on("click", function (e) {
+          $(this)
+            .children("h1")
+            .text(++cnt);
+        });
+      })();
+
+      function test1() {
+        $(".trg").trigger("click");
+      }
+    </script>
+  </body>
+</html>
