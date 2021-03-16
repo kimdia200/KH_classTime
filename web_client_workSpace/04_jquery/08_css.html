@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./js/jquery-3.6.0.js"></script>
+    <!-- easing파일은 반드시 jquery먼저 임포트한뒤 임포트할것 -->
+    <script src="./js/jquery.easing.1.3.js"></script>
+    <script
+      src="https://code.jquery.com/color/jquery.color-2.2.0.js"
+      integrity="sha256-gvMJWDHjgDrVSiN6eBI9h7dRfQmsTTsGU/eTT8vpzNg="
+      crossorigin="anonymous"
+    ></script>
+    <title>jquery - css</title>
+  </head>
+  <body>
+    <h1>CSS</h1>
+    <h2>display</h2>
+    <input type="button" value="show" onclick="test1()" />
+    <input type="button" value="hide" onclick="test2()" />
+    <input type="button" value="toggle" onclick="test3()" />
+    <br />
+    <br />
+    <img src="./images/river1.PNG" id="img-river" style="display: none" />
+    <hr />
+    <script>
+      /**
+       * https://www.w3schools.com/jquery/eff_show.asp
+       *
+       * show([milli][,easing][,callbackFunction(){}])
+       * hide([milli][,easing][,callbackFunction(){}])
+       * 파라미터 안넣어주면 즉시 실행
+       * 파라미터로 밀리초넣어주면 duration시간임
+       * 파라미터로 콜백함수 추가로 넣어주면 끝나고 콜백함수 작동
+       */
+      function test1() {
+        $("#img-river").show(4000, function () {
+          alert("show끝!");
+          $(this).css("border", "3px solid black");
+        });
+      }
+
+      function test2() {
+        $("#img-river").hide(4000, function () {
+          alert("hide 끝!");
+        });
+      }
+
+      function test3() {
+        $("#img-river").toggle(1000, "easeInExpo", function () {
+          alert("toggle 끝!");
+        });
+      }
+    </script>
+
+    <h2>fade</h2>
+    <input type="button" value="fadeIn" onclick="test4()" />
+    <input type="button" value="fadeOut" onclick="test5()" />
+    <input type="button" value="fadeToggle" onclick="test6()" />
+    <br /><br />
+    <img src="./images/flower1.PNG" id="flower" />
+    <hr />
+
+    <div class="img-wrapper">
+      <img src="./images/flower2.PNG" id="flower2" />
+    </div>
+
+    <style>
+      .img-wrapper {
+        width: 500px;
+        height: 500px;
+        overflow: hidden;
+      }
+      .img-wrapper img {
+        width: 100%;
+        /* 두개의 사진을 부드럽게 연결시켜주려면 duration필수 */
+        transition-duration: 0.5s;
+        opacity: 0.7;
+      }
+    </style>
+
+    <script>
+      /**
+       * fadeIn : 시작시 display속성 원래대로 , 그 뒤 opacity 0 - > 1
+       */
+      function test4() {
+        $("#flower").fadeIn();
+      }
+
+      /**
+       * fadeOut : 먼저 opacity 1 -> 0, 종료시 display 속성 none
+       */
+      function test5() {
+        $("#flower").fadeOut();
+      }
+      /**
+       * fadeToggle
+       * 상황에 맞춰 fadeIn, fadeOut실행
+       */
+      function test6() {
+        $("#flower").fadeToggle();
+      }
+
+      /**
+       * ! 팁. 똑같은 효과를 CSS와 JQuery둘다 낼수있다면
+       * ! CSS를 택하는것이 속도나 리소스 측면에서 좋다
+       *
+       * fadeTo(milli,opacity)
+       */
+
+      $("#flower2").hover(
+        function () {
+          //mouseEnter
+          $(this).fadeTo(100, 1).css("transform", "scale(1.1,1.1)");
+        },
+        function () {
+          //mouseLeave
+          $(this).fadeTo(100, 0.7).css("transform", "scale(1,1)");
+        }
+      );
+    </script>
+
+    <h2>animate</h2>
+    <input type="button" value="실행" onclick="test7()" />
+    <div class="box" id="box1"></div>
+
+    <div class="img-container">
+      <img src="./images/tour1.jpg" alt="" />
+    </div>
+    <style>
+      .box {
+        background-color: deeppink;
+        width: 10px;
+        height: 10px;
+      }
+
+      .img-container {
+        width: 155px;
+        height: 105px;
+        margin: 0 auto;
+        overflow: hidden;
+        border: 2px solid gray;
+        padding-left: 5px;
+        padding-top: 5px;
+      }
+
+      .img-container img {
+        width: 150px;
+        height: 100px;
+        position: relative;
+      }
+    </style>
+    <script>
+      /**
+       * animate(cssProps, duration, easing, callbackFunction);
+       * 인자가 좀 많죠 !
+       * callbackFunction은 종료되고 이뤄지는 함수
+       */
+      function test7() {
+        $("#box1").animate(
+          {
+            width: "500px",
+            height: "500px",
+            "background-color": "yellow",
+            //"background-color": "yellow",
+            //숫자값외에는 먹지 않음(플러그인 설치해서 해결가능)
+            //상단에 스크립트 경로 추가 해주니까 점점 노란색으로 바뀌는것을 확인함
+          },
+          3000,
+          "easeOutBounce",
+          function () {
+            alert("animate완료!");
+          }
+        );
+      }
+    </script>
+
+    <script>
+      $(".img-container img").click(function () {
+        $(this).animate(
+          {
+            left: "-158px",
+          },
+          600,
+          "swing",
+          function () {
+            $(this)
+              .css("left", "155px")
+              .delay(1000)
+              .animate(
+                {
+                  left: "0px",
+                },
+                600,
+                "swing",
+                function () {}
+              );
+          }
+        );
+      });
+    </script>
+  </body>
+</html>
