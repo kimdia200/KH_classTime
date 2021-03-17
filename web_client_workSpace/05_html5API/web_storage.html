@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="js/jquery-3.6.0.js"></script>
+    <title>html5 api - webstorage</title>
+    <script>
+      $(function () {
+        //페이지 최초 방문시, entries를 조회
+        showEntries();
+        console.log("로딩완료");
+      });
+    </script>
+    <style>
+      #tbl-entry {
+        border: 1px solid black;
+        border-collapse: collapse;
+        margin: 10px 0;
+      }
+      #tbl-entry th,
+      #tbl-entry td {
+        border: 1px solid black;
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>WebStorage</h1>
+    <!-- 
+      Client(browser)에 사용자 데이터를 저장하는 html5 표준 api.
+      1. sessionStorage : 서버에 접속한 동안만 기록되고, 세션이 종료되면 데이터 삭제
+      2. localStorage : 만료기간 없이 삭제전까지 데이터가 기록됨
+
+      cokie 기술과 차별점은 절대 서버로 데이터가 전송되지 않는다.
+    -->
+
+    <h2>CRUD</h2>
+    <fieldset>
+      <legend>아이템 저장</legend>
+      <input type="text" id="key1" placeholder="key" />
+      <input type="text" id="value1" placeholder="value" />
+      <input type="button" value="실행" onclick="test1();" />
+    </fieldset>
+    <script>
+      if (window.localStorage) {
+        console.log("당신의 브라우저는 Web Storage를 사용 할 수 있습니다.");
+      } else {
+        console.log(
+          "당신의 브라우저는 Web Storage를 사용 할 수 없습니다.\n" +
+            "브라우저를 업데이트 하세요."
+        );
+      }
+
+      /**
+       * key, value를 한쌍으로 localStorage객체에 저장한다.
+       * 1. setItem
+       * 2. obj[key] = value
+       */
+      function test1() {
+        var $key = $("#key1");
+        var $value = $("#value1");
+
+        // localStorage.setItem($key.val(), $value.val());
+        localStorage[$key.val()] = $value.val();
+
+        //초기화
+        $key.val("");
+        $value.val("");
+      }
+    </script>
+
+    <fieldset>
+      <legend>아이템 가져오기</legend>
+      <input type="search" id="key2" placeholder="key" />
+      <input type="button" value="검색" onclick="test2();" />
+    </fieldset>
+    <script>
+      /**
+       * key값으로 아이템 조회하기
+       * 1. getItem(key)
+       * 2. localStorage[key]
+       *    .notation은 사용불가
+       */
+      function test2() {
+        var $key = $("#key2");
+        // var value = localStorage.getItem($key.val());
+        var value = localStorage[$key.val()];
+
+        if (value) {
+          alert($key.val() + " : " + value);
+
+          console.log(typeof value); // string
+
+          //형변환 필수
+          //숫자형 : Number
+          //논리형 : localStorage[key] == 'true' -> true | false
+        } else {
+          alert("조회한 데이터가 없습니다.");
+        }
+
+        //초기화
+        $key.val("");
+      }
+    </script>
+
+    <fieldset>
+      <legend>아이템 삭제하기</legend>
+      <input type="search" id="key3" placeholder="key" />
+      <input type="button" value="삭제" onclick="test3();" />
+    </fieldset>
+    <script>
+      /**
+       * removeItem(key)
+       */
+      function test3() {
+        var $key = $(key3); // 아이디인 경우, 식별자를 전달.
+        localStorage.removeItem($key.val());
+        $key.val(""); // 초기화
+      }
+    </script>
+
+    <h2>객체 저장</h2>
+    <input type="button" value="실행" onclick="test4();" />
+    <script>
+      /**
+       * localStorage의 value는 모두 string으로 처리되므로,
+       * 객체저장시 toString() 호출결과를 저장한다. 데이터 유지불가
+       *
+       */
+      function test4() {
+        var user = {
+          id: "honggd",
+          phone: "01012341234",
+          married: false,
+          age: 35,
+        };
+        //JSON 형식으로 저장
+        var jsonStr = JSON.stringify(user);
+        console.log(jsonStr);
+        // {"id":"honggd","phone":"01012341234","married":false,"age":35} 라고 떳음
+
+        // storage에 저장
+        localStorage.setItem("user", jsonStr);
+
+        var value = localStorage.getItem("user");
+        console.log(value); // {"id":"honggd","phone":"01012341234","married":false,"age":35}
+        console.log(typeof value); //string
+
+        //JSON객체를 Javascript 객체로 다시 변환 하기
+        var anotherUser = JSON.parse(value);
+        console.log(anotherUser);
+      }
+    </script>
+
+    <h2>방명록</h2>
+    <form action="javascript:saveEntry();" name="entryFrm">
+      <fieldset>
+        <legend>작성</legend>
+        <table>
+          <tr>
+            <th>이름</th>
+            <td><input type="text" name="name" /></td>
+          </tr>
+          <tr>
+            <th>내용</th>
+            <td><input type="text" name="content" /></td>
+          </tr>
+          <tr>
+            <td colspan="2"><input type="submit" value="저장" /></td>
+          </tr>
+        </table>
+      </fieldset>
+    </form>
+
+    <table id="tbl-entry"></table>
+
+    <script>
+      /**
+       * localStorage.entries배열에 사용자 방명록을 관리한다.
+       */
+      function saveEntry() {
+        var $frm = $("[name=entryFrm]");
+        var entry = {
+          name: $frm.find("[name=name]").val(),
+          content: $frm.find("[name=content]").val(),
+        };
+        console.log(entry);
+
+        //entries 배열
+        var entries = JSON.parse(localStorage.getItem("entries")) || [];
+        entries.push(entry);
+
+        //JSON문자열로 변환
+        var jsonEntries = JSON.stringify(entries);
+
+        //localStorage에 저장
+        localStorage.setItem("entries", jsonEntries);
+
+        //폼 전체 초기화
+        document.entryFrm.reset();
+
+        //방명록 최신화
+        showEntries();
+      }
+
+      /**
+       * localStorage.entries를 가져와서 table태그로 작성
+       */
+      function showEntries() {
+        // localStorage.entries || []
+        var entries = JSON.parse(localStorage.getItem("entries")) || [];
+
+        var $table = $("#tbl-entry");
+
+        //header추가
+        $table.html("<tr><th>No</th><th>이름</th><th>내용</th></tr>");
+
+        if (entries.length) {
+          //저장된 entry가 있는 경우
+          $.each(entries, function (i, entry) {
+            var $tr = $("<tr>");
+            $tr
+              .append("<td>" + (i + 1) + "</td>")
+              .append("<td>" + entry.name + "</td>")
+              .append("<td>" + entry.content + "</td>")
+              .appendTo($table);
+          });
+        } else {
+          //저장된 entry가 없는 경우
+          $table.append(
+            "<tr><td colspan='3'>조회된 방명록이 없습니다.</td></tr>"
+          );
+        }
+      }
+    </script>
+  </body>
+</html>
