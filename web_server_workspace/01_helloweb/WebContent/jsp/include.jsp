@@ -12,6 +12,6 @@
 	<script>
 		$(function(){
 			$("h1").css("color", "deeppink");
-		});
+		})();
 	</script>
 <%@ include file="/jsp/footer.jsp" %>
