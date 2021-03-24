@@ -23,4 +23,12 @@
   	<servlet-name>TestPerson2Servlet</servlet-name>
   	<url-pattern>/testPerson2.do</url-pattern>
   </servlet-mapping>
+  <servlet>
+  	<servlet-name>menuServlet</servlet-name>
+  	<servlet-class>com.kh.web.servlet.menuServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>menuServlet</servlet-name>
+  	<url-pattern>/menuServlet.do</url-pattern>
+  </servlet-mapping>
 </web-app>
