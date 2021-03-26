@@ -35,6 +35,6 @@ public class MemberService {
 			rollback(conn);
 		}
 		close(conn);
-		return 1;
+		return result;
 	}
 }

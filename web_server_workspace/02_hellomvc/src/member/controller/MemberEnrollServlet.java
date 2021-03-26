@@ -75,15 +75,25 @@ public class MemberEnrollServlet extends HttpServlet {
 				);
 		
 		//3. 업무 로직
+		HttpSession session = request.getSession(true);
+		
+		//이미 존재하는 회원인지 확인
+		Member member = new MemberService().selectOne(memberId);
+		if(member!=null) {
+			System.out.println("회원가입 실패...(이미 존재하는 회원입니다.)");
+			session.setAttribute("signUpLog", "회원가입 실패...");
+			response.sendRedirect(request.getContextPath());
+			return;
+		}
+		
 		int year = Integer.parseInt(birthDay.substring(0, 4));
 		int month = Integer.parseInt(birthDay.substring(5, 7));
 		int dayOfMonth = Integer.parseInt(birthDay.substring(8));
 		Date birthday = new Date(new GregorianCalendar(year, month, dayOfMonth).getTimeInMillis());
 		//MemberRole(Service에서 임포트), birthDay(형변환), enrollDate(새로하나 만듬)
-		Member member = new Member(memberId, password, memberName, MEMBER_ROLE, gender, birthday, email, phone, address, hobby, new Date(Calendar.getInstance().getTimeInMillis()));
+		member = new Member(memberId, password, memberName, MEMBER_ROLE, gender, birthday, email, phone, address, hobby, new Date(Calendar.getInstance().getTimeInMillis()));
 		
 		int result = new MemberService().insertMember(member);
-		HttpSession session = request.getSession(true);
 		if(result>0) {
 			System.out.println("회원가입 성공!!!");
 			session.setAttribute("signUpLog", "회원가입 성공!!!");
