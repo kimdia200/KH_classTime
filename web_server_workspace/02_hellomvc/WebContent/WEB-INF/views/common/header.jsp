@@ -3,9 +3,29 @@
 	pageEncoding="UTF-8"%>
 <%
 	//request는 일회용 , session은 생명주기가 보다 김
-	String msg = (String)request.getAttribute("msg");
-	String loc = (String)request.getAttribute("loc");
+	/* String msg = (String)request.getAttribute("msg");
+	String loc = (String)request.getAttribute("loc"); */
+	
+	String msg = (String)session.getAttribute("msg");
+	if(msg!=null) session.removeAttribute("msg");//일회용 으로 쓰기위해! 안그럼 새로고침 할때마다 뜸...
+	
 	Member loginMember = (Member)session.getAttribute("loginMember");
+	
+	String signUpLog = (String)session.getAttribute("signUpLog");
+	if(signUpLog!=null) session.removeAttribute("signUpLog");
+	
+	//사용자 쿠키처리
+	String saveId = null;
+	Cookie[] cookies = request.getCookies();
+	if(cookies != null){
+		for(Cookie c : cookies){
+			String name = c.getName();
+			String value = c.getValue();
+			System.out.println(name+" : "+value);
+			if("saveId".equals(name))
+				saveId = value;
+		}
+	}
 %>
 <!DOCTYPE html>
 <html>
@@ -21,15 +41,18 @@
 	<% if(msg!=null) {%>
 		alert("<%= msg%>");
 	<%}%>
+	<% if(signUpLog!=null) {%>
+	alert("<%= signUpLog%>");
+<%}%>
 	
 	<%--
 		로그인 실패를 했을때는 loc라는 값을 attribute에 저장 하는데
 		loc가 존재하면 로그인에 실패 했다는 것이므로
 		현재 페이지에 머물지 못하고 이전 페이지로 되돌려 보내버림
 	--%>
-	<% if(loc!=null) {%>
+	<%-- <% if(loc!=null) {%>
 		location.href = "<%=loc%>";
-	<%}%>
+	<%}%> --%>
 	
 	
 	$(function(){
@@ -52,6 +75,7 @@
 		});
 	});
 	
+	
 </script>
 </head>
 <body>
@@ -71,7 +95,7 @@
 							<!-- tabindex 속성을 사용해서 내가 원하는대로 조정 해줄 수 있다. -->
 							
 							<td><input type="text" name="memberId" id="memberId"
-								placeholder="아이디" tabindex="1"></td>
+								placeholder="아이디" tabindex="1" value="<%= saveId != null ? saveId : ""%>"></td>
 							<td><input type="submit" value="로그인" tabindex="3"></td>
 						</tr>
 						<tr>
@@ -81,8 +105,8 @@
 						</tr>
 						<tr>
 							<td colspan="2"><input type="checkbox" name="saveId"
-								id="saveId" /> <label for="saveId">아이디저장</label>&nbsp;&nbsp; <input
-								type="button" value="회원가입"></td>
+								id="saveId" <%= saveId != null ? "checked" : "" %>/> <label for="saveId">아이디저장</label>&nbsp;&nbsp; <input
+								type="button" value="회원가입" onclick="location.href='<%= request.getContextPath() %>/member/memberEnroll';"></td>
 						</tr>
 					</table>
 				</form>
@@ -99,7 +123,7 @@
 					<tr>
 						<td> 
 							<input type="button" value="내정보보기" />
-							<input type="button" value="로그아웃" />
+							<input type="button" value="로그아웃" onclick="location.href='<%=request.getContextPath()%>/member/logout';"/>
 						</td>
 					</tr>
 				</table>
