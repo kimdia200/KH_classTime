@@ -14,8 +14,9 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
---><!-- The contents of this file will be loaded for each web application --><Context>
-
+--><!-- The contents of this file will be loaded for each web application -->
+<Context workDir="C:\Users\kimYS\Desktop\Git\KH_classTime\web_server_workspace\02_hellomvc\WebContent\WEB-INF\work">
+	
     <!-- Default set of monitored resources. If one of these changes, the    -->
     <!-- web application will be reloaded.                                   -->
     <WatchedResource>WEB-INF/web.xml</WatchedResource>

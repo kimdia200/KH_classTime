@@ -56,23 +56,25 @@
 	
 	
 	$(function(){
-		$('#loginFrm').submit(function(){
+		/**
+		* 로그인 폼 유효성 검사 
+		*/
+		$("#loginFrm").submit(function(){
 			var $memberId = $(memberId);
 			var $password = $(password);
 			
-			if(/^.{4,}$/.test($memberId.val())==false){
+			if(/^.{4,}$/.test($memberId.val()) == false){
 				alert("유효한 아이디를 입력하세요.");
 				$memberId.select();
 				return false;
 			}
-			
-			if(/^.{4,}$/.test($password.val())==false){
-				alert("유효한 비밀번호를 입력하세요.")
+			if(/^.{4,}$/.test($password.val()) == false){
+				alert("유효한 비밀번호를 입력하세요.");
 				$password.select();
 				return false;
 			}
-			return true;
 		});
+		
 	});
 	
 	
@@ -122,7 +124,7 @@
 					</tr>
 					<tr>
 						<td> 
-							<input type="button" value="내정보보기" />
+							<input type="button" value="내정보보기" onclick="location.href='<%= request.getContextPath() %>/member/memberView';"/>
 							<input type="button" value="로그아웃" onclick="location.href='<%=request.getContextPath()%>/member/logout';"/>
 						</td>
 					</tr>

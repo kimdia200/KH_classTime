@@ -42,10 +42,17 @@ select * from tab;
 rollback;
 
 commit;
+ 
+update member
+set password = '1234', member_name = '김종수', member_role = 'A', gender='F', birthday = '94/02/06', email = 'kimdia2000@gmail.com', phone = '01011111111', address = '서울시 신림동', hobby = '운동 ,등산,독서', enroll_date = '21/02/06'
+where member_id = 'kimdia200';
+
     
 
 INSERT INTO member 
 VALUES ('kimdia200','dbstn','김윤수','U','M',sysdate,'kimdia200@naver.com','01063534583','경기도 부천시','게임',sysdate);
+    
+    
     
 --회원 추가
 	insert into member
@@ -63,6 +70,8 @@ VALUES ('kimdia200','dbstn','김윤수','U','M',sysdate,'kimdia200@naver.com','0
 		'admin', '1234', '관리자', 'A', 'M', to_date('19801010','yyyymmdd'),
 		'admin@naver.com', '01056785678', '서울시 관악구', '게임,독서', default
 	);
+    
+    delete member where member_id='honggd';
     
     
     
