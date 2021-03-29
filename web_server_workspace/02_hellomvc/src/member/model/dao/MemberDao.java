@@ -131,8 +131,7 @@ public class MemberDao {
 			pstmt.setString(7, m.getPhone());
 			pstmt.setString(8, m.getAddress());
 			pstmt.setString(9, m.getHobby());
-			pstmt.setDate(10, m.getEnrollDate());
-			pstmt.setString(11, m.getMemberId());
+			pstmt.setString(10, m.getMemberId());
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
