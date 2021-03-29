@@ -81,6 +81,7 @@
         <input type="button" onclick="deleteMember();" value="탈퇴"/>
 	</form>
 	<script>
+	//정보수정 버튼 클릭시 유효성 검사를 통과한다면, Get방식으로  제출함
 	function updateMember(){
 		//password
 		var $p1 = $("#password_");
@@ -117,6 +118,8 @@
 		}
 		$("#memberUpdateFrm").attr("method","GET").submit();
 	}
+	
+	//탈퇴버튼 클릭시 post방식으로 제출함
 	function deleteMember(){
 		$("#memberUpdateFrm").submit();
 	}
