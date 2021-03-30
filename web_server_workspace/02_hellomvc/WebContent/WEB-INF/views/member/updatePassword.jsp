@@ -27,29 +27,28 @@
 				</tr>
 				<tr>
 					<td colspan="2" style="text-align: center;">
-						<input type="button"  value="변경" onclick="update()"/>
+						<input type="submit"  value="변경"/>
 					</td>
 				</tr>
 			</table>
 		</form>
 	<script>
-	function update(){
+	$("[name=updatePwdFrm]").submit(function(){
 		//신규 비밀번호 검사
 		var $p1 = $("#newPassword");
 		var $p2 = $("#passwordCheck");
 		if(/^[a-zA-Z0-9!@#$$%^&*()]{4,}/.test($p1.val()) == false){
 			alert("유효한 패스워드를 입력하세요.");
 			$p1.select();
-			return;
+			return false;
 		}
-		
+		//비밀번호 일치 검사
 		if($p1.val() != $p2.val()){
 			alert("패스워드가 일치하지 않습니다.");
-			$p1.select();
-			return;
+			$p2.select();
+			return false;
 		}
-		$("[name=updatePwdFrm]").submit();
-	};
+	});
 	</script>
 	</section>
 	

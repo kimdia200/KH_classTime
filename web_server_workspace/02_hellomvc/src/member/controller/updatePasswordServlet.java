@@ -13,9 +13,6 @@ import common.MvcUtils;
 import member.model.service.MemberService;
 import member.model.vo.Member;
 
-/**
- * Servlet implementation class updatePasswordServlet
- */
 @WebServlet({ "/updatePasswordServlet", "/member/updatePassword" })
 public class updatePasswordServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -49,7 +46,7 @@ public class updatePasswordServlet extends HttpServlet {
 		String oldPwd = member.getPassword();
 		
 		//기존비밀번호가 틀릴경우
-		if(oldPwd!=password) {
+		if(oldPwd.equals(password)==false) {
 			session.setAttribute("msg", "기존 비밀번호가 일치하지 않습니다.");
 			response.sendRedirect(request.getContextPath()+"/member/updatePassword");
 			return;
@@ -67,14 +64,14 @@ public class updatePasswordServlet extends HttpServlet {
 			if(session!=null) {
 				session.setAttribute("msg", "비밀번호 변경 성공!!!");
 				session.setAttribute("loginMember", member);
+				response.sendRedirect(request.getContextPath()+"/member/memberView");
 			}
 		} else {
 			System.out.println("회원정보변경 실패...");
 			if(session!=null) {
 				session.setAttribute("msg", "비밀번호 변경 실패...");
+				response.sendRedirect(request.getContextPath()+"/member/updatePassword");
 			}
 		}
-
-		response.sendRedirect(request.getContextPath()+"/member/memberView");
 	}
 }
