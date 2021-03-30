@@ -71,8 +71,10 @@ VALUES ('kimdia200','dbstn','김윤수','U','M',sysdate,'kimdia200@naver.com','0
 		'admin@naver.com', '01056785678', '서울시 관악구', '게임,독서', default
 	);
     
-    delete member where member_id='honggd';
+    delete member where member_id='kimdia2001';
     
+    update member
+    set password = '1ARVn2Auq2/WAqx2gNrL+q3RNjAzXpUfCXrzkA6d4Xa22yhRLy4AC50E+6UTPoscbo31nbOoq51gvkuXzJ6B2w==';
     
     
     

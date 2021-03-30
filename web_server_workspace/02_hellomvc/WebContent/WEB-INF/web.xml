@@ -8,6 +8,15 @@
   </welcome-file-list>
   <!-- session timeout(min) -->
   <session-config>
-  <session-timeout>10</session-timeout>
+  <session-timeout>30</session-timeout>
   </session-config>
+  
+  <filter>
+  	<filter-name>LoggerFilter</filter-name>
+  	<filter-class>common.filter.LoggerFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>LoggerFilter</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
 </web-app>

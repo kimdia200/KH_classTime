@@ -13,6 +13,8 @@
 					<input type="text" name="memberId" id="memberId_" value="" readonly>
 				</td>
 			</tr>
+			<!--
+			암호화 때문에 여기서 처리 안하기로함
 			<tr>
 				<th>패스워드</th>
 				<td>
@@ -24,7 +26,7 @@
 				<td>	
 					<input type="password" id="password2" value="" required><br>
 				</td>
-			</tr> 
+			</tr>  -->
 			<tr>
 				<th>이름</th>
 				<td>	
@@ -78,11 +80,18 @@
 			</tr>
 		</table>
         <input type="button" onclick="updateMember();" value="정보수정"/>
+        <input type="button" onclick="updatePassword();" value="비밀번호 변경"/>
         <input type="button" onclick="deleteMember();" value="탈퇴"/>
 	</form>
 	<script>
+	function updatePassword(){
+		location.href = "<%= request.getContextPath()%>/member/updatePassword";
+	}
+	
 	//정보수정 버튼 클릭시 유효성 검사를 통과한다면, Get방식으로  제출함
 	function updateMember(){
+		/* 
+		암호화해서 패스워드는 여기서 변경하지 않기로함
 		//password
 		var $p1 = $("#password_");
 		var $p2 = $("#password2");
@@ -96,7 +105,7 @@
 			alert("패스워드가 일치하지 않습니다.");
 			$p1.select();
 			return;
-		}
+		} */
 		
 		//memberName
 		var $memberName = $("#memberName");
@@ -127,8 +136,8 @@
 	$(function(){
 		//값 채워주기
 		$("#memberId_").val("<%= loginMember.getMemberId() %>");
-		$("#password_").val("<%= loginMember.getPassword() %>");
-		$("#password2").val("<%= loginMember.getPassword() %>");
+		<%-- $("#password_").val("<%= loginMember.getPassword() %>");
+		$("#password2").val("<%= loginMember.getPassword() %>"); --%>
 		$("#memberName").val("<%= loginMember.getMemberName() != null ? loginMember.getMemberName() : ""%>");
 		$("#birthDay").val("<%= loginMember.getBirthday() != null ? loginMember.getBirthday() : ""%>")
 		$("#email").val("<%= loginMember.getEmail() != null ? loginMember.getEmail() : "" %>")

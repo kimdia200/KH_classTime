@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import common.MvcUtils;
 import member.model.service.MemberService;
 import member.model.vo.Member;
 
@@ -41,14 +42,14 @@ public class MemberEnrollServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// 1. 인코딩
-		request.setCharacterEncoding("utf-8");
+		// 1. 인코딩 (EncodingFilter에서 처리해줌)
+//		request.setCharacterEncoding("utf-8");
 
 		// 2. 값처리
 //		NULL
 		String memberId = request.getParameter("memberId");
-		String password = request.getParameter("password");
-		String password2 = request.getParameter("password2");
+		String password = MvcUtils.getSha512(request.getParameter("password"));
+//		String password2 = request.getParameter("password2");
 		String memberName = request.getParameter("memberName");
 		String birthDay = request.getParameter("birthDay");
 		String email = request.getParameter("email");
@@ -64,7 +65,7 @@ public class MemberEnrollServlet extends HttpServlet {
 				hobby += ",";
 		}
 
-		System.out.println(memberId + "\n" + password + "\n" + password2 + "\n" + memberName + "\n" + birthDay + "\n"
+		System.out.println(memberId + "\n" + password + "\n" + memberName + "\n" + birthDay + "\n"
 				+ email + "\n" + phone + "\n" + address + "\n" + gender + "\n" + hobby + "\n");
 
 		// 3. 업무 로직

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import common.MvcUtils;
 import member.model.service.MemberService;
 import member.model.vo.Member;
 
@@ -35,11 +36,13 @@ public class MemberLoginServlet extends HttpServlet {
 		
 		//1. encoding처리 (대소문자 상관없음)
 		//post방식만 인코딩 처리 필요함
-		request.setCharacterEncoding("utf-8");
+//		request.setCharacterEncoding("utf-8");
 		
 		//2. 사용자 입력값 처리
 		String memberId = request.getParameter("memberId");
-		String password = request.getParameter("password");
+		//우리가 구현한 비밀번호 암호화는  단방향 암호화이기 때문에 DB에 있는 값을 복호화 하는게 아니라
+		//로그인할때 입력받은 값을 다시 암호화 하여 암호화 한 값끼리 배교한것
+		String password = MvcUtils.getSha512(request.getParameter("password"));
 		String saveId = request.getParameter("saveId");
 		System.out.println("memberId@Servlet = " + memberId);
 		System.out.println("password@Servlet = " + password);
