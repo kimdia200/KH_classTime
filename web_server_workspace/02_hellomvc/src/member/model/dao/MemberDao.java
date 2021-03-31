@@ -10,6 +10,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import member.model.vo.Member;
@@ -139,5 +142,91 @@ public class MemberDao {
 			close(pstmt);
 		}
 		return result;
+	}
+
+
+	public List<Member> selectList(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+//		String sql = "select * from member order by Enroll_Date desc"
+		String sql = prop.getProperty("selectList");
+		List<Member> list= new ArrayList<Member>();
+		Member member = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				String memberId = rset.getString("member_id");
+				String password = rset.getString("password");
+				String memberName = rset.getString("member_name");
+				String memberRole = rset.getString("member_role");
+				String gender = rset.getString("gender");
+				Date birthday = rset.getDate("birthday");
+				String email = rset.getString("email");
+				String phone = rset.getString("phone");
+				String address = rset.getString("address");
+				String hobby = rset.getString("hobby");
+				Date enrollDate = rset.getDate("enroll_date");
+				member = new Member(memberId, password, memberName, memberRole, gender, birthday, email, phone, address, hobby, enrollDate);
+				list.add(member);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return list;
+	}
+
+
+	public List<Member> searchMember(Connection conn, Map<String, String> param) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+//		String sql = "select * from member order by Enroll_Date desc"
+		String sql = prop.getProperty("searchMember");
+		//아이디를 조회 한다면
+		//select * from member where member_id like %a%
+		//이름을 조회 한다면
+		//select * from member where member_name like %a%
+		//성별을 조회 한다면
+		//select * from member where gender = a
+		
+		//select * from member where ? 라고 해주자
+		switch(param.get("searchType")) {
+		case "memberId" 	: sql += " member_id like '%" + param.get("searchKeyword") + "%'"; break;
+		case "memberName" 	: sql += " member_name like '%" + param.get("searchKeyword") + "%'"; break;
+		case "gender" 		: sql += " gender = '" + param.get("searchKeyword") + "'"; break;
+		}
+		
+		List<Member> list= new ArrayList<Member>();
+		Member member = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				String memberId = rset.getString("member_id");
+				String password = rset.getString("password");
+				String memberName = rset.getString("member_name");
+				String memberRole = rset.getString("member_role");
+				String gender = rset.getString("gender");
+				Date birthday = rset.getDate("birthday");
+				String email = rset.getString("email");
+				String phone = rset.getString("phone");
+				String address = rset.getString("address");
+				String hobby = rset.getString("hobby");
+				Date enrollDate = rset.getDate("enroll_date");
+				member = new Member(memberId, password, memberName, memberRole, gender, birthday, email, phone, address, hobby, enrollDate);
+				list.add(member);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return list;
 	}
 }

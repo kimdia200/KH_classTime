@@ -27,11 +27,13 @@ public class Member_Update_delete_Servlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//1.인코딩처리(Get방식은 인코딩 필요없음)
+		HttpSession session = request.getSession(false);
 		
 		//2.값처리
 		String memberId = request.getParameter("memberId");
-		String password = request.getParameter("password");
-		String password2 = request.getParameter("password2");
+		//더이상 MemberView에서는 비밀번호 변경을 처리 하지 않음
+//		String password = request.getParameter("password");
+		String password = ((Member)session.getAttribute("loginMember")).getPassword();
 		String memberName = request.getParameter("memberName");
 		String birthDay = request.getParameter("birthDay");
 		String email = request.getParameter("email");
@@ -47,11 +49,10 @@ public class Member_Update_delete_Servlet extends HttpServlet {
 				hobby += ",";
 		}
 		
-		System.out.println(memberId + "\n" + password + "\n" + password2 + "\n" + memberName + "\n" + birthDay + "\n"
+		System.out.println(memberId + "\n" + password + "\n" + memberName + "\n" + birthDay + "\n"
 				+ email + "\n" + phone + "\n" + address + "\n" + gender + "\n" + hobby + "\n");
 
 		// 3. 업무 로직
-		HttpSession session = request.getSession(false);
 
 		// (강사님 코드)날짜타입으로 변경 : 1990-09-09
 		Date birthday = null;

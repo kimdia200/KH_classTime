@@ -6,6 +6,8 @@ import static common.JDBCTemplate.getConnection;
 import static common.JDBCTemplate.rollback;
 
 import java.sql.Connection;
+import java.util.List;
+import java.util.Map;
 
 import member.model.dao.MemberDao;
 import member.model.vo.Member;
@@ -62,5 +64,21 @@ public class MemberService {
 		}
 		close(conn);
 		return result;
+	}
+
+	//전체회원 조회
+	public List<Member> selectList() {
+		Connection conn = getConnection();
+		List<Member> list = memberDao.selectList(conn);
+		close(conn);
+		return list;
+	}
+
+	//관리자페이지에서의 조회
+	public List<Member> searchMember(Map<String, String> param) {
+		Connection conn = getConnection();
+		List<Member> list = memberDao.searchMember(conn,param);
+		close(conn);
+		return list;
 	}
 }
