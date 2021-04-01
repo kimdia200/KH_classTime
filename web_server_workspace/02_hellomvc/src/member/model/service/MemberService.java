@@ -73,6 +73,13 @@ public class MemberService {
 		close(conn);
 		return list;
 	}
+	public List<Member> selectList(int start, int end) {
+		Connection conn = getConnection();
+		List<Member> list = memberDao.selectList(conn,start,end);
+		close(conn);
+		return list;
+	}
+	
 
 	//관리자페이지에서의 조회
 	public List<Member> searchMember(Map<String, String> param) {
@@ -81,4 +88,26 @@ public class MemberService {
 		close(conn);
 		return list;
 	}
+	public List<Member> searchMember(Map<String, String> param, int start, int end) {
+		Connection conn = getConnection();
+		List<Member> list = memberDao.searchMember(conn,param,start, end);
+		close(conn);
+		return list;
+	}
+
+	public int selectMemberCount() {
+		Connection conn = getConnection();
+		int totalContents = memberDao.selectMemberCount(conn);
+		close(conn);
+		return totalContents;
+	}
+
+	public int selectFinderCount(Map<String, String> param) {
+		Connection conn = getConnection();
+		int totalContents = memberDao.selectFinderCount(conn,param);
+		close(conn);
+		return totalContents;
+	}
+
+	
 }

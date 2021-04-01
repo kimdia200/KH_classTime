@@ -78,10 +78,37 @@ VALUES ('kimdia200','dbstn','김윤수','U','M',sysdate,'kimdia200@naver.com','0
     
     
     
+    select member.* from member order by member_name;
     
     
+    --인라인 뷰를 한번 쓰면 between 11 and 20같은 값이 적용이 되지 않는다...where 절이 끝나야 rownum이 부여되기 때문
+    select rownum rnum, m.*
+    from (select member.* from member order by enroll_date desc) m
+    where rownum BETWEEN 1 and 10;
     
+    --완성본은 인라인뷰를 두번 써야함
+    select *
+    from (
+            select rownum rnum, m.*
+            from (
+                    select member.* 
+                    from member 
+                    order by enroll_date desc
+                    ) m
+            )m
+    where rnum between 11 and 20;
     
+    --2. window함수 row_number
+    -- cPage = 1 : 1 ~10
+    -- cPage = 2 : 11 ~ 20
+    -- cPage = 3 : 21 ~ 30
+    -- .. . . ... .. . 
     
+    select * 
+    from (
+            select row_number() over(order by enroll_date desc) rnum, m.*
+            from member m
+            )
+    where rnum between 11 and 20;
     
     

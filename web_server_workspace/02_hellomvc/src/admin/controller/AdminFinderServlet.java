@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import common.MvcUtils;
 import member.model.service.MemberService;
 import member.model.vo.Member;
 
@@ -30,11 +31,30 @@ public class AdminFinderServlet extends HttpServlet {
 		System.out.println("param@servlet = " + param);
 		
 		
+		
+		
 		//2. 업무 로직
-		List<Member> list = memberService.searchMember(param);
+		final int numPerPage = 10;
+		int cPage = 1;
+		try {
+			cPage = Integer.parseInt(request.getParameter("cPage"));
+		}catch(NumberFormatException e){
+			System.out.println("cPage = 1로 유지");
+		}
+		
+		int start = (cPage-1)*numPerPage+1;
+		int end = cPage * numPerPage;
+		List<Member> list = memberService.searchMember(param,start, end);
 		System.out.println("list@servlet = "+list);
+		int totalContents = memberService.selectFinderCount(param);
+		System.out.println("검색한 멤버 갯수 : "+totalContents);
 		
 		//3. jsp에 html 응답메세지 작성 위임
+		String url = request.getRequestURI()+"?searchType="+searchType+"&searchKeyword="+searchKeyword;
+		System.out.println("URL = "+url);
+		String pageBar = MvcUtils.getPageBar(cPage, numPerPage, totalContents, url);
+		
+		request.setAttribute("pageBar", pageBar);
 		request.setAttribute("list", list);
 		request.getRequestDispatcher("/WEB-INF/views/admin/memberList.jsp").forward(request, response);
 	}

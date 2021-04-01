@@ -179,6 +179,44 @@ public class MemberDao {
 		}
 		return list;
 	}
+	
+	//rownum사용한 paging에서 사용할것
+	public List<Member> selectList(Connection conn, int start, int end) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+//		String sql = "select * from member order by Enroll_Date desc"
+		String sql = prop.getProperty("selectPageList");
+		List<Member> list= new ArrayList<Member>();
+		Member member = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, start);
+			pstmt.setInt(2, end);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				String memberId = rset.getString("member_id");
+				String password = rset.getString("password");
+				String memberName = rset.getString("member_name");
+				String memberRole = rset.getString("member_role");
+				String gender = rset.getString("gender");
+				Date birthday = rset.getDate("birthday");
+				String email = rset.getString("email");
+				String phone = rset.getString("phone");
+				String address = rset.getString("address");
+				String hobby = rset.getString("hobby");
+				Date enrollDate = rset.getDate("enroll_date");
+				member = new Member(memberId, password, memberName, memberRole, gender, birthday, email, phone, address, hobby, enrollDate);
+				list.add(member);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return list;
+	}
 
 
 	public List<Member> searchMember(Connection conn, Map<String, String> param) {
@@ -229,4 +267,105 @@ public class MemberDao {
 		}
 		return list;
 	}
+	
+	public List<Member> searchMember(Connection conn, Map<String, String> param, int start, int end) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = null;
+		switch(param.get("searchType")) {
+		//m.member_id like '%a%') m where rnum between ? and ?
+		case "memberId" 	: sql = prop.getProperty("selectPageFinderList_id"); 
+							  param.put("searchKeyword","%"+param.get("searchKeyword")+"%");break;
+		case "memberName" 	: sql = prop.getProperty("selectPageFinderList_name");
+							  param.put("searchKeyword","%"+param.get("searchKeyword")+"%"); break;
+		case "gender" 		: sql = prop.getProperty("selectPageFinderList_gender"); break;
+		}
+		
+		List<Member> list= new ArrayList<Member>();
+		Member member = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, param.get("searchKeyword"));
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				String memberId = rset.getString("member_id");
+				String password = rset.getString("password");
+				String memberName = rset.getString("member_name");
+				String memberRole = rset.getString("member_role");
+				String gender = rset.getString("gender");
+				Date birthday = rset.getDate("birthday");
+				String email = rset.getString("email");
+				String phone = rset.getString("phone");
+				String address = rset.getString("address");
+				String hobby = rset.getString("hobby");
+				Date enrollDate = rset.getDate("enroll_date");
+				member = new Member(memberId, password, memberName, memberRole, gender, birthday, email, phone, address, hobby, enrollDate);
+				list.add(member);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return list;
+	}
+
+
+	public int selectMemberCount(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("selectMemberCount");
+
+		int totalContents = 0;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				totalContents = rset.getInt("count(*)");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return totalContents;
+	}
+
+
+	public int selectFinderCount(Connection conn, Map<String, String> param) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int totalContents =0;
+		String sql = prop.getProperty("selectFinderCount");
+		
+		switch(param.get("searchType")) {
+		case "memberId" 	: sql += " member_id like '%" + param.get("searchKeyword") + "%')"; break;
+		case "memberName" 	: sql += " member_name like '%" + param.get("searchKeyword") + "%')"; break;
+		case "gender" 		: sql += " gender = '" + param.get("searchKeyword") + "')"; break;
+		}
+		
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				totalContents = rset.getInt("count(*)");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return totalContents;
+	}
+
+
+	
 }
