@@ -5,7 +5,7 @@ section#memberList-container table#tbl-member {width:100%; border:1px solid gray
 table#tbl-member th, table#tbl-member td {border:1px solid gray; padding:10px; }
 ​
 /*페이징 : 페이지바 */
-section#memberList-container div#pageBar{margin-top:10px; text-align:center; background-color:rgba(0, 188, 212, 0.3);}
+section#memberList-container div#pageBar{margin-top:10px; text-align:center; background-color:rgba(0, 188, 212, 0.8);}
 section#memberList-container div#pageBar span.cPage{color: #0066ff; margin-right: 5px;}
 section#memberList-container div#pageBar a{margin-right: 5px; text-decoration: none;}
 section#memberList-container div#pageBar a:hover {text-decoration: underline;}

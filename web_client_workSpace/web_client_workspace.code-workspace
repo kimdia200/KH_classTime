@@ -17,7 +17,7 @@
 		}
 	],
 	"settings": {
-		"liveServer.settings.multiRootWorkspaceName": "05_html5API",
+		"liveServer.settings.multiRootWorkspaceName": "01_HTML",
 		"liveServer.settings.port": 5501
 	}
 }

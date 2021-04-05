@@ -9,8 +9,7 @@
 	String keyword = request.getParameter("searchKeyword");
 %>
 <!-- 관리자용 admin.css link -->
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/css/admin.css" />
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/admin.css" />
 
 <style>
 div#search-container {margin:0 0 10px 0; padding:3px; background-color: rgba(0, 188, 212, 0.3);}
@@ -99,7 +98,7 @@ div#search-gender{display: <%= "gender".equals(searchType) ? "inline-block" : "n
 			<%}} %>
 		</tbody>
 	</table>
-	<div id="pageBar">
+	<div id="pageBar" style="margin-top:10px; text-align:center; background-color:rgba(0, 188, 212, 0.3); ">
 		<%= request.getAttribute("pageBar") != null ? request.getAttribute("pageBar") : ""%>
 	</div>
 </section>

@@ -19,7 +19,7 @@ import java.util.Properties;
 public class JDBCTemplate {
 	private static String driverClass;
 //	private static String url = "jdbc:oracle:thin:@khmclass.iptime.org:1521:xe";
-	private static String url;
+	public static String url;
 	private static String user;
 	private static String password;
 	

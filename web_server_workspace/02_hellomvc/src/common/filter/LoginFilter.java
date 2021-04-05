@@ -20,7 +20,8 @@ import member.model.vo.Member;
 @WebFilter({ "/LoginFilter",
 			 "/member/memberView",
 			 "/member/deleteMember",
-			 "/member/updatePassword"
+			 "/member/updatePassword",
+			 "/board/boardForm"
 })
 public class LoginFilter implements Filter {
 

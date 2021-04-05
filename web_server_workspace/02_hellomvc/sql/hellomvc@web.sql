@@ -112,3 +112,11 @@ VALUES ('kimdia200','dbstn','김윤수','U','M',sysdate,'kimdia200@naver.com','0
     where rnum between 11 and 20;
     
     
+    select * 
+    from (
+            select row_number() over(order by enroll_date desc) rnum, m.*
+            from member m
+            where m.member_id like '%a%'
+            ) m
+    where rnum between 11 and 20;
+    
