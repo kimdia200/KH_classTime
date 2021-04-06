@@ -30,7 +30,8 @@ $(document).ready(function(){
 <form
 	name="boardEnrollFrm"
 	action="<%=request.getContextPath() %>/board/boardEnroll" 
-	method="post">
+	method="post"
+	enctype="multipart/form-data">
 	<table id="tbl-board-view">
 	<tr>
 		<th>제 목</th>

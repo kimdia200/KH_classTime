@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import board.model.exception.BoardException;
+import board.model.vo.Attachment;
 import board.model.vo.Board;
 import member.model.dao.MemberDao;
 
@@ -38,7 +39,6 @@ public class BoardDao {
 		String sql = prop.getProperty("selectPageList");
 		System.out.println(sql);
 		List<Board> list= new ArrayList<Board>();
-		Board b = null;
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -46,14 +46,27 @@ public class BoardDao {
 			pstmt.setInt(2, end);
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
-				int no = rset.getInt("no");
-				String title = rset.getString("title");
-				String writer = rset.getString("writer");
-				String content = rset.getString("content");
-				Date regDate = rset.getDate("reg_date");
-				int readCount = rset.getInt("read_count");
-				b=new Board(no, title, writer, content, regDate, readCount, null);
-				list.add(b);
+				Board board = new Board();
+				board.setNo(rset.getInt("no"));
+				board.setTitle(rset.getString("title"));
+				board.setWriter(rset.getString("writer"));
+				board.setContent(rset.getString("content"));
+				board.setRegDate(rset.getDate("reg_date"));
+				board.setReadCount(rset.getInt("read_count"));
+				
+				System.out.println(rset.getInt("attach_no"));
+				//첨부파일이 있는 경우
+				if(rset.getInt("attach_no") != 0) {
+					Attachment attach = new Attachment();
+					attach.setNo(rset.getInt("attach_no"));
+					attach.setBoardNo(rset.getInt("no"));
+					attach.setOriginalFileName(rset.getString("original_filename"));
+					attach.setRenamedFileName(rset.getString("renamed_filename"));
+					attach.setStatus("Y".equals(rset.getString("status")) ? true : false);
+					board.setAttach(attach);
+				}
+				
+				list.add(board);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -100,12 +113,106 @@ public class BoardDao {
 			result = pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new BoardException("게시물 등록 오류",e);
 		} finally {
 			close(pstmt);
 		}
 		
 		return result;
+	}
+
+	public int selectLastBoardNo(Connection conn) {
+		//DQL
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("selectLastBoardNo");
+
+		int boardNo = 0;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				boardNo = rset.getInt("board_no");
+			}
+		} catch (SQLException e) {
+			throw new BoardException("게시물 등록 - 번호 조회 오류",e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return boardNo;
+	}
+
+	public int insertAttachment(Connection conn, Attachment attach) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("insertAttachment");
+		System.out.println(sql);
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, attach.getBoardNo());
+			pstmt.setString(2, attach.getOriginalFileName());
+			pstmt.setString(3, attach.getRenamedFileName());
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new BoardException("게시물 등록 - 첨부파일 오류",e);
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public Board selectOneBoard(Connection conn, int no) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("selectOneBoard");
+		Board board = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, no);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				board=new Board();
+				board.setNo(rset.getInt("no"));
+				board.setTitle(rset.getString("title"));
+				board.setWriter(rset.getString("writer"));
+				board.setContent(rset.getString("content"));
+				board.setRegDate(rset.getDate("reg_date"));
+				board.setReadCount(rset.getInt("read_count"));
+			}
+		} catch (SQLException e) {
+			throw new BoardException("하나 가져오는데 오류",e);
+		}
+		return board;
+	}
+
+	public Attachment selectOneAttach(Connection conn, int no) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("selectOneAttach");
+		Attachment attach = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, no);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				attach=new Attachment();
+				attach.setNo(rset.getInt("no"));
+				attach.setBoardNo(rset.getInt("board_no"));
+				attach.setOriginalFileName(rset.getString("original_filename"));
+				attach.setRenamedFileName(rset.getString("renamed_filename"));
+				attach.setStatus("Y".equals(rset.getString("status")) ? true : false);
+			}
+		} catch (SQLException e) {
+			throw new BoardException("하나 가져오는데 오류",e);
+		}
+		return attach;
 	}
 
 }

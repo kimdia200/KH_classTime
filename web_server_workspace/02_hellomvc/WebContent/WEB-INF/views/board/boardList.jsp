@@ -32,12 +32,16 @@
 			%>
 			<tr>
 				<td><%= b.getNo()%></td>
-				<td><%= b.getTitle() %></td>
+				<td>
+					<a href="<%= request.getContextPath()%>/board/boardView?no=<%=b.getNo()%>">
+						<%= b.getTitle() %>
+					</a>
+				</td>
 				<td><%= b.getWriter() %></td>
 				<td><%= b.getRegDate() %></td>
 				<td>
 				<% if(b.getAttach() != null){ %>
-				<img src="<%= request.getContextPath() %>/images/file.png" alt="" />
+				<img src="<%= request.getContextPath() %>/images/file.png" width="16px"/>
 				<% } %>
 			</td>
 				<td><%= b.getReadCount() %></td>
