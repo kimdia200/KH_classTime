@@ -215,4 +215,26 @@ public class BoardDao {
 		return attach;
 	}
 
+	public int lastBoardNo(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("lastBoardNo");
+
+		int boardNo = 0;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			rset.next();
+			boardNo = rset.getInt("no");
+		} catch (SQLException e) {
+			boardNo=1;
+			throw new BoardException("게시물 등록 - 번호 조회 오류",e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return boardNo;
+	}
+
 }

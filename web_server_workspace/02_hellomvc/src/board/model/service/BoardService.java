@@ -76,4 +76,11 @@ public class BoardService {
 		
 		return attach;
 	}
+
+	public int lastBoardNo() {
+		Connection conn = getConnection();
+		int boardNo = boardDao.lastBoardNo(conn);
+		close(conn);
+		return boardNo;
+	}
 }

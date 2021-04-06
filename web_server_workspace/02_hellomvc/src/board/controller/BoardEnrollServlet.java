@@ -102,8 +102,12 @@ public class BoardEnrollServlet extends HttpServlet {
 			session.setAttribute("msg", "게시글 등록 성공");
 		}else {
 			session.setAttribute("msg", "게시글 등록 실패");
+			response.sendRedirect(request.getContextPath()+"/board/boardList");
 		}
-		response.sendRedirect(request.getContextPath()+"/board/boardList");
+		
+		int board_no = boardService.lastBoardNo();
+		
+		response.sendRedirect(request.getContextPath()+"/board/boardView?no="+board_no);
 	}
 
 }

@@ -29,7 +29,7 @@
 				<% if(board.getAttach() != null) {%>
 				<%-- 첨부파일이 있을경우만, 이미지와 함께 original파일명 표시 --%>
 				<img alt="첨부파일" src="<%=request.getContextPath() %>/images/file.png" width=16px>
-				<a href="<%= request.getContextPath()%>/upload/board/<%=board.getAttach().getRenamedFileName()%>">원본이미지보기</a>
+				<a href="<%= request.getContextPath()%>/upload/board/<%=board.getAttach().getRenamedFileName()%>"><%= board.getAttach().getRenamedFileName() %></a>
 				<% } %>
 			</td>
 		</tr>
@@ -37,7 +37,7 @@
 			<th>내 용</th>
 			<td> <%= board.getContent() %></td>
 		</tr>
-			<% if(loginMember.getMemberId().equals(board.getWriter()) || "A".equals(loginMember.getMemberRole())) {%>
+			<% if(loginMember != null && (loginMember.getMemberId().equals(board.getWriter()) || "A".equals(loginMember.getMemberRole()))) {%>
 		<tr>
 			<%-- 작성자와 관리자만 마지막행 수정/삭제버튼이 보일수 있게 할 것 --%>
 			<th colspan="2">
