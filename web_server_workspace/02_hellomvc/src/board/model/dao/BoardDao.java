@@ -237,4 +237,43 @@ public class BoardDao {
 		return boardNo;
 	}
 
+	public int deleteOneBoard(Connection conn, int board_no) {
+		String sql = prop.getProperty("deleteOneBoard");
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board_no);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	public int updateBoard(Connection conn, Board b) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("updateBoard");
+		System.out.println(sql);
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, b.getTitle());
+			pstmt.setString(2, b.getContent());
+			pstmt.setInt(3, b.getNo());
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new BoardException("게시물 수정 오류",e);
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
 }

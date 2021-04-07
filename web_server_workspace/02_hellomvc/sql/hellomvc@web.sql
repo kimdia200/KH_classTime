@@ -120,3 +120,6 @@ VALUES ('kimdia200','dbstn','김윤수','U','M',sysdate,'kimdia200@naver.com','0
             ) m
     where rnum between 11 and 20;
     
+    
+    
+    

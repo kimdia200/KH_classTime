@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import board.model.service.BoardService;
 import board.model.vo.Attachment;
 import board.model.vo.Board;
+import common.MvcUtils;
 
 /**
  * Servlet implementation class BoardViewServlet
@@ -43,6 +44,13 @@ public class BoardViewServlet extends HttpServlet {
 		Board board = boardService.selectOneBoard(no);
 		if(board != null) {
 			System.out.println("게시글 조회성공");
+
+			//xss공격 방지
+			board.setTitle(MvcUtils.escapeHtml(board.getTitle()));
+			board.setContent(MvcUtils.escapeHtml(board.getContent()));
+			
+			//개행문자를 br처리해줌
+			board.setContent(MvcUtils.convertLineFeedToBr(board.getContent()));
 			System.out.println(board);
 		}else {
 			System.out.println("게시글 조회 실패");

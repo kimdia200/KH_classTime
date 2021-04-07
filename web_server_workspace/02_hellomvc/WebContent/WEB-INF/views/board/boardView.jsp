@@ -3,6 +3,7 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <% Board board = (Board)request.getAttribute("board"); %>
+<% boolean editable = loginMember != null && (loginMember.getMemberId().equals(board.getWriter()) || "A".equals(loginMember.getMemberRole())); %>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/board.css" />
 <section id="board-container">
 	<h2>게시판</h2>
@@ -29,7 +30,7 @@
 				<% if(board.getAttach() != null) {%>
 				<%-- 첨부파일이 있을경우만, 이미지와 함께 original파일명 표시 --%>
 				<img alt="첨부파일" src="<%=request.getContextPath() %>/images/file.png" width=16px>
-				<a href="<%= request.getContextPath()%>/upload/board/<%=board.getAttach().getRenamedFileName()%>"><%= board.getAttach().getRenamedFileName() %></a>
+				<a href="<%= request.getContextPath()%>/board/fileDownload?no=<%=board.getNo()%>"><%= board.getAttach().getOriginalFileName() %></a>
 				<% } %>
 			</td>
 		</tr>
@@ -37,7 +38,7 @@
 			<th>내 용</th>
 			<td> <%= board.getContent() %></td>
 		</tr>
-			<% if(loginMember != null && (loginMember.getMemberId().equals(board.getWriter()) || "A".equals(loginMember.getMemberRole()))) {%>
+			<% if(editable) {%>
 		<tr>
 			<%-- 작성자와 관리자만 마지막행 수정/삭제버튼이 보일수 있게 할 것 --%>
 			<th colspan="2">
@@ -48,4 +49,21 @@
 			<% } %>
 	</table>
 </section>
+<% if(editable){ %>
+	<form action="<%= request.getContextPath()%>/board/boardDelete" name = "boardDelFrm" method="post">
+		<input type="hidden" name="no" value="<%= board.getNo()%>"/>
+	</form>
+	<script>
+		//바로 삭제 할 수도 있지만 삭제같은경우는 사용자한테 한번 더 물어봐주자!
+		function deleteBoard(){
+			if(confirm("게시글을 정말 삭제 하시겠습니까?")){
+				$(document.boardDelFrm).submit();
+			}
+		}
+		
+		function updateBoard(){
+			location.href = "<%= request.getContextPath() %>/board/boardUpdate?no=<%= board.getNo() %>";
+		}
+	</script>
+<% } %>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

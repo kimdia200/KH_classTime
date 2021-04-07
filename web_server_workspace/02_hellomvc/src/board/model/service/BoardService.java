@@ -83,4 +83,45 @@ public class BoardService {
 		close(conn);
 		return boardNo;
 	}
+
+	public int deleteOneBoard(int board_no) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = boardDao.deleteOneBoard(conn, board_no);
+			if(result==0) {
+				throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다. : "+board_no);
+			}
+			commit(conn);
+		} catch (Exception e) {
+			rollback(conn);
+			throw e;//controller가 예외처리를 결정 할 수 있도록
+		}finally {
+			close(conn);
+		}
+		return result;
+	}
+
+	public int updateBoard(Board b) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			//1. board update
+			result = boardDao.updateBoard(conn, b);
+			//2. attachment insert
+			if(b.getAttach() != null) {
+				//첨부파일이 변경되었다면 첨부파일은 무조건 추가되는거임
+				result = boardDao.insertAttachment(conn, b.getAttach());
+			}
+			
+			commit(conn);
+		}catch (Exception e) {
+			rollback(conn);
+			throw e;
+		}finally {
+			close(conn);
+		}
+		
+		return result;
+	}
 }

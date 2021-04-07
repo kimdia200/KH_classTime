@@ -16,11 +16,11 @@ $(document).ready(function(){
 			return false;
 		}   
 		//내용을 작성하지 않은 경우 폼제출할 수 없음.
-		if(/^.{1,}$/.test($("[name=content]").val())==false){
+		/* if(/^.{1,}$/.test($("[name=content]").val())==false){
 			alert("내용 미작성");
 			return false;
 		}   
-		return true;
+		return true; */
 	}
 })
 </script>
