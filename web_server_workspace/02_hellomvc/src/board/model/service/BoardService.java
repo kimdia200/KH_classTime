@@ -9,8 +9,10 @@ import java.sql.Connection;
 import java.util.List;
 
 import board.model.dao.BoardDao;
+import board.model.exception.BoardException;
 import board.model.vo.Attachment;
 import board.model.vo.Board;
+import board.model.vo.BoardComment;
 
 public class BoardService {
 	private BoardDao boardDao = new BoardDao();
@@ -122,6 +124,66 @@ public class BoardService {
 			close(conn);
 		}
 		
+		return result;
+	}
+
+	public int deleteAttachment(String attachNo) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = boardDao.deleteAttachment(conn, attachNo);
+			commit(conn);
+		}catch (Exception e) {
+			rollback(conn);
+			throw e;
+		}finally {
+			close(conn);
+		}
+		return result;
+	}
+
+	public int insertBoardComment(BoardComment bc) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = boardDao.insertBoardComment(conn, bc);
+			commit(conn);
+		}catch (Exception e) {
+			rollback(conn);
+			throw e;
+		}finally {
+			close(conn);
+		}
+		return result;
+	}
+
+	public List<BoardComment> selectBoardCommentList(int no) {
+		Connection conn = getConnection();
+		List<BoardComment> list = boardDao.selectBoardCommentList(conn, no);
+		close(conn);
+		return list;
+	}
+
+	public int countCommentThisBoard(int no) {
+		Connection conn = getConnection();
+		int result = boardDao.countCommentThisBoard(conn, no);
+		close(conn);
+		return result;
+	}
+
+	
+	public int deleteComment(int no) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = boardDao.deleteComment(conn, no);
+			commit(conn);
+		} catch (Exception e) {
+			e.printStackTrace();
+			rollback(conn);
+			throw new BoardException("댓글 삭제에 실패함",e);
+		}
+		close(conn);
 		return result;
 	}
 }

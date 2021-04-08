@@ -110,6 +110,8 @@ public class MemberLoginServlet extends HttpServlet {
 		
 		//4.redirect : url변경
 		//성공하든 실패하든 redirect방식으로 변경
-		response.sendRedirect(request.getContextPath());
+		System.out.println("이전 페이지 : "+request.getHeader("Referer"));
+//		response.sendRedirect(request.getContextPath());
+		response.sendRedirect(request.getHeader("Referer"));
 	}
 }

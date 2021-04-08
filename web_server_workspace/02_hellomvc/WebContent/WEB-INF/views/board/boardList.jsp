@@ -1,3 +1,4 @@
+<%@page import="board.model.vo.BoardPlus"%>
 <%@page import="board.model.vo.Board"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -5,7 +6,7 @@
     
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%
-	List<Board> list = (List<Board>)request.getAttribute("list");
+	List<BoardPlus> list = (List<BoardPlus>)request.getAttribute("list");
 %>
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/board.css" />
@@ -28,13 +29,13 @@
 				<td colspan="6" style="text-align: center">조회된 게시글이 없습니다.</td>
 			</tr>
 			<%}else{ 
-			for(Board b:list){
+			for(BoardPlus b:list){
 			%>
 			<tr>
 				<td><%= b.getNo()%></td>
 				<td>
 					<a href="<%= request.getContextPath()%>/board/boardView?no=<%=b.getNo()%>">
-						<%= b.getTitle() %>
+						<%= b.getTitle() %> <%= b.getCommentCount() != 0 ? " ("+b.getCommentCount()+")":"" %>
 					</a>
 				</td>
 				<td><%= b.getWriter() %></td>

@@ -1,6 +1,7 @@
 package board.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import board.model.service.BoardService;
 import board.model.vo.Board;
+import board.model.vo.BoardPlus;
 import common.MvcUtils;
 
 /**
@@ -52,9 +54,18 @@ public class BoardListServlet extends HttpServlet {
 		// b. pageBar영역(스태틱 메서드 사용)
 		String pageBar = MvcUtils.getPageBar(cPage, numPerPage, totalContents, url);
 		
+		//댓글 갯수 측정
+		List<BoardPlus> list2 = new ArrayList<BoardPlus>();
+		for(Board b : list) {
+			BoardPlus bp = new BoardPlus(b.getNo(), b.getTitle(), b.getWriter(), b.getContent(), b.getRegDate(), b.getReadCount(), b.getAttach());
+			bp.setCommentCount(boardService.countCommentThisBoard(b.getNo()));
+			list2.add(bp);
+		}
+		
 		//4. JSP에 html 응답메세지 작성 위임
 		request.setAttribute("pageBar", pageBar);
-		request.setAttribute("list", list);
+		request.setAttribute("list0", list);
+		request.setAttribute("list", list2);
 		request.getRequestDispatcher("/WEB-INF/views/board/boardList.jsp").forward(request, response);
 	}
 

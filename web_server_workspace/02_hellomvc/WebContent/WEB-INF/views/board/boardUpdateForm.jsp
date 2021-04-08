@@ -29,6 +29,7 @@
 			<p style ="margin:0">
 				<img src="<%= request.getContextPath() %>/images/file.png" width="16px"/>
 				<%= board.getAttach().getOriginalFileName() %>
+				<% System.out.println("어태치 넘버 = "+board.getAttach().getNo()); %>
 				<input type="checkbox" name="delfile" id="delFile" value="<%= board.getAttach().getNo()%>"/>
 				<label for="delFile">삭제</label>
 			</p>
@@ -61,9 +62,15 @@ $(document.boardUpdateFrm).submit(function (){
 $("[name=upFile]").change(function(){
 	console.log($(this).val());
 	if($(this).val() != ""){
-		$("#delFile").prop("checked",true);
+		//파일을 선택하면 체크상태로 변경하고 더이상 변경이 불가능 하게 해버림
+		$("#delFile").prop("checked",true)
+			.on('click',function(){
+			return false;
+		})
 	}else{
-		$("#delFile").prop("checked",false);
+		//파일을 해제하면 체크가능 상태가 되고 변경이 가능하다
+		$("#delFile").prop("checked",false)
+			.off('click');
 	}
 });
 </script>

@@ -1,6 +1,7 @@
 package board.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import board.model.service.BoardService;
 import board.model.vo.Attachment;
 import board.model.vo.Board;
+import board.model.vo.BoardComment;
 import common.MvcUtils;
 
 /**
@@ -64,7 +66,17 @@ public class BoardViewServlet extends HttpServlet {
 			System.out.println("첨부파일 존재하지 않음");
 		}
 		
+		//댓글 가져오기
+		List<BoardComment> commentList = boardService.selectBoardCommentList(board.getNo());
+		if(commentList != null) {
+			System.out.println("댓글 리스트 받기 성공");
+			System.out.println(commentList);
+		}else {
+			System.out.println("댓글 리스드 받기 실패");
+		}
+		
 		request.setAttribute("board", board);
+		request.setAttribute("commentList", commentList);
 		
 		//3. dispatcher
 		request.getRequestDispatcher("/WEB-INF/views/board/boardView.jsp").forward(request, response);

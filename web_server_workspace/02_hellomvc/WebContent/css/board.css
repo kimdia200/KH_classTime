@@ -1,19 +1,18 @@
-@charset "UTF-8";
-
+@CHARSET "UTF-8";
 /*게시판*/
 section#board-container{width:600px; margin:0 auto; text-align:center;}
 section#board-container h2{margin:10px 0;}
 table#tbl-board{width:100%; margin:0 auto; border:1px solid black; border-collapse:collapse; clear:both; }
 table#tbl-board th, table#tbl-board td {border:1px solid; padding: 5px 0; text-align:center;} 
-​
+
 /*글쓰기버튼*/
 input#btn-add{float:right; margin: 0 0 15px;}
-​
+
 /*페이지바*/
 div#pageBar{margin-top:10px; text-align:center; background-color:rgba(0, 188, 212, 0.3); }
 div#pageBar span.cPage{color: #0066ff; margin-right: 5px;}
 div#pageBar a{margin-right: 5px;}
-​
+
 /*게시글 작성/상세보기 테이블*/
 table#tbl-board-view {
 	width:500px; 
@@ -32,3 +31,26 @@ table#tbl-board-view td {
 	padding: 5px 0 5px 15px; 
 	text-align:left;
 }
+/* 댓글 작성 */
+div.comment-container #btn-insert{width:60px; height:50px; color:white; background:#3300ff; position:relative; top:-20px;}
+
+/*댓글테이블*/
+table#tbl-comment{width:580px; margin:0 auto; border-collapse:collapse; } 
+table#tbl-comment tr td{border-bottom:1px solid; border-top:1px solid; padding:5px; text-align:left; line-height:120%;}
+table#tbl-comment tr td:first-of-type {padding: 5px 5px 5px 50px;}
+table#tbl-comment tr td:last-of-type {text-align:right; width: 100px;}
+table#tbl-comment button.btn-reply{display:none;}
+table#tbl-comment tr:hover {background:lightgray;}
+table#tbl-comment tr:hover button.btn-reply{display:inline;}
+table#tbl-comment sub.comment-writer {color:navy; font-size:14px}
+table#tbl-comment sub.comment-date {color:tomato; font-size:10px}
+table#tbl-comment tr.level2 {color:gray; font-size: 14px;}
+table#tbl-comment tr.level2 td:first-of-type{padding-left:100px; text-align:left;}
+table#tbl-comment tr.level2 sub.comment-writer {color:#8e8eff; font-size:14px}
+table#tbl-comment tr.level2 sub.comment-date {color:#ff9c8a; font-size:10px}
+/*답글관련*/
+table#tbl-comment textarea{margin: 4px 0 0 0;}
+table#tbl-comment button.btn-insert-reply {width:60px; height:23px; color:white; background:#3300ff; position:relative; top:-5px; left:10px;}
+/* 삭제버튼관련 */
+table#tbl-comment button.btn-delete{background:red; color:white; display:none;}
+table#tbl-comment tr:hover button.btn-delete{display:inline;}

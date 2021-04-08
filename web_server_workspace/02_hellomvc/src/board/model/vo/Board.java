@@ -22,10 +22,10 @@ public class Board {
 		super();
 	}
 	//파라미터 생성자
-	public Board(int number, String title, String writer, String content, Date regDate, int readCount,
+	public Board(int no, String title, String writer, String content, Date regDate, int readCount,
 			Attachment attach) {
 		super();
-		this.no = number;
+		this.no = no;
 		this.title = title;
 		this.writer = writer;
 		this.content = content;

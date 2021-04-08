@@ -109,8 +109,76 @@ insert into web.board (no,title,writer,content,reg_date,read_count) values (seq_
 insert into web.board (no,title,writer,content,reg_date,read_count) values (seq_board_no.nextval,'안녕하세요, 게시판입니다 - 59','qwerty','반갑습니다',to_date('18/06/09','RR/MM/DD'),0);
 insert into web.board (no,title,writer,content,reg_date,read_count) values (seq_board_no.nextval,'안녕하세요, 게시판입니다 - 60','admin','안녕하세',to_date('18/06/10','RR/MM/DD'),0);
 
+--댓글 테이블 작성
+create table board_comment(
+  no number,
+  comment_level number default 1,
+  writer varchar2(15), --member참조
+  content varchar2(2000),
+  board_no number, --board 참조
+  comment_ref number, --현재 테이블의 no참조
+  reg_date date default sysdate,
+  constraint pk_board_comment_no primary key(no),
+  constraint fk_board_comment_writer foreign key(writer) REFERENCES member(member_id) on delete set null,
+  constraint fk_board_comment_board_no foreign key(board_no) REFERENCES board(no) on delete set null,
+  constraint fk_board_comment_ref foreign key(comment_ref) REFERENCES board_comment(no) on delete set null
+);
+
+comment on column board_comment.no is '게시판댓글번호';
+comment on column board_comment.comment_level is '게시판댓글 레벨';
+comment on column board_comment.writer is '게시판댓글 작성자';
+comment on column board_comment.content is '게시판댓글';
+comment on column board_comment.board_no is '참조원글번호';
+comment on column board_comment.comment_ref is '게시판댓글 참조번호';
+comment on column board_comment.reg_date is '게시판댓글 작성일';
+
+create sequence seq_board_comment_no;
+
+--샘플 테스트
+--113번 게시물에 댓글을 달아보겠습니다
+--댓글 추가
+insert into board_comment(no, comment_level, writer, content, board_no, comment_ref)
+values(seq_board_comment_no.nextval,1, 'admin', '댓글내용입니다', 113, null);
+
+insert into board_comment(no, comment_level, writer, content, board_no, comment_ref)
+values(seq_board_comment_no.nextval,1, 'qwerty', 'WOW~~~~!!!!', 113, null);
+
+insert into board_comment(no, comment_level, writer, content, board_no, comment_ref)
+values(seq_board_comment_no.nextval,1, 'honggd', '멋지네요', 113, null);
+
+--대댓글 추가
+insert into board_comment(no, comment_level, writer, content, board_no, comment_ref)
+values(seq_board_comment_no.nextval,2, 'admin', '대댓글내용입니다', 113, 1);
+
+insert into board_comment(no, comment_level, writer, content, board_no, comment_ref)
+values(seq_board_comment_no.nextval,3, 'abcd', '뭐래', 113, 1);
+
+insert into board_comment(no, comment_level, writer, content, board_no, comment_ref)
+values(seq_board_comment_no.nextval,2, 'admin', '호우~~!!!', 113, 2);
+
+--계층형 쿼리
+--기준 컬럼을 이용해 행간의 수직구조를 표현한 쿼리
+--댓글, 조직도, 메뉴등의 트리구조를 표현 할 수 있다.
+--start with 최상위 행을 지정
+--connect by 부모행과 자식행의 관계 작성. 부모행의 컬럼앞에 prior키워드를 작성.
+--level 이라는 가상 컬럼을 사용 할 수 있다.
+select lpad(' ',(level -1)*5)||content,
+          bc.*
+from board_comment bc
+--where bc.board_no = 113
+start with comment_level = 1
+connect by prior no = comment_ref
+order siblings by reg_date asc;
+
+rollback;
 
 commit;
 
-select * from board;
+
+select * from board order by no desc;
+select * from attachment order by no desc;
+select * from board_comment order by no desc;
 select * from member;
+
+select * from board_comment where board_no = 113 start with comment_level = 1 connect by prior no = comment_ref order siblings by reg_date asc
+
