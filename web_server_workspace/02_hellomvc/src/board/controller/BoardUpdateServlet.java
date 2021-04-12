@@ -40,6 +40,7 @@ public class BoardUpdateServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
 		//파일저장 
 				//1. MultipartRequest객체 생성
 				//   /WebContent/upload/board/업로드파일명.jpg
@@ -119,5 +120,4 @@ public class BoardUpdateServlet extends HttpServlet {
 				
 				response.sendRedirect(request.getContextPath()+"/board/boardView?no="+b.getNo());
 	}
-
 }
