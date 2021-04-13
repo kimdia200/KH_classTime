@@ -1,3 +1,5 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -70,17 +72,19 @@ span#time{
 	<div id="order-list"></div>
 </div>
 <div class="container">
-	<h2>인기순위</h2>
-	<span id="time"></span>
+	<h2 style="margin-bottom:0">인기순위</h2>
+	<span id="time" style="margin:0"></span>
 	<div id="rank-list"></div>
 </div>
 <script>
 	$("#btn-order").click(function(){
 		var $pname = $("option:selected").val();
 		var $amount = $("#amount").val();
+		$("#order-list").html("");
 		
 		$.ajax({
 			url:"<%= request.getContextPath()%>/smart",
+			method:"POST",
 			data:{
 				pname:$pname,
 				amount:$amount
@@ -111,6 +115,49 @@ span#time{
 			}
 		});
 	});
+	
+	$(document).ready(function(){
+		setInterval(function () {
+			time();
+	        rank();
+	        }, 5000);
+	});
+	
+	function time(){
+		$("#time").html("");
+		$("#time").html("<%= new SimpleDateFormat("yyyy년 MM월 dd일 a hh:mm:ss").format(new Date()) %>");
+	};
+	
+	function rank(){
+		$.ajax({
+			url:"<%= request.getContextPath()%>/smart",
+			success:function(data){
+				console.log(data);
+				$("#rank-list").html("");
+				
+				var arr = data.split("\n");
+				arr.splice(arr.length-1,1);
+				console.log(arr);
+				
+				$table = $("<table></table>")
+						.append($("<th>순위</th>"))
+						.append($("<th>제품명</th>"))
+						.append($("<th>누적판매량</th>"));
+				$(arr).each(function(index,a){
+					var arr2 = a.split(",");
+					$tr = $("<tr></tr>")
+					$(arr2).each(function(index, a){
+						$tr.append("<td>"+a+"</td>")
+					})
+						$tr.appendTo($table)
+				});
+						$table.appendTo($("#rank-list"));
+			},
+			error:function(xhr, status, err){
+				console.log(xhr, status, err);
+			}
+		});
+	};
 	
 </script>
 

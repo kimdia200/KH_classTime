@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.kh.homework.model.dao.SmartDao;
 import com.kh.homework.model.vo.Smart;
+import com.kh.homework.model.vo.SmartUp;
 
 public class SmartService {
 	private SmartDao smartDao = new SmartDao();
@@ -31,6 +32,13 @@ public class SmartService {
 		List<Smart> list = null;
 		Connection conn = getConnection();
 		list = smartDao.selectRecentFive(conn);
+		return list;
+	}
+
+	public List<SmartUp> rankFive() {
+		List<SmartUp> list = null;
+		Connection conn = getConnection();
+		list = smartDao.rankFive(conn);
 		return list;
 	}
 

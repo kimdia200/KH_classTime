@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Properties;
 
 import com.kh.homework.model.vo.Smart;
+import com.kh.homework.model.vo.SmartUp;
 
 
 public class SmartDao {
@@ -70,6 +71,32 @@ public class SmartDao {
 				s.setPname(rset.getString("pname"));
 				s.setAmount(rset.getInt("amount"));
 				s.setPdate(rset.getDate("pdate"));
+				list.add(s);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return list;
+	}
+
+	public List<SmartUp> rankFive(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("rankFive");
+		List<SmartUp> list= new ArrayList<SmartUp>(); 
+		try {
+			//select * from (select rownum,
+			pstmt=conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				SmartUp s = new SmartUp();
+				s.setRank(rset.getInt("rank"));
+				s.setPname(rset.getString("pname"));
+				s.setAmount(rset.getInt("amount"));
 				list.add(s);
 			}
 			
