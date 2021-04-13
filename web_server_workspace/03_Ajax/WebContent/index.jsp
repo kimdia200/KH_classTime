@@ -19,5 +19,20 @@
 	<ul>
 		<li><a href="<%=request.getContextPath()%>/html/html.jsp">html</a></li>
 	</ul>
+	
+	<h2>xml</h2>
+	<ul>
+		<li><a href="<%=request.getContextPath()%>/xml/xml.jsp">xml</a></li>
+	</ul>
+	
+	<h2>json</h2>
+	<ul>
+		<li><a href="<%=request.getContextPath()%>/json/json.jsp">json</a></li>
+	</ul>
+	
+	<h2>homework</h2>
+	<ul>
+		<li><a href="<%=request.getContextPath()%>/homework/smart.jsp">homework</a></li>
+	</ul>
 </body>
 </html>
