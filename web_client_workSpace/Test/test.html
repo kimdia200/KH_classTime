@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+  </head>
+  <body>
+    <div id="section2">
+      <div id="messagnerWrapper">
+        <div id="openMsg">
+          <img src="./chatImg.png" alt="" onclick="openn();" />
+        </div>
+        <input type="button" id="closee" value="X　" onclick="closee()" />
+        <div id="backimg">
+          <img src="massanger.png" alt="" />
+        </div>
+        <div id="abss">
+          <div id="contextArea">
+            <div class="notme">
+              <p class="chatwriter">writer</p>
+              <div style="border-radius: 10px" class="chatNotMe">
+                <span>
+                  conversation conversation conversation conversation
+                </span>
+              </div>
+              <div style="clear: both"></div>
+            </div>
+
+            <div class="notme">
+              <p class="chatwriter">writer</p>
+              <div style="border-radius: 10px" class="chatNotMe">
+                <span>
+                  conversation conversation conversation conversation
+                </span>
+              </div>
+              <div style="clear: both"></div>
+            </div>
+
+            <div class="notme">
+              <p class="chatwriter">writer</p>
+              <div style="border-radius: 10px" class="chatNotMe">
+                <span>
+                  conversation conversation conversation conversation
+                </span>
+              </div>
+              <div style="clear: both"></div>
+            </div>
+
+            <div class="notme">
+              <p class="chatwriter">writer</p>
+              <div style="border-radius: 10px" class="chatNotMe">
+                <span>
+                  conversation conversation conversation conversation
+                </span>
+              </div>
+              <div style="clear: both"></div>
+            </div>
+
+            <div class="notme">
+              <p class="chatwriter">writer</p>
+              <div style="border-radius: 10px" class="chatNotMe">
+                <span>
+                  conversation conversation conversation conversation
+                </span>
+              </div>
+              <div style="clear: both"></div>
+            </div>
+
+            <div class="me">
+              <p class="chatwriter">writer</p>
+              <div style="border-radius: 10px" class="chatMe">
+                <span>
+                  conversation conversation conversation conversation
+                </span>
+              </div>
+              <div style="clear: both"></div>
+            </div>
+          </div>
+
+          <div id="inputArea">
+            <form action="sdsdsdds" method="POST">
+              <input type="text" name="msgInput" id="msgInput" />
+              <input type="button" value="전송" />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    $(document).ready(function () {
+      $("#contextArea").scrollTop($("#contextArea")[0].scrollHeight);
+    });
+    function closee() {
+      $("#section2").attr("style", "transform:translateY(0px);");
+      $("#openMsg").attr("style", "visibility: visible;");
+    }
+    function openn() {
+      $("#section2").attr("style", "transform:translateY(-500px);");
+      $("#openMsg").attr("style", "visibility: hidden;");
+    }
+  </script>
+  <style>
+    #section2 {
+      position: fixed;
+      right: 0;
+      bottom: -500px;
+      transition-duration: 1s;
+      transition-timing-function: ease-in;
+    }
+    #closee {
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      right: 11px;
+      top: 6px;
+      cursor: pointer;
+    }
+    #messagnerWrapper {
+      margin: 0;
+      padding: 0;
+      width: 300px;
+      height: 500px;
+      position: relative;
+      z-index: 30;
+    }
+    #backimg {
+      width: 300px;
+      height: 500px;
+      position: absolute;
+      z-index: -1;
+    }
+    #backimg img {
+      width: 100%;
+      height: 100%;
+    }
+    #abss {
+      position: absolute;
+      left: 8px;
+      top: 30px;
+    }
+    #contextArea {
+      width: 285px;
+      height: 384px;
+      overflow-y: scroll;
+      background: white;
+      position: relative;
+    }
+    #inputArea {
+      width: 300px;
+      height: 50px;
+    }
+    #inputArea input[type="text"] {
+      width: 230px;
+    }
+    .notme {
+      text-align: left;
+    }
+    .notme .chatwriter {
+      color: black;
+      font-weight: bold;
+    }
+    .me {
+      text-align: right;
+    }
+    .me .chatwriter {
+      color: #fd9000;
+      font-weight: bold;
+    }
+    .chatwriter {
+      margin-bottom: 0;
+    }
+    .chatNotMe {
+      background: lightgray;
+      border-radius: 10px;
+      float: left;
+      max-width: 200px;
+    }
+    .chatMe {
+      background: #fd9000;
+      color: white;
+      float: right;
+      max-width: 200px;
+    }
+    #openMsg {
+      position: absolute;
+      top: -50px;
+      right: 0;
+      width: 50px;
+      height: 50px;
+      background: #fd9000;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+  </style>
+</html>

@@ -1,23 +1,26 @@
 {
-	"folders": [
-		{
-			"path": "01_HTML"
-		},
-		{
-			"path": "02_CSS"
-		},
-		{
-			"path": "03_javaScript"
-		},
-		{
-			"path": "04_jquery"
-		},
-		{
-			"path": "05_html5API"
-		}
-	],
-	"settings": {
-		"liveServer.settings.multiRootWorkspaceName": "01_HTML",
-		"liveServer.settings.port": 5501
-	}
+  "folders": [
+    {
+      "path": "01_HTML"
+    },
+    {
+      "path": "02_CSS"
+    },
+    {
+      "path": "03_javaScript"
+    },
+    {
+      "path": "04_jquery"
+    },
+    {
+      "path": "05_html5API"
+    },
+    {
+      "path": "Test"
+    }
+  ],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "Test",
+    "liveServer.settings.port": 5501
+  }
 }

@@ -28,8 +28,7 @@
 			<% if(board.getAttach() != null){ %>
 			<p style ="margin:0">
 				<img src="<%= request.getContextPath() %>/images/file.png" width="16px"/>
-				<%= board.getAttach().getOriginalFileName() %>
-				<% System.out.println("어태치 넘버 = "+board.getAttach().getNo()); %>
+				<%= board.getAttach().getRenamedFileName() %>
 				<input type="checkbox" name="delfile" id="delFile" value="<%= board.getAttach().getNo()%>"/>
 				<label for="delFile">삭제</label>
 			</p>

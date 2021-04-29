@@ -12,7 +12,7 @@
 			<tr>
 				<th>아이디<sup>*</sup></th>
 				<td>
-					<input type="text" placeholder="4글자이상" name="memberId" id="memberId_" required>
+					<input type="text" placeholder="4글자이상" name="memberId" id="<memb></memb>erId_" required>
 					<input type="button" value="중복검사" onclick="checkIdDuplicate();" />
 					<input type="hidden" id="idValid" value="0" />
 					<%-- #idValid 1이면 사용가능한 아이디이고 중복검사함, 0이면 중복검사전. --%>

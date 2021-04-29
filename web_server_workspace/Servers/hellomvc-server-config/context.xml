@@ -27,4 +27,17 @@
     <!--
     <Manager pathname="" />
     -->
+    
+    <!-- DBCP 자원 생성 -->
+    <Resource name="jdbc/myoracle"
+    		  auth="Container"
+    		  type="javax.sql.DataSource"
+    		  driverClassName="oracle.jdbc.OracleDriver"
+    		  url="jdbc:oracle:thin:@52.79.162.84:1521:xe"
+    		  username="web"
+    		  password="web"
+    		  maxTotal="20"
+    		  maxIdle="10"
+    		  maxWaitMillis="-1"
+    			/>
 </Context>

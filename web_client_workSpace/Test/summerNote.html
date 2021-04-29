@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css"
+      rel="stylesheet"
+    />
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
+
+    <!-- include summernote css/js-->
+    <link
+      href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css"
+      rel="stylesheet"
+    />
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="summernote"></div>
+    <form action="" name="frm">
+      <input type="hidden" name="hidden" />
+      <input type="submit" value="클릭" />
+      <input type="button" value="ddddd" onclick="kkk()" />
+    </form>
+  </body>
+  <script>
+    $(document).ready(function () {
+      $("#summernote").summernote().summernote("code", "<h1>안녕하세요</h1>");
+      $(document.frm).submit(function () {
+        var markupStr = $("#summernote").summernote("code");
+        alert(markupStr);
+        console.log(markupStr);
+
+        $("body").html(markupStr);
+        return false;
+      });
+      function kkk() {
+        location.href("http://localhost:9090/mvc");
+      }
+    });
+  </script>
+</html>

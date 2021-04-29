@@ -15,7 +15,7 @@ import member.model.vo.Member;
 /**
  * Servlet implementation class AdminMemberRoleUpdateServlet
  */
-@WebServlet({ "/AdminMemberRoleUpdateServlet", "/admin/memberRoleUpdate" })
+@WebServlet("/admin/memberRoleUpdate")
 public class AdminMemberRoleUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	MemberService memberService = new MemberService();

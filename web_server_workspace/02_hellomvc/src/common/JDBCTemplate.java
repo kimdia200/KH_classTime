@@ -4,11 +4,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 /**
  * Service, Dao 클래스의 공통부문을 static메소드로 제공
@@ -54,19 +58,45 @@ public class JDBCTemplate {
 		}
 	}
 	
+//	public static Connection getConnection() {
+//		Connection conn = null;
+//		try {
+//			//1. DriverClass등록(최초1회)
+//			//2. Connection객체 생성(URL,User,Password)
+//			conn = DriverManager.getConnection(url, user, password);
+//			
+//			//	2.1. 자동커밋  false설정
+//			conn.setAutoCommit(false);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		return conn;
+//	}
+	
+	/**
+	 * DBCP 이용버전
+	 * 
+	 * Resource등록 - JNDI를 통한 참조
+	 * @return
+	 */
 	public static Connection getConnection() {
 		Connection conn = null;
+		//javax.naming
 		try {
-			//1. DriverClass등록(최초1회)
-			//2. Connection객체 생성(URL,User,Password)
-			conn = DriverManager.getConnection(url, user, password);
-			
-			//	2.1. 자동커밋  false설정
+			Context ctx = new InitialContext();
+			/**
+			 * JNDI구조
+			 * java:/comp/env/ + jdbc/myoracle
+			 */
+			DataSource dataSource = (DataSource) ctx.lookup("java:/comp/env/jdbc/myoracle");
+			conn = dataSource.getConnection();
 			conn.setAutoCommit(false);
+		} catch (NamingException e) {
+			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 		return conn;
 	}
 	

@@ -20,10 +20,6 @@ public class CheckIdDuplicateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// 1. 사용자 입력값 처리
@@ -43,5 +39,4 @@ public class CheckIdDuplicateServlet extends HttpServlet {
 						request.getRequestDispatcher("/WEB-INF/views/member/checkIdDuplicate.jsp");
 				requestDispatcher.forward(request, response);
 	}
-
 }
