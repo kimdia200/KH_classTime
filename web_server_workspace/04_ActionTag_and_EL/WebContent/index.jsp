@@ -29,7 +29,9 @@ ul{
 	</ul>
 	<h2>jtsl</h2>
 	<ul>
-		<li><a href="${pageContext.request.contextPath}/jstl/coreBasics.jsp?no1=234&no2=432">core basics</a></li>
+		<li><a href="${pageContext.request.contextPath}/jstl/coreBasics.do?no1=234&no2=432">core basics</a></li>
+		<li><a href="${pageContext.request.contextPath}/jstl/fmtBasics.jsp">fmt Basics</a></li>
+		<li><a href="${pageContext.request.contextPath}/jstl/fnBasics.jsp">fn Basics</a></li>
 	</ul>
 </body>
 </html>

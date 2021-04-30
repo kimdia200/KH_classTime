@@ -15,6 +15,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Core Basics</title>
+<style>
+table {
+	border-collapse: collapse;
+	border: 1px solid #000;
+	margin: 10px;
+}
+th, td {
+	border: 1px solid #000;
+	padding: 5px;
+}
+</style>
 </head>
 <body>
 	<h1>JSTL</h1>
@@ -60,8 +71,63 @@
 	
 	<c:set var="list" value='<%= Arrays.asList("홍길동", "신사임당", "이순신") %>'/>
 	<c:forEach items="${list}" var="name" varStatus="vs">
+		<!-- 0부터 시작 = index, 1부터시작 = count -->
 		<p>${vs.index} ${vs.count} -  ${name}</p>
 	</c:forEach>
+	
+	<table>
+		<tr>
+			<th>No</th>
+			<th>아이디</th>
+			<th>이름</th>
+			<th>성별</th>
+			<th>나이</th>
+			<th>결혼여부</th>
+		</tr>
+		<c:forEach items="${personList}" var="person" varStatus="vs">
+		<tr>
+			<td>${vs.count}</td>
+			<td>${person.id}</td>
+			<td>${person.name}</td>
+			<td>${person.gender}</td>
+			<td>${person.age}</td>
+			<td><input type="checkbox" ${person.married ? 'checked' : ''} onclick="return false;"/></td>
+		</tr>
+		</c:forEach>
+	</table>
+	<table>
+		<c:forEach items="${map}" var="item">
+		<tr>
+			<th>${item.key}</th>
+			<td>${item.value}</td>
+		</tr>
+		</c:forEach>
+	</table>
+	
+	<c:forEach items="${list}" var="name" varStatus="vs">
+		
+		<%--
+		방법1
+		<c:if test="${list.size()-1 != vs.index}">
+			${name}, 
+		</c:if>
+		<c:if test="${list.size()-1 == vs.index}">
+			${name}
+		</c:if> 
+		--%>
+		
+		<%-- 
+		방법2
+		${name}${vs.count!= list.size() ? ', ': '' } 
+		--%>
+		
+		${name}${vs.last ? "" : ", "}
+	</c:forEach>
+	
+		<h2>url</h2>
+	<img alt="이미지" src="${pageContext.request.contextPath}/images/file.png">
+	<img src='<c:url value="/images/file.png"/>' alt="이미지" />
+	
 	
 </body>
 </html>
