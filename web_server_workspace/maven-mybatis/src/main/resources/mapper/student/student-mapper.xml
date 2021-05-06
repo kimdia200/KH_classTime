@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="student">
+	<!-- <select id="insertStudent" parameterType="com.kh.mybatis.student.model.vo.Student"> -->
+	<!-- mybatis-config.xml에서 별칭 설정해줘서 이렇게 간단하게 사용 가능 -->
+	<select id="insertStudent" parameterType="student">
+	
+		insert into
+			student(no, name, tel)
+		values(
+			seq_student_no.nextval,
+			<!-- 현재 파라미터 student가 넘어온걸 아니까 getter에서 get을떼고 사용  = OGNL방식-->
+			#{name},
+			#{tel}
+		)
+	</select>
+</mapper>

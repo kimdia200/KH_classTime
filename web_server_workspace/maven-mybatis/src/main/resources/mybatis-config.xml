@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <typeAliases>
+  	<!-- 링크 걸리는지 확인 ctrl+클릭 -->
+  	<typeAlias type="com.kh.mybatis.student.model.vo.Student" alias="student"/>
+  </typeAliases>
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC"/>
+	  <!--  type="POOLED" = 풀을 이용하겠다는것  -->
+      <dataSource type="POOLED">
+        <property name="driver" value="oracle.jdbc.OracleDriver"/>
+        <property name="url" value="jdbc:oracle:thin:@localhost:1522:xe"/>
+        <property name="username" value="mybatis"/>
+        <property name="password" value="mybatis"/>
+      </dataSource>
+    </environment>
+  </environments>
+  <mappers>
+    <mapper resource="mapper/student/student-mapper.xml"/>
+  </mappers>
+</configuration>
