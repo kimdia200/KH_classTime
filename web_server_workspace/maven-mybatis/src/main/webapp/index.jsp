@@ -31,6 +31,7 @@ $(()=>{
 	<h2>student</h2>
 	<ul>
 		<li><a href="${pageContext.request.contextPath}/student/insertStudent.do">/student/insertStudent.do</a></li>
+		<li><a href="${pageContext.request.contextPath}/student/selectOne.do">/student/selectOne.do</a></li>
 	</ul>
 </body>
 </html>

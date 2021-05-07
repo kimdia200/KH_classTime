@@ -3,6 +3,9 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+  <settings>
+  	<setting name="mapUnderscoreToCamelCase" value="true"/>
+  </settings>
   <typeAliases>
   	<!-- 링크 걸리는지 확인 ctrl+클릭 -->
   	<typeAlias type="com.kh.mybatis.student.model.vo.Student" alias="student"/>

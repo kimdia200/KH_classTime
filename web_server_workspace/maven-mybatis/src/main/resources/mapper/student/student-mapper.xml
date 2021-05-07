@@ -5,7 +5,7 @@
 <mapper namespace="student">
 	<!-- <select id="insertStudent" parameterType="com.kh.mybatis.student.model.vo.Student"> -->
 	<!-- mybatis-config.xml에서 별칭 설정해줘서 이렇게 간단하게 사용 가능 -->
-	<select id="insertStudent" parameterType="student">
+	<insert id="insertStudent" parameterType="student">
 	
 		insert into
 			student(no, name, tel)
@@ -15,5 +15,88 @@
 			#{name},
 			#{tel}
 		)
+	</insert>
+	<insert id="insertStudentMap" parameterType="map">
+		insert into
+			student(no, name, tel)
+		values(
+			seq_student_no.nextval,
+			<!-- map을 전달했을때는 키값을 가져와서 사용하게됨 -->
+			#{name},
+			#{tel}
+		)
+	</insert>
+	<!-- select는 resultType/resultMap을 반드시 작성해야함  필수라고 필수!-->
+	<select id="selectStudentCount" resultType="_int">
+		select
+			count(*)
+		from
+			student
 	</select>
+	<!-- 
+		resultset을 mybatis가 자동으로 vo매핑
+		1. 동일한 이름의 setter를 통해 값 대입
+		2. 자동형변환 처리
+			varchar2, char -> String
+			number -> int/double
+			date -> java.util.date
+		
+		단 setter의 이름과 컬럼명이 다를경우 처리되지 않음
+		ex. DB에서는 reg_date, 자바객체로는 regDate일경우
+		
+		해경방안1. query alias지정 - 대소문자 구분위해 ""(쌍따옴표 필수)
+			select reg_date "regDate"....
+		해결방안2. resultMap사용
+		해결방안3. mybatis-config.xml의 setting태그 mapUnderscoreToCamelCase true설정
+	 -->
+	 
+	 <!-- 해결방안 1 -->
+	<!-- <select id="selectOneStudent" resultType="student">
+		select no, name, tel, reg_date "regDate" from student where no = #{no}
+	</select> -->
+	
+	<!-- 해결방안 2 -->
+	<!-- <select id="selectOneStudent" resultMap="studentVoMap">
+		select * from student where no=#{no}
+	</select> -->
+	<!-- 
+		resultMap의 장점 db컬럼과 vo필드(property)연결
+		1. 이름 불일치 해결
+		2. 형변환 처리를 임의로 배정
+		
+		-column과 property가 동일하다면, 해당 자식태그는 생략 가능
+		-resultMap은 재사용이 가능하다
+	 -->
+	<resultMap type="student" id="studentVoMap">
+		<!-- <id column="no" property="no"/> pk컬럼용
+		<result column="name" property="name"/>
+		<result column="tel" property="tel"/> -->
+		<result column="reg_date" property="regDate"/>
+	</resultMap>
+	
+	
+	<!-- 해결방안3 -->
+	<!-- mybatis-config.xml에서 setting값 추가해줫음~! -->
+	<select id="selectOneStudent" resultType="student">
+		select * from student where no=#{no}
+	</select>
+	
+	<select id="selectOneStudentMap" resultType="map" parameterType="map" resultMap="studentMap">
+		<!-- 이렇게 하면 대문자로 출력되니까 우리가 지정한 값으로 하려면~
+		select * from student where no=#{no} -->
+		
+		<!-- 해결방안1.별칭을 지정해준다!
+		select no "no", reg_date "regDate", tel "tel", name "name"
+		from student where no=#{no} -->
+		
+		<!-- 아래 resultMap을 이용 -->
+		select * from student where no=#{no}
+	</select>
+	<resultMap type="map" id="studentMap">
+		<!-- column속성은 대소문자 구분 안하지만 property는 대소문자 구분해서 key값이 됨 -->
+		<id column="no" property="no"/>
+		<result column="name" property="name"/>
+		<result column="tel" property="tel"/>
+		<result column="reg_date" property="regDate"/>
+	</resultMap>
 </mapper>

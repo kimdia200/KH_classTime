@@ -49,6 +49,31 @@ alert("${msg}");
 			</table>
 		</form>
 	</div>
+	
+	<hr />
+	
+	<h2>회원등록(map)</h2>
+	<form method="post" action="${pageContext.request.contextPath}/student/insertStudentMap.do">
+			<table id="tbl-student">
+				<tr>
+					<th>학생이름</th>
+					<td>
+						<input type="text" name="name" required/>
+					</td>
+				</tr>
+				<tr>
+					<th>전화번호</th>
+					<td>
+						<input type="tel" name="tel" maxlength="11" required/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="submit" value="등록" />
+					</td>
+				</tr>
+			</table>
+		</form>
 
 </body>
 </html>

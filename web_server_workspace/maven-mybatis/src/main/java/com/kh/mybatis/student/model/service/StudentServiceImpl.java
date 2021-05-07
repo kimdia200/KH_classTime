@@ -2,6 +2,8 @@ package com.kh.mybatis.student.model.service;
 
 import static com.kh.mybatis.common.MybatisUtils.getSqlSession;
 
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 
 import com.kh.mybatis.student.model.dao.StudentDao;
@@ -33,5 +35,63 @@ public class StudentServiceImpl implements StudentService {
 			session.close();
 		}
 		return result;
+	}
+
+	@Override
+	public int insertStudentMap(Map<String, Object> student) {
+		int result = 0;
+		SqlSession session = getSqlSession();
+		try {
+			result = studentDao.insertStudentMap(session, student);
+			session.commit();
+		} catch (Exception e) {
+			session.rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+		return result;
+	}
+
+	@Override
+	public int selectStudentCount() {
+		int total=0;
+		SqlSession session = getSqlSession();
+		try {
+			total = studentDao.selectStudentCount(session);
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			session.close();
+		}
+		return total;
+	}
+
+	@Override
+	public Student selectOneStudent(int no) {
+		Student student=null;
+		SqlSession session = getSqlSession();
+		try {
+			student=studentDao.selectOneStudent(session, no);
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			session.close();
+		}
+		return student;
+	}
+
+	@Override
+	public Map<String, Object> selectOneStudentMap(int no) {
+		Map<String, Object> student = null;
+		SqlSession session = getSqlSession();
+		try {
+			student = studentDao.selectOneStudentMap(session, no);
+		} catch (Exception e) {
+			throw e;
+		}finally {
+			session.close();
+		}
+		return student;
 	}
 }

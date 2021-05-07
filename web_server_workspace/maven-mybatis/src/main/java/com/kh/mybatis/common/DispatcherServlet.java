@@ -47,6 +47,7 @@ public class DispatcherServlet extends HttpServlet {
 			// controller객체화 : new SomeController();
 			try {
 				// 클래스 객체에 : forName메서드에 패키지 포함 클래스명을 넣어주면 해당 클래스를 하나 리턴
+				//java reflection api
 				Class clazz = Class.forName(value);
 				AbstractController controller = (AbstractController) clazz.newInstance();
 
