@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="emp">
+	<select id="selectAllEmp" resultMap="empMap">
+		select * from emp order by emp_id
+	</select>
+	
+		<!--
+			1. 테이블명, 컬러몀ㅇ의 식별자를 표현 ${col}
+			2. 데이터를 표현 #{value}
+		 -->
+	<select id="search1" resultMap="empMap">
+		select * from emp where ${searchType} like '%' || #{searchKeyword} || '%'
+	</select>
+	
+	
+	<select id="search2" resultMap="empMap2">
+		select * from ( select e.*, decode(substr(emp_no, 8, 1), '1', '남', '3', '남', '여') gender from emp e ) e
+	<!--  
+				where태그 내부에 and/or 먼저오면 제거, 
+				where태그 몸통이 비었다면 where키워드 제거 
+			 -->
+		<where>
+			<if test="gender != null and gender != ''"> gender = #{gender} </if>
+			<if test="searchType != null and searchType != ''"> and ${searchType} like '%' || #{searchKeyword} || '%' </if>
+		</where>
+	</select>
+	<resultMap type="map" id="empMap">
+<!-- 		emp_id, emp_name, emp_no, email, phone, dept_code, job_code, sal_level, salary,
+		 bonus, manager_id, hire_date, quit_date, quit_yn -->
+		<id column="emp_id" property="empId"/>
+		<result column="emp_name" property="empName"/>
+		<result column="emp_no" property="empNo"/>
+		<result column="email" property="email"/>
+		<result column="phone" property="phone"/>
+		<result column="dept_code" property="deptCode"/>
+		<result column="job_code" property="jobCode"/>
+		<result column="sal_level" property="salLevel"/>
+		<result column="salary" property="salary"/>
+		<result column="bonus" property="bonus"/>
+		<result column="manager_id" property="managerId"/>
+		<result column="hire_date" property="hireDate"/>
+		<result column="quit_date" property="quitDate"/>
+		<result column="quit_yn" property="quitYN"/>
+		
+	</resultMap>
+	<resultMap type="map" id="empMap2">
+<!-- 		emp_id, emp_name, emp_no, email, phone, dept_code, job_code, sal_level, salary,
+		 bonus, manager_id, hire_date, quit_date, quit_yn -->
+		<id column="emp_id" property="empId"/>
+		<result column="emp_name" property="empName"/>
+		<result column="emp_no" property="empNo"/>
+		<result column="gender" property="gender"/>
+		<result column="email" property="email"/>
+		<result column="phone" property="phone"/>
+		<result column="dept_code" property="deptCode"/>
+		<result column="job_code" property="jobCode"/>
+		<result column="sal_level" property="salLevel"/>
+		<result column="salary" property="salary"/>
+		<result column="bonus" property="bonus"/>
+		<result column="manager_id" property="managerId"/>
+		<result column="hire_date" property="hireDate"/>
+		<result column="quit_date" property="quitDate"/>
+		<result column="quit_yn" property="quitYN"/>
+		
+	</resultMap>
+</mapper>

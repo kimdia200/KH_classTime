@@ -99,4 +99,22 @@
 		<result column="tel" property="tel"/>
 		<result column="reg_date" property="regDate"/>
 	</resultMap>
+	
+	<!-- 어차피 정수형을 리턴하므로 result타입 적지않아도 된다 -->
+	<update id="updateStudent" >
+		update student set name = #{name}, tel = #{tel} where no = #{no}
+	</update>
+	
+	<delete id="deleteStudent">
+		delete from student where no = #{no}
+	</delete>
+	
+	<!-- selectList라면 resultType이 list일것같지만 한행에 대한 것을 적어줘야 하므로 student라고 적어줘야함 -->
+	<select id="selectStudentList" resultType="student">
+		select * from student order by no desc
+	</select>
+	
+	<select id="selectStudentMapList" resultMap="studentMap">
+		select * from student order by no desc
+	</select>
 </mapper>

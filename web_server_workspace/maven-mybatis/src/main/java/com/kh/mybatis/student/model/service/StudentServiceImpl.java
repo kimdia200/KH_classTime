@@ -2,6 +2,7 @@ package com.kh.mybatis.student.model.service;
 
 import static com.kh.mybatis.common.MybatisUtils.getSqlSession;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -30,6 +31,7 @@ public class StudentServiceImpl implements StudentService {
 			
 		} catch (Exception e) {
 			session.rollback();
+			throw e;
 		} finally {
 			//4. 자원반납 - SqlSession에 대한 자원반납
 			session.close();
@@ -94,4 +96,89 @@ public class StudentServiceImpl implements StudentService {
 		}
 		return student;
 	}
+
+	@Override
+	public int updateStudent(Student student) {
+		int result = 0;
+		SqlSession session = getSqlSession();
+		try {
+			//1. connection 생성
+			//mybatis에서는 Connection대신 SqlSession이라는 객체를 사용함
+			
+			//2. dao업무위임
+			result = studentDao.updateStudent(session, student);
+			
+			//3. transaction 처라 - SqlSession에 대해서 commit | rollback
+			session.commit();
+			
+		} catch (Exception e) {
+			session.rollback();
+			throw e;
+		} finally {
+			//4. 자원반납 - SqlSession에 대한 자원반납
+			session.close();
+		}
+		return result;
+	}
+
+	@Override
+	public int deleteStudent(int no) {
+		int result = 0;
+		SqlSession session = getSqlSession();
+		try {
+			//1. connection 생성
+			//mybatis에서는 Connection대신 SqlSession이라는 객체를 사용함
+			
+			//2. dao업무위임
+			result = studentDao.deleteStudent(session, no);
+			
+			//3. transaction 처라 - SqlSession에 대해서 commit | rollback
+			session.commit();
+			
+		} catch (Exception e) {
+			session.rollback();
+			throw e;
+		} finally {
+			//4. 자원반납 - SqlSession에 대한 자원반납
+			session.close();
+		}
+		return result;
+	}
+
+	@Override
+	public List<Student> selectStudentList() {
+		List<Student> list = null;
+		SqlSession session = getSqlSession();
+		
+		try {
+			list = studentDao.selectStudentList(session);
+			session.commit();
+		} catch (Exception e) {
+			session.rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+		
+		return list;
+	}
+
+	@Override
+	public List<Map<String, Object>> selectStudentMapList() {
+		List<Map<String, Object>> mapList = null;
+		SqlSession session = getSqlSession();
+		
+		try {
+			mapList = studentDao.selectStudentMapList(session);
+			session.commit();
+		} catch (Exception e) {
+			session.rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+		
+		return mapList;
+	}
+	
 }
