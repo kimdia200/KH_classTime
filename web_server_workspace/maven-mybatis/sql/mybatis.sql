@@ -53,4 +53,11 @@ select * from tab;
 
 commit;
 
-emp_id, emp_name, emp_no, email, phone, dept_code, job_code, sal_level, salary, bonus, manager_id, hire_date, quit_date, quit_yn;
+select * from job where job_code in ('J1','J2');
+
+select * from (select e.*, decode(substr(emp_no, 8, 1), '1', '남', '3', '남', '여') gender, d.dept_title, j.job_name
+				from emp e 
+				left join dept d on e.dept_code = d.dept_id
+				left join job j on e.job_code = j.job_code);
+                
+select dept_id "deptId", dept_title "deptTitle" from dept order by dept_id asc;

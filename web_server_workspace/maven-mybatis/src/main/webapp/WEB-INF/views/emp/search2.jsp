@@ -63,6 +63,28 @@ input#btn-search { width: 350px; background: lightslategray; color: white; box-s
 					<label for="gender1">여</label>
 				</td>
 			</tr>
+				<!-- 급여기준 -->
+			<tr>
+				<th>급여</th>
+				<td>
+					<input type="number" name="salary" min="0" step="500000" value="${ param.salary }"/>
+					<input type="radio" name="salaryCompare" id="salaryCompareGE" value='ge' ${ param.salaryCompare eq 'ge' ? 'checked' : '' }/>
+					<label for="salaryCompareGE">이상</label>
+					<input type="radio" name="salaryCompare" id="salaryCompareLE" value='le' ${ param.salaryCompare eq 'le' ? 'checked' : '' }/>
+					<label for="salaryCompareLE">이하</label>
+				</td>
+			</tr>
+					<!-- @실습문제 : 입사일 조회 -->
+			<tr>
+				<th>입사일</th>
+				<td>
+					<input type="date" name="hire_date" value="${param.hire_date}"/>	
+					<input type="radio" name="hiredateCompare" id="hire_date_le" value='le' ${param.hiredateCompare eq 'le' ? 'checked' : ''}/>
+					<label for="hire_date_le">이전</label>
+					<input type="radio" name="hiredateCompare" id="hire_date_ge" value='ge' ${param.hiredateCompare eq 'ge' ? 'checked' : ''}/>
+					<label for="hire_date_ge">이후</label>
+				</td>
+			</tr>
 			<tr>
 				<th colspan="2">
 					<input type="submit" id="btn-search" value="검색"  />

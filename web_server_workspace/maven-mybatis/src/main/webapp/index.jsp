@@ -37,7 +37,8 @@ $(()=>{
 	<h2>employee</h2>
 	<ul>
 		<li><a href="${pageContext.request.contextPath}/emp/search1.do">/emp/search1.do</a></li>
-		<li><a href="${pageContext.request.contextPath}/emp/search2.do">/emp/search1.do</a></li>
+		<li><a href="${pageContext.request.contextPath}/emp/search2.do">/emp/search2.do</a></li>
+		<li><a href="${pageContext.request.contextPath}/emp/search3.do">/emp/search3.do</a></li>
 	</ul>
 </body>
 </html>

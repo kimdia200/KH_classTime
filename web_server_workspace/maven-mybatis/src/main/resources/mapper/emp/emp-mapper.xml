@@ -25,6 +25,57 @@
 		<where>
 			<if test="gender != null and gender != ''"> gender = #{gender} </if>
 			<if test="searchType != null and searchType != ''"> and ${searchType} like '%' || #{searchKeyword} || '%' </if>
+			<!--  
+				CDATA Section
+				xml의 entity문자(예약문자) < > & 등을 문자그대로 사용하고 할때 사용.
+				<![CDATA[문자그대로 처리]]>
+			  -->
+			<if test="salary != null and salary != 0">
+				<if test="salaryCompare != null and salaryCompare != ''">
+					<choose>
+						<when test="salaryCompare == 'ge'">
+							and salary
+							<![CDATA[ >= ]]>
+							#{salary}
+						</when>
+						<when test="salaryCompare == 'le'">
+							and salary
+							<![CDATA[ <= ]]>
+							#{salary}
+						</when>
+						<otherwise/>
+					</choose>
+				</if>
+			</if>
+			<!-- hireDate 문자열 처리 -->
+			<!-- <if test="hireDate != null and hireDate != ''">
+				<if test="hiredateCompare != null and hiredateCompare != ''">
+					<choose>
+						<when test="hiredateCompare eq 'ge'">
+							and hire_date <![CDATA[ >= ]]> to_date(#{hireDate},'yyyy-MM-dd')
+						</when>
+						<when test="hiredateCompare eq 'le'">
+							and hire_date <![CDATA[ <= ]]> to_date(#{hireDate},'yyyy-MM-dd')
+						</when>
+						<otherwise/>
+					</choose>
+				</if>
+			</if> -->
+			
+			<!-- hireDate 날짜형 처리 -->
+			<if test="hire_date != null">
+				<if test="hiredateCompare != null and hiredateCompare != ''">
+					<choose>
+						<when test="hiredateCompare eq 'ge'">
+							and hire_date <![CDATA[ >= ]]> #{hireDate}
+						</when>
+						<when test="hiredateCompare eq 'le'">
+							and hire_date <![CDATA[ <= ]]> #{hireDate}
+						</when>
+						<otherwise/>
+					</choose>
+				</if>
+			</if>
 		</where>
 	</select>
 	<resultMap type="map" id="empMap">
@@ -66,4 +117,43 @@
 		<result column="quit_yn" property="quitYN"/>
 		
 	</resultMap>
+	
+	<select id="selectJobList" resultMap="job">
+		select * from job order by job_code asc
+	</select>
+	<resultMap type="map" id="job">
+		<id column="job_code" property="jobCode"/>
+		<result column="job_name" property="jobName"/>
+	</resultMap>
+	
+	<select id="search3" resultType="map">
+		select * from ( select e.*, decode(substr(emp_no, 8, 1), '1', '남', '3', '남', '여') gender, nvl(d.dept_title,'인턴') dept_title, j.job_name from emp e left join dept d on e.dept_code = d.dept_id left join job j on e.job_code = j.job_code ) e
+		<where>
+			<if test="jobCodeArr != null">
+				job_code in
+				<foreach collection="jobCodeArr" item="jobCode" open="(" close=")" separator=","> #{jobCode} </foreach>
+			</if>
+			<if test="deptCodeArr != null">
+				and nvl(dept_code,'D0') in
+				<foreach collection="deptCodeArr" item="deptCode" open="(" close=")" separator=",">#{deptCode}</foreach>
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectDeptList" resultType="map">
+		select dept_id "deptId", dept_title "deptTitle" from dept order by dept_id asc
+	</select>
+	
+	<select  id="selectEmpOne" resultType="map">
+		select * from ( select e.*, decode(substr(emp_no, 8, 1), '1', '남', '3', '남', '여') gender, nvl(d.dept_title,'인턴') dept_title, j.job_name from emp e left join dept d on e.dept_code = d.dept_id left join job j on e.job_code = j.job_code ) e where emp_id=#{empId}
+	</select>
+	
+	<update id="updateEmp">
+		update emp
+		<set>
+			<if test="jobCode != null">job_code = #{jobCode},</if>
+			<if test="deptCode != null">dept_code = #{deptCode}</if>
+		</set>
+		where emp_id = #{empId}
+	</update>
 </mapper>
