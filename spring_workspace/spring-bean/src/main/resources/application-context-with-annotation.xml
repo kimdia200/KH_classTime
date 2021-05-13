@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- com.kh.spring 하위패키지 모두 조사하겠다 -->
+	<!-- base-package 하위의 클래스들의 어노테이션 처리
+		- @Component : 해당클래스를 bean으로 등록
+		- @Autowired : 의존주입(DI)처리 해준다 (필드 , setter, 생성자 레벨에서 사용)
+	 -->
+	<context:component-scan base-package="com.kh.spring"></context:component-scan>
+</beans>

@@ -61,3 +61,12 @@ select * from (select e.*, decode(substr(emp_no, 8, 1), '1', '남', '3', '남', 
 				left join job j on e.job_code = j.job_code);
                 
 select dept_id "deptId", dept_title "deptTitle" from dept order by dept_id asc;
+
+select e.*, decode(substr(emp_no, 8, 1), '1', '남', '3', '남', '여') gender, d.dept_title, j.job_name, nvl(dept_code,'D0') "dept_codee" from emp e left join dept d on e.dept_code = d.dept_id left join job j on e.job_code = j.job_code;
+select * from ( 
+                        select e.*, decode(substr(emp_no, 8, 1), '1', '남', '3', '남', '여') gender, d.dept_title, j.job_name, nvl(dept_code,'D0') dept_codee 
+                        from emp e left join dept d on e.dept_code = d.dept_id left join job j on e.job_code = j.job_code 
+                    ) e where dept_codee is null;
+                    
+                    
+                    select * from emp where emp_id=214;

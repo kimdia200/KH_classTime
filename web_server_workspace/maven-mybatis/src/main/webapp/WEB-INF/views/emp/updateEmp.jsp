@@ -57,7 +57,7 @@ table#emp th, table#emp td{
 	</table>
 	<hr />
 	<div class="update-wrapper">
-		<form action="${pageContext.request.contextPath }/emp/updateEmp.do" method="post">
+		<form action="${pageContext.request.contextPath }/emp/updateEmp.do" method="post" name="empUpdateFrm">
 			<input type="hidden" name="empId" value="${emp['EMP_ID']}" />
 		   	직급: 
 		    <select name="jobCode">
@@ -81,11 +81,19 @@ table#emp th, table#emp td{
 	
 </div>
 <script>
-function empUpdateValidate(){
-	//아무것도 입력하지 않은 경우, 전송하지 않는다.
-
-	return true;
-}
-</script>
+		$(document.empUpdateFrm).submit(empUpdateValidate);
+		
+		//아무것도 입력하지 않은경우 전송하지 않는다.
+		function empUpdateValidate(e){
+			var $jobCode = $('[name=jobCode]');
+			var $deptCode = $('[name=deptCode]');
+			
+			if($jobCode.val() == '' && $deptCode.val() == ''){
+				alert("변화없음");
+				return false;
+				/* e.preventDefault(); // 폼이 제출되지 않도록 함. */
+			}
+		};
+	</script>
 </body>
 </html>
