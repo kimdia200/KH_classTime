@@ -7,20 +7,28 @@
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
+	<!-- 기본 namespace는 mvc이다 -->
+
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
+	<!-- @Controller 어노테이션이 붙은 클래스가 사용자 요청을 처리 할 수 있도록 함 -->
 	<annotation-driven />
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<!-- 정적 파일에 대한 요청 및 location을 mapping한다 -->
+	<!-- /foo/* : /foo, /foo/a -->
+	<!-- /foo/** : /foo, /foo/a, /foo/a/b/c.do -->
 	<resources mapping="/resources/**" location="/resources/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<!-- view단의 jsp를 찾기 위한 ViewResolver 빈 등록 -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<!-- base-package하위의 어노테이션을 검색/처리 @Component, @Autowired, @controller, .... -->
 	<context:component-scan base-package="com.kh.spring" />
 	
 	
