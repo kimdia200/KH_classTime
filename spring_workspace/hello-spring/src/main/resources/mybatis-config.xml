@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <settings>
+  	<setting name="jdbcTypeForNull" value="NULL"/>
+  	<setting name="mapUnderscoreToCamelCase" value="true"/>
+  	<!-- JAVA타입 데이터가 NULL일 경우, JDBC타입도 null로 처리한다. insert null이 가능하게 해준다. -->
+  </settings>
+  <typeAliases>
+  <!-- com.kh.spring하위의 모든 클래스를 소문자로 시작하는 별칭 등록 -->
+  	<package name="com.kh.spring"/>
+  </typeAliases>
+  <typeHandlers>
+  	<!-- <typeHandler handler="com.kh.spring.common.typehandler.StringArrayTypeHandler"/> -->
+  	<package name="com.kh.spring.common.typehandler"/>
+  </typeHandlers>
+</configuration>

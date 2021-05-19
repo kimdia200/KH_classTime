@@ -130,6 +130,50 @@
 			<version>1.18.20</version>
 			<scope>provided</scope>
 		</dependency>     
+		
+		<!-- #6 커맨드객체 유효성검사 @Valid-->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>2.0.1.Final</version>
+		</dependency>
+		
+		<!-- #7. Database 연결관련 의존등록 -->
+		<!-- OJDBC도 필요한데 웹상으로 다운받으면 문제가 있어 직접 lib에 넣어줬음 -->
+		<!-- spring jdbc -->		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<!-- 순수 mybatis -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.4.6</version>
+		</dependency>
+		<!-- spring mabatis -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+		<!-- Database Connection Pool 사용 dbcp-->
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.springframework/springloaded -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>springloaded</artifactId>
+		    <version>1.2.8.RELEASE</version>
+		    <scope>provided</scope>
+		    <!-- 기본값 compile, compile시에는 사용 runtime 사용하지 않음 -->
+		</dependency>
+		
 	</dependencies>
     <build>
         <plugins>

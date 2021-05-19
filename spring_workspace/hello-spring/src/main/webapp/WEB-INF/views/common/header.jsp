@@ -20,7 +20,11 @@
 
 <!-- 사용자작성 css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" />
-
+<c:if test="${not empty msg}">
+<script>
+	alert("${msg}");
+</script>
+</c:if>
 </head>
 <body>
 <div id="container">

@@ -1,8 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- target/classes/datasource.properties -->
+	<context:property-placeholder location="classpath:datasource.properties"/>
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-		
+	<!-- #7.1. datasource & mybatis 관련 빈 등록 -->
+	<bean class="org.apache.commons.dbcp.BasicDataSource"
+		  id="dataSource"
+		  destroy-method="close">
+		<property name="driverClassName" value="${datasource.driverClassName}"/>
+		<property name="url" value="${datasource.url}"/>
+		<property name="username" value="${datasource.username}"/>
+		<property name="password" value="${datasource.password}"/>
+	</bean>
+	
+	<!-- #7.2. myBatis(JDBC)설정 : SqlSessionFactory -->
+	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- name=dataSource => 빈객체sqlSessionFactoryBean의  property명 dataSource임(setter) -->
+		<!-- ref의 dataSource는 위에서 선언한 datasource 빈객체를 의미함. -->
+		<property name="dataSource" ref="dataSource"/>
+		<!-- 앞으로 생성할 모든 mapper파일을 한번에 읽어오도록하자. -->
+		<!-- 여기서 classpath는 target/classes를 의미한다.-->
+		<!-- src/main/resources 디렉토리에서 작성된 파일들은 classpath로 이동함.-->
+		<property name="mapperLocations" value="classpath*:mapper/**/*.xml"/>
+		<!-- mybatis-config.xml파일 위치를 명시함. -->
+		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+	</bean>
+	
+	<!-- #7.3. SqlSessionTemplate 마이바티스 스프링 연동모듈의 핵심기능. -->
+	<!-- SqlSessionTemplate : SqlSession 인터페이스를 구현클래스-->
+	<!-- 여러 dao에서 공유하므로 메모리관리에 있어 최적화된 테크닉. -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactoryBean"/>
+	</bean>		
 </beans>

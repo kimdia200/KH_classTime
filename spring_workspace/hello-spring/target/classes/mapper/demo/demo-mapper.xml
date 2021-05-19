@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="demo">
+	<insert id="insertDev">
+		insert into dev
+		values(
+			seq_dev_no.nextval,
+			#{name},
+			#{career},
+			#{email},
+			#{gender},
+			#{lang}
+		)
+	</insert>
+	<select id="selectDevList" resultMap="devVoMap">
+		select * from dev order by no desc
+	</select>
+	<resultMap type="dev" id="devVoMap">
+		<!-- typehandler 생략 가능 : @MappedTypes, @MappedJdbcTypes 어노테이션 지정한 경우 -->
+		<result column="lang" property="lang" typeHandler="stringArrayTypehandler"/>
+	</resultMap>
+	<select id="selectDevOne" resultMap="devVoMap">
+		select * from dev where no = #{no}
+	</select>
+</mapper>
