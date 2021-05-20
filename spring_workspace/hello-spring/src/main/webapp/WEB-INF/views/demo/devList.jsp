@@ -50,7 +50,7 @@
 		.attr("method","GET")
 		.submit();
 	}
-	function deleteDev(){
+	function deleteDev(btn){
 	//POST /demo/deleteDev.do --->redirect:/demo/devList.do
 		var no = $(btn).data("no");
 		$("#hi").val(no);

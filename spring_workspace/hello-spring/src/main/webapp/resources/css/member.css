@@ -1,0 +1,14 @@
+@charset "UTF-8";
+
+/* 회원 가입 */
+div#enroll-container { width:500px; }
+div#enroll-container input, div#enroll-container select { margin-bottom:10px; }
+div#enroll-container table th { text-align:right; padding-right:10px; }
+div#enroll-container table td { text-align:left; }
+
+
+/* 중복아이디체크관련 */
+div#memberId-container { position:relative; padding:0px; }
+div#memberId-container span.guide { display:none; font-size:12px; position:absolute; top:12px; right:10px; }
+div#memberId-container span.ok { color:green; }
+div#memberId-container span.error { color:red; }

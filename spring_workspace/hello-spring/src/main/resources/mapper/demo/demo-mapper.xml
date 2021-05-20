@@ -24,4 +24,17 @@
 	<select id="selectDevOne" resultMap="devVoMap">
 		select * from dev where no = #{no}
 	</select>
+	<update id="updateDev">
+		update dev
+		set
+			name = #{name},
+			career = #{career},
+			email = #{email},
+			gender = #{gender},
+			lang = #{lang, typeHandler = stringArrayTypeHandler}
+			where no = #{no}
+	</update>
+	<delete id="deleteDev">
+		delete dev where no = #{no}
+	</delete>
 </mapper>

@@ -3,13 +3,19 @@
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
 			   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"           
 			   xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-			   version="3.1"> 
+			   version="3.1">   
 
 	<!-- #3. Application Context 빈 설정파일 -->
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/spring/root-context.xml</param-value>
+		<!-- #8.1 security-context 설정파일 추가 -->
+		<!-- 복수개의 파일을 하려면 개행을 하든 공백을 주든 해서 구분해주면됨 -->
+		<!-- <param-value>/WEB-INF/spring/root-context.xml</param-value> -->
+		<param-value>
+			/WEB-INF/spring/root-context.xml
+			/WEB-INF/spring/security-context.xml
+		</param-value>
 	</context-param>
 	
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->

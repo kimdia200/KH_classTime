@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+	<insert id="insertMember">
+		insert into member
+		values (
+				#{id},
+				#{password},
+				#{name},
+				#{gender},
+				#{birthday},
+				#{email},
+				#{phone},
+				#{address},
+				#{hobby},
+				default,
+				default
+		)
+		<!-- enroll_date, enabled컬럼은 기본값 사용 -->		
+	</insert>
+	
+	<select id="selectOneMember" resultMap="memberVoMap">
+		select * from member where id = #{id}
+	</select>
+	<resultMap type="member" id="memberVoMap">
+		<result column="hobby" property="hobby" typeHandler="stringArrayTypeHandler"/>
+	</resultMap>
+</mapper>

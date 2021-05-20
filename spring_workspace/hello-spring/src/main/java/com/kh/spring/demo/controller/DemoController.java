@@ -13,7 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -239,15 +241,60 @@ public class DemoController {
 		return "demo/devList";
 	}
 	
-	@RequestMapping(value="/updateDev.do", method = RequestMethod.GET)
+//	@RequestMapping(value="/updateDev.do", method = RequestMethod.GET)
+	@GetMapping("/updateDev.do")
 	public String updateDev(@RequestParam int no, Model model) {
 		//1. 업무로직
-		Dev dev = demoService.selectDevOne(no);
-		log.info("no = {}",no);
-		log.info("dev = {}", dev);
+		try {
+			Dev dev = demoService.selectDevOne(no);
+			log.info("no = {}",no);
+			log.info("dev = {}", dev);
+			model.addAttribute("dev",dev);
+		} catch (Exception e) {
+			log.error("Dev 수정페이지 오류!", e);
+			throw e;
+		}
 		
 		//2. jsp위임
-		model.addAttribute("dev",dev);
 		return "demo/devUpdateForm";
+	}
+	
+	@PostMapping("/updateDev.do")
+	public String updateDev(Dev dev, RedirectAttributes redirectAttributes) {
+		log.info("dev = {}",dev);
+		
+		try {
+			//1. 업무로직
+			int result = demoService.updateDev(dev);
+			
+			//2. 사용자피드백 & 리다이렉트
+			if(result ==0)
+				throw new IllegalArgumentException("존재하지 않는 개발자 정보 : "+dev.getNo());
+			redirectAttributes.addFlashAttribute("msg", "개발자 정보 수정 성공!");
+		} catch (Exception e) {
+			log.error("개발자 정보 수정 오류!", e);
+			throw e;
+		}
+		
+		return "redirect:/demo/devList.do";
+	}
+	
+	@PostMapping("/deleteDev.do")
+	public String deleteDev(@RequestParam int no, RedirectAttributes redirectAttr) {
+		try {
+			//1. 업무로직
+			int result = demoService.deleteDev(no);
+			
+			//2. 사용자 피드백
+			if(result ==0)
+				throw new IllegalArgumentException("삭제하지 못한 개발자 번호 : "+no);
+			redirectAttr.addFlashAttribute("msg","개발자 정보 삭제 성공!");
+			
+		} catch (Exception e) {
+			log.error("개발자 정보 삭제 오류!", e);
+			throw e;
+		}
+		
+		return "redirect:/demo/devList.do";
 	}
 }

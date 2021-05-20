@@ -4723,10 +4723,12 @@
   <!-- here, so be sure to include any of the default values that you wish  -->
   <!-- to use within your application.                                       -->
 
-    <welcome-file-list>
+    <!-- RedirectAttributes의 속성처리를 하기위해 HomeController의 핸들러를 거쳐가기위해 주석처리함
+    
+     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
         <welcome-file>index.htm</welcome-file>
         <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
+    </welcome-file-list> -->
 
 </web-app>

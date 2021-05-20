@@ -80,7 +80,7 @@ div#demo-container{
 			</div>
 		</div>
 		<!-- 중요 - 수정시 반드시 고유번호도 함께 넘겨주어야 함 -->
-	  	<input type="hidden" name="no" value="" />
+	  	<input type="hidden" name="no" value="${dev.no}" />
 	  	<button type="submit" class="list-group-item list-group-item-action">dev 수정</button>
 	</form>
 </div>
@@ -90,10 +90,20 @@ div#demo-container{
  * 수정폼 유효성검사
  * 
  */
-$(document.devFrm).submit((e) => {
+$("#devFrm").submit((e) => {
+	var $name = $("#name").val();
 	//1. 이름은 한글 2글자 이상이어야 한다.
+	if(/^[가-힣]{2,}$/.test($name)==false){
+		alert("이름은 한글 2글자 이상이여야 합니다.")
+		e.preventDefault();
+	}
 	
 	//2. 개발언어는 하나이상 선택해야 한다.
+	var $lang = $("[name=lang]:checked");
+	if($lang.length == 0){
+		alert("개발언어는 하나이상 선택해야 합니다.")
+		e.preventDefault();
+	}
 	
 });
 </script>
