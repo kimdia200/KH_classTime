@@ -13,9 +13,12 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.spring.member.model.service.MemberService;
@@ -26,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequestMapping("/member")
-@SessionAttributes({"loginMember"})
+@SessionAttributes({"loginMember", "next"})
 public class MemberController {
 	
 	@Autowired
@@ -80,11 +83,14 @@ public class MemberController {
 	}
 	
 	@GetMapping("/memberLogin.do")
-	public void memberLogin() {
+	public void memberLogin(@RequestHeader (name = "Referer", required = false) String referer, Model model) {
+		log.info("referer = {}", referer);
+		if(referer != null)
+			model.addAttribute("next", referer);
 	}
 	
 	@PostMapping("/memberLogin.do")
-	public String memberLogin(@RequestParam String id, @RequestParam String password, Model model, RedirectAttributes redirectAttr) {
+	public String memberLogin(@RequestParam String id, @RequestParam String password, @SessionAttribute(required = false) String next, Model model, RedirectAttributes redirectAttr) {
 		//1. 업무로직
 		Member member = memberService.selectOneMember(id);
 		log.info("member = {}",member);
@@ -101,7 +107,22 @@ public class MemberController {
 		else {
 			redirectAttr.addFlashAttribute("msg","로그인 실패");
 		}
+		model.addAttribute("next",null);
+		return "redirect:"+ (next != null ? next : "/");
+	}
+	
+	/**
+	 * @SessionAttributes를 통해서 등록한 session속성은 
+	 * SessionStatus객체에 대해서 complete처리해야한다.
+	 * 
+	 * @return
+	 */
+	@GetMapping("/memberLogout.do")
+	public String memberLogout(SessionStatus status) {
 		
+		if(!status.isComplete())
+			//다썻어요 하고 처리해주는것
+			status.setComplete();
 		return "redirect:/";
 	}
 }
