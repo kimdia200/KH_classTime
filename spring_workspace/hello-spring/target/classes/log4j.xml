@@ -1,18 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<!-- <!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd"> -->
+<!DOCTYPE log4j:configuration SYSTEM "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
 	<!-- Appenders -->
 	<appender name="console" class="org.apache.log4j.ConsoleAppender">
 		<param name="Target" value="System.out" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
+			<!-- <param name="ConversionPattern" value="%-5p: %c - %m%n" /> -->
+			<param name="ConversionPattern" value="[%d{yy-MM-dd HH:mm:ss}]%-5p: %m - %l%n" />
 		</layout>
 	</appender>
 	
+	<appender name="fileLogger" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="append" value="true"/>
+		<param name="file" value="${catalina.base}/logs/hellospring/hellospring.log"/>
+		<param name="datePattern" value=".yy-MM-dd"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p:[%d{ISO8601}] %F:%L - %m%n"/>
+		</layout>
+	</appender>
+	
+	<!-- #10.2.log4jdbc-remix 로그 출력 appender 추가 -->
+	<appender name="sqlLogger" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p: %m%n" />
+		</layout>
+	</appender>
+    <!-- #10.3.log4jdbc-remix 관련 logger 시작 -->
+    <!-- additivity : 부모logger전파여부 기본값 true -->
+	<!-- Query Loggers  -->
+	<logger name="jdbc.sqlonly" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="sqlLogger"/>
+	</logger>
+	<logger name="jdbc.resultsettable" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="sqlLogger"/>
+	</logger>
+	<!-- 
+		패턴으로 사용되는 형식 문자
+		
+		* %c : 카테고리명(logger이름)을 표시
+		테고리명이 hello.world.logger일때, %c{2}는 world.logger를 출력
+		* %C : 클래스명을 표시함.	
+			* 풀 클래스 명이 com.kh.logger일때, %C{2}는 kh.logger를 출력
+		* %d : 로그 시간을 출력한다. java.text.SimpleDateFormat에서 적절한 출력 포맷을 지정할 수 있다. 
+			* %d{HH:mm:ss, SSS}
+			* %d{yyyy MMM dd HH:mm:ss, SSS}
+			* %d{ABSOLUTE} 
+			* %d{DATE} 
+			* %d{ISO8601}
+		* %F : 파일명을 출력. 로그시 수행한 메소드, 라인번호가 함께 출력된다.
+		* %l : 로깅이 발생한 caller의 위치정보.메소드명 (자바파일명:라인번호) - 링크제공
+		* %L : 라인 번호만 출력한다(링크없음)
+		* %m : 로그로 전달된 메시지를 출력한다.
+		* %M : 로그를 수행한 메소드명을 출력한다. 
+		* %n : 플랫폼 종속적인 개행문자가 출력. rn 또는 n
+		* %p : 로그 이벤트명등의 priority 가 출력(debug, info, warn, error, fatal )
+		* %r : 로그 처리시간 (milliseconds)
+		* %t : 로그이벤트가 발생된 쓰레드의 이름을 출력
+		* %% : % 표시를 출력. escaping
+		* %r : 어플리케이션 시작 이후 부터 로깅이 발생한 시점의 시간(milliseconds)
+		* %X : 로깅이 발생한 thread와 관련된 MDC(mapped diagnostic context)를 출력합니다. %X{key} 형태.
+	 -->
+	
+	<!-- loggin message 수집용 -->
 	<!-- Application Loggers -->
 	<logger name="com.kh.spring">
-		<level value="info" />
+		<level value="debug" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
@@ -36,6 +92,7 @@
 	<root>
 		<priority value="warn" />
 		<appender-ref ref="console" />
+		 <appender-ref ref="fileLogger" />
 	</root>
 	
 </log4j:configuration>

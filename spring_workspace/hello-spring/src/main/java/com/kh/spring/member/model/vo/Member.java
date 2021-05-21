@@ -29,5 +29,4 @@ public class Member {
 	private Date enrollDate;
 	//enabled는 활성화여부를 0,1로 관리함 true=1, false=0
 	private boolean enabled;
-	
 }

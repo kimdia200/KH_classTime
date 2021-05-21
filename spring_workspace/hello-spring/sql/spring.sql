@@ -54,8 +54,11 @@ create table member(
 	from
 		member;
         
+    update member
+    set password = '$2a$10$4aS6TOnwjCHVLeXoeaLFee62.EJPbLFn4h91UezpwB7za8A5C/cRy'
+    where id = 'sinsa';
     
-        
+    commit;
         
         
         

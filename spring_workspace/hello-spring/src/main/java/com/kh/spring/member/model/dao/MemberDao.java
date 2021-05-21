@@ -8,4 +8,6 @@ public interface MemberDao {
 
 	Member selectOneMember(String id);
 
+	int updateMember(Member member);
+
 }

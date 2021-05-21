@@ -21,4 +21,9 @@ public class MemberServiceImpl implements MemberService{
 	public Member selectOneMember(String id) {
 		return memberdao.selectOneMember(id);
 	}
+
+	@Override
+	public int updateMember(Member member) {
+		return memberdao.updateMember(member);
+	}
 }

@@ -11,13 +11,25 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<!-- #7.1. datasource & mybatis 관련 빈 등록 -->
 	<bean class="org.apache.commons.dbcp.BasicDataSource"
-		  id="dataSource"
+		  id="realDataSource"
 		  destroy-method="close">
 		<property name="driverClassName" value="${datasource.driverClassName}"/>
 		<property name="url" value="${datasource.url}"/>
 		<property name="username" value="${datasource.username}"/>
 		<property name="password" value="${datasource.password}"/>
 	</bean>
+	
+	<!-- #10.1.log4jdbc-remix 관련 dataSource처리  -->
+    <!-- 기존 dataSource빈을 이용해서 proxyDataSource를 만듬 -->
+    <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">  
+        <constructor-arg ref="realDataSource" />
+        <property name="logFormatter">
+            <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">    
+                <property name="loggingType" value="MULTI_LINE" />
+                <property name="sqlPrefix" value="[SQL] " />
+            </bean>
+        </property>
+    </bean>
 	
 	<!-- #7.2. myBatis(JDBC)설정 : SqlSessionFactory -->
 	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">

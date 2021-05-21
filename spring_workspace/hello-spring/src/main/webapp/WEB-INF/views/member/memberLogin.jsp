@@ -46,6 +46,14 @@ $(() => {
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
+				<c:if test="${not empty msg}">
+				<div class="alert alert-warning alert-dismissible fade show" role="alert">
+				  <strong>${msg}</strong>
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				    <span aria-hidden="true">&times;</span>
+				  </button>
+				</div>
+				</c:if>
 				<!--로그인폼 -->
 				<!-- https://getbootstrap.com/docs/4.1/components/forms/#overview -->
 				<form
@@ -53,9 +61,9 @@ $(() => {
 					method="post">
 					<div class="modal-body">
 						<input type="text" class="form-control" name="id"
-							placeholder="아이디" required> <br /> <input
+							placeholder="아이디" value="admin" required> <br /> <input
 							type="password" class="form-control" name="password"
-							placeholder="비밀번호" required>
+							placeholder="비밀번호" value="1234" required>
 					</div>
 					<div class="modal-footer">
 						<button type="submit" class="btn btn-outline-success">로그인</button>

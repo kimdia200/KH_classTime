@@ -27,4 +27,10 @@
 	<resultMap type="member" id="memberVoMap">
 		<result column="hobby" property="hobby" typeHandler="stringArrayTypeHandler"/>
 	</resultMap>
+	
+	<update id="updateMember">
+		update member
+		set name = #{name}, birthday = #{birthday}, email=#{email}, phone=#{phone}, address=#{address}, gender=#{gender}, hobby=#{hobby}
+		where id = #{id}
+	</update>
 </mapper>
