@@ -63,3 +63,52 @@ create table member(
         
         
         
+        
+--=======================================================================
+-- AOP 공부할 목적의 테이블 생성
+--=======================================================================
+        
+--memo 테이블 생성
+create table memo(
+    no number,
+    memo varchar2(2000),
+    reg_date date default sysdate,
+    constraint pk_memo_no primary key(no)
+);
+
+create sequence seq_memo_no;
+
+commit;
+
+
+select * from memo;
+
+select * from memo order by no asc;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

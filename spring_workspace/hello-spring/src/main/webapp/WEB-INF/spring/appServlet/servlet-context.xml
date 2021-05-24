@@ -3,9 +3,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd"> 
 
 	<!-- 기본 namespace는 mvc이다 -->
 
@@ -46,4 +48,31 @@
 			<beans:bean id="loginInterceptor" class="com.kh.spring.common.interceptor.LoginInterceptor"/>
 		</interceptor>
 	</interceptors>
+	
+	<!-- #11.1 aop 관련 xml처리 -->
+	<!-- XML방식으로 처리 해보겠습니다~! -->
+	<!-- 어노테이션방법을 사용해보기위해 아래 xml방식 모두 주석처리함 -->
+<!-- 	<beans:bean id="loggerAspect" class="com.kh.spring.common.aop.LoggerAspect"/>
+	<aop:config>
+		ref="loggerAspect"는 loggerAspect라고 등록되어있는 bean을 가져와서 쓰겠다는 의미
+		<aop:aspect id="loggerAspect" ref="loggerAspect">
+			어떤 조인 포인트를 이용할 것인지 execution안에 어떨때 접근해줄지 명시해주는데 
+			* 와일드 카드를 쓸수도있고 패키지.메서드 명 파라미터타입 까지 적을수 있는데 ..이라고 하면 모든 반환타입 의미
+			controller패키지 하위 모든것 의 insertMemo()
+			
+			접근제어자(생략가능) 리턴타입 메서드
+			* *  리턴타입 아무거나 메서드 아무거나
+			<aop:pointcut expression="execution(* com.kh.spring.memo..selectMemoList(..))" id="loggerPointcut"/>
+			aop:pointcut을 aop:around에 연결 - pointcut-ref로
+			<aop:around method="logger" pointcut-ref="loggerPointcut"/>
+		</aop:aspect>
+	</aop:config> -->
+	
+	<!-- com.kh.spring.common.aop.LoggerAspect.java에서 어노테이션으로 처리한후 xml에서 마지막으로 하나 해줄게있다 -->
+	<!-- 
+		aop 관련 annotation등록을 자동으로 해준다
+		root-context의 aop설정을 servlet-context에 적용해주는 역할까지 한다.
+	 -->
+	<aop:aspectj-autoproxy/>
+	
 </beans:beans>
