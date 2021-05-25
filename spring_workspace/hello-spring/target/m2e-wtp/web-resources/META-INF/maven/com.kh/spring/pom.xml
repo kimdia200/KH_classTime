@@ -222,6 +222,19 @@
 			<artifactId>log4jdbc-remix</artifactId>
 			<version>0.2.7</version>
 		</dependency>
+		
+		<!-- #12. FileUpload용 라이브러리 추가 (두개 필요함) -->
+		<!-- 저번에는 cos.jar를 썻지만 이번에는 apaches commons사용할거임 -->
+	    <dependency>
+	        <groupId>commons-io</groupId>
+	        <artifactId>commons-io</artifactId>
+	        <version>2.6</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>commons-fileupload</groupId>
+	        <artifactId>commons-fileupload</artifactId>
+	        <version>1.3.3</version>
+	    </dependency>
 	</dependencies>
     <build>
         <plugins>

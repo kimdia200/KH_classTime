@@ -43,8 +43,10 @@
 		<interceptor>
 			<!-- /member이하는 모두 로그인 인터셉터를 거치되 memberLogin.do는 제외 -->
 			<mapping path="/member/**"/>
+			<mapping path="/board/**"/>
 			<exclude-mapping path="/member/memberLogin.do"/>
 			<exclude-mapping path="/member/memberEnroll.do"/>
+			<exclude-mapping path="/board/boardList.do"/>
 			<beans:bean id="loginInterceptor" class="com.kh.spring.common.interceptor.LoginInterceptor"/>
 		</interceptor>
 	</interceptors>
@@ -75,4 +77,10 @@
 	 -->
 	<aop:aspectj-autoproxy/>
 	
+	<!-- #12.1 파일업로드를 처리할 Resolver클래스 빈등록(빈이름 주의) -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">   
+		<beans:property name="maxUploadSize" value="52428800" /> <!-- multipart/form-data 요청당 최대 파일 크기는 50MB(50 * 1024 * 1024)이다. default: -1(제한없음)-->
+		<beans:property name="maxUploadSizePerFile" value="10485760" /> <!-- 파일하나당 최대용량은 10MB(10 * 1024 * 1024)이다. 기본값: -1(제한없음) -->
+		<beans:property name="maxInMemorySize" value="10240" /> <!-- 메모리 사용최대용량. 기본값 10240. 이값을 넘어가면, 임시파일로 저장함. -->
+	</beans:bean>
 </beans:beans>

@@ -18,7 +18,7 @@ public class LoggerAspect {
 	@Pointcut("execution(* com.kh.spring.memo..selectMemoList(..))")
 	public void loggerPointcut() {}
 	
-	@Pointcut("execution(* com.kh.spring.memo.controller..insertMemo(..))")
+	@Pointcut("execution(* com.kh.spring.memo.controller.MemoController.insertMemo(..))")
 	public void insertMemoStopWatch() {}
 	
 	/**
