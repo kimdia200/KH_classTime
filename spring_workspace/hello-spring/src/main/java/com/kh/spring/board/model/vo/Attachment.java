@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 public class Attachment {
 	private int no;
 	private int boardNo;
-	private String orginalFilename;
+	private String originalFilename;
 	private String renamedFilename;
-	private Date upload;
+	private Date uploadDate;
 	private int downloadCount;
 	private boolean status;  //DB-status  = check('Y','N') 이기 때문에 typeHandler 필요
 	

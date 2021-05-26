@@ -42,7 +42,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 			//로그인후 최종이동할 url을 session속성 next에 저장
 			//login.do 에서는 리다이렉트로 가면 referer가 없기 때문에 내가 세션에 next라는 이름으로 지금 인터셉터에서 담아줌
 			String url = request.getRequestURL().toString();
-			request.getSession().setAttribute("next", url);
+			String queryString = request.getQueryString();
+			request.getSession().setAttribute("next", url+"?"+queryString);
 			response.sendRedirect(request.getContextPath()+"/member/memberLogin.do");
 			return false;
 		}

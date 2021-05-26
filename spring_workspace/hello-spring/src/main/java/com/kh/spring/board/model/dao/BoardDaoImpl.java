@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.spring.board.model.vo.Attachment;
 import com.kh.spring.board.model.vo.BoardExt;
 
 @Repository
@@ -29,6 +30,37 @@ public class BoardDaoImpl implements BoardDao {
 		
 		//public <E> List<E> selectList(String statement, Object parameter, RowBounds rowBounds)
 		return session.selectList("board.selectBoardList", null, rowBounds);
+	}
+
+	@Override
+	public int selectBoardTotalContents() {
+		return session.selectOne("board.selectBoardTotalContents");
+	}
+
+	@Override
+	public int insertBoard(BoardExt board) {
+		return session.insert("board.insertBoard",board);
+	}
+
+	@Override
+	public int insertAttachment(Attachment attach) {
+		return session.insert("board.insertAttachment",attach);
+	}
+
+	@Override
+	public BoardExt selectBoardOne(int no) {
+		return session.selectOne("board.selectBoardOne",no);
+	}
+
+	@Override
+	public List<Attachment> selectAttachList(int no) {
+		return session.selectList("board.selectAttachList",no);
+	}
+
+	@Override
+	public BoardExt selectBoardOneCollection(int no) {
+		//컬렉션을 사용해서 받을때는 List라고 생각할수있지만 One으로 작성해야함
+		return session.selectOne("board.selectBoardOneCollection",no);
 	}
 	
 }

@@ -35,19 +35,21 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 				
-		<!-- AspectJ -->
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>${org.aspectj-version}</version>
-		</dependency>	
 		<!-- 
 			#11. aop처리를 위한 aspectjweaver 추가하기 
 			온전히 aop를 이용하려면 위의 AspectJ와 aspectJWeaver 두개가 필요하다
 			
 			사용방법1. xml이용
 			사용방법2. annotation이용
+			
+			#13. 트랜잭션처리에 필요 의존
 		-->
+		<!-- AspectJ -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${org.aspectj-version}</version>
+		</dependency>	
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>

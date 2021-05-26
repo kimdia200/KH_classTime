@@ -3,9 +3,81 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board">
+
 	<select id="selectBoardList" resultType="boardExt">
 		select b.*, (select count(*) from attachment where board_no = b.no) "attach_cnt"  
 		from board b 
 		order by no desc
 	</select>
+	
+	<select id="selectBoardTotalContents" resultType="_int">
+		select count(*) from board
+	</select>
+	
+	<insert id="insertBoard">
+		insert into board(no, title, member_id, content)
+		values(seq_board_no.nextval, #{title}, #{memberId}, #{content})
+		<!-- 발급받은 board pk no값을 파라미터 board객체의 property no에 저장한다. -->
+		<selectKey keyProperty="no" resultType="_int" order="AFTER">
+			select seq_board_no.currval 
+			from dual
+		</selectKey>
+	</insert>
+	
+	<insert id="insertAttachment">
+		insert into attachment(no, board_no, original_filename, renamed_filename)
+		values(seq_attachment_no.nextval, #{boardNo}, #{originalFilename}, #{renamedFilename})
+	</insert>
+	
+	<select id="selectBoardOne" resultType="boardExt">
+		select * from board where no = #{no}
+	</select>
+	
+	<select id="selectAttachList" resultMap="attachmentVo">
+		select * from attachment where board_no = #{no}
+	</select>
+	
+	<resultMap type="attachment" id="attachmentVo">
+		<!-- typehandler 생략 가능 : @MappedTypes, @MappedJdbcTypes 어노테이션 지정한 경우 -->
+		<result column="status" property="status" typeHandler="boolTypeHandler"/>
+	</resultMap>
+	
+	<select id="selectBoardOneCollection" resultMap="boardCollectionMap">
+	<!-- board테이블의 no와 attachment테이블의 no가 이름이 겹쳐서 select절을 이렇게슴 -->
+	<!-- 1:1관계 일때는 Association, 1:n 관계일때는 collection -->
+		select 
+			b.*,
+			a.no "attach_no",
+			a.board_no,
+			a.original_filename,
+			a.renamed_filename,
+			a.upload_date,
+			a.download_count,
+			a.status
+		from board b left join attachment a on b.no = a.board_no
+		where b.no = #{no}
+	</select>
+	<resultMap type="boardExt" id="boardCollectionMap">
+		<!-- 모든 컬럼을 다적어줌 -->
+		<id column="no" property="no"/>
+		<result column="member_id" property="memberId"/>
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="reg_date" property="regDate"/>
+		<result column="read_count" property="readCount"/>
+		<!-- collection태그는 list로 모여질 친구들을 적어준다 -->
+		<!-- 
+			property = boardExt의 list필드
+			ofType = 하나하나는 attachment타입이다
+		 -->
+		<collection property="attachList" ofType="attachment">
+			<id column="attach_no" property="no"/>
+			<result column="board_no" property="boardNo"/>
+			<result column="original_filename" property="originalFilename"/>
+			<result column="renamed_filename" property="renamedFilename"/>
+			<result column="upload_date" property="uploadDate"/>
+			<result column="download_count" property="downloadCount"/>
+			<result column="status" property="status" typeHandler="boolTypeHandler"/>
+		</collection>
+	</resultMap>
 </mapper>

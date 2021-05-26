@@ -73,7 +73,7 @@
 	<!-- com.kh.spring.common.aop.LoggerAspect.java에서 어노테이션으로 처리한후 xml에서 마지막으로 하나 해줄게있다 -->
 	<!-- 
 		aop 관련 annotation등록을 자동으로 해준다
-		root-context의 aop설정을 servlet-context에 적용해주는 역할까지 한다.
+		root-context의 aop설정(transaction)을 servlet-context에 적용해주는 역할까지 한다.
 	 -->
 	<aop:aspectj-autoproxy/>
 	

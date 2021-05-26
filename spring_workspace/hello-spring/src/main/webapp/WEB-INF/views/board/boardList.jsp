@@ -9,11 +9,23 @@
 <style>
 /*글쓰기버튼*/
 input#btn-add{float:right; margin: 0 0 15px;}
+tr[data-no]{
+	cursor: pointer;
+}
 </style>
 <script>
 function goBoardForm(){
 	location.href = "${pageContext.request.contextPath}/board/boardForm.do";
 }
+$(() =>{
+	$("tr[data-no]").click(e=>{
+		//화살표 함수 안에서는 this는 e.target이 아니다.
+		console.log(e.target);//클릭한 td태그
+		var $tr = $(e.target).parent();
+		var no = $tr.data('no');
+		location.href = "${pageContext.request.contextPath}/board/boardDetail.do?no="+no;
+	});
+});
 </script>
 <section id="board-container" class="container">
 	<input type="button" value="글쓰기" id="btn-add" class="btn btn-outline-success" onclick="goBoardForm();"/>
@@ -33,17 +45,19 @@ function goBoardForm(){
 		</c:if>
 		<c:if test="${not empty list}">
 		<c:forEach items="${list}" var="board">
-		<tr>
-			<th>${board.no}</th>
-			<th>${board.title}</th>
-			<th>${board.memberId}</th>
-			<th><fmt:formatDate value="${board.regDate}" pattern="yyyy/MM/dd(E)"/></th>
-			<th><c:if test="${board.attachCnt >0}"><img src="${pageContext.request.contextPath}/resources/images/file.png"></c:if></th>
-			<th>${board.readCount}</th>
+		<tr data-no="${board.no}">
+			<td>${board.no}</td>
+			<td>${board.title}</td>
+			<td>${board.memberId}</td>
+			<td><fmt:formatDate value="${board.regDate}" pattern="yyyy/MM/dd(E)"/></td>
+			<td><c:if test="${board.attachCnt >0}"><img src="${pageContext.request.contextPath}/resources/images/file.png"></c:if></td>
+			<td>${board.readCount}</td>
 		</tr>
 		</c:forEach>
 		</c:if>
 	</table>
+	
+	${pageBar}
 </section> 
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
