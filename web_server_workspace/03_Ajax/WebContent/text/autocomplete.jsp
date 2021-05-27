@@ -31,9 +31,9 @@
     			search: request.term
     		},
     		success:function(data){
-    			console.log(data);
+    			console.log("data = ",data);
     			var arr = data.split("\n");
-    			console.log(arr);
+    			console.log("arr = ",arr);
     			//arr = arr.slice(0, arr.length-1);
     			arr.splice(arr.length-1,1);
     			console.log(arr);

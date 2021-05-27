@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>구조분해 할당 destructuring assignment</h1>
+
+    <h2>배열</h2>
+    배열안의 구조를 아주쉽게 할당하기
+    <button onclick="koo()">koo</button>
+    <script>
+      console.log("배열 기존방식");
+      const arr = [1, 2, 3, 4, 5];
+      const a = arr[0];
+      const b = arr[1];
+      const c = arr[2];
+      const d = arr[3];
+      const e = arr[4];
+      console.log(a, b, c, d, e);
+
+      console.log("배열 구조분해 할당");
+      //앞에서 부터 순서대로 담는다, 모자라면 undifined
+      const [k, f, x, y, z, m] = arr;
+      console.log(k, f, x, y, z, m); //1 2 3 4 5 undifined
+
+      let n = 10,
+        nn = 20;
+      let temp = n;
+      n = nn;
+      nn = temp;
+      console.log(n, nn);
+
+      (n = 10), (nn = 20);
+      [n, nn] = [nn, n];
+      console.log(n, nn);
+
+      //나머지 파라미터 rest parameter
+      const [j, l, ...rest] = [
+        "홍길동",
+        "신사임당",
+        "윤봉준",
+        "세종대왕",
+        "유관순",
+      ];
+      console.log(j, l, rest); //나머지값들은 rest에 배열형태로 들어가있다
+
+      function foo(v, w, ...rest) {
+        console.log("v = ", v);
+        console.log("w = ", w);
+        console.log("rest = ", rest);
+      }
+      foo(1, 2, 3, 4);
+    </script>
+
+    <h2>객체</h2>
+    객체안의 구조를 아주쉽게 할당하기
+    <script>
+      const user = {
+        id: "honggd",
+        name: "홍길동",
+        items: {
+          weapon: "k2",
+          car: {
+            name: "소나타",
+            color: "black",
+          },
+          phone: {
+            number: "01012341234",
+          },
+        },
+        hobby: ["축구", "당구", "볼링"],
+      };
+
+      console.log(user.items.phone.number);
+      //바로밑의 레벨만 접근 가능
+      const { id, name, hobby } = user;
+      console.log(id, name, hobby);
+
+      const {
+        items: { weapon },
+      } = user;
+      console.log(weapon);
+
+      //할당된 변수명 바꾸기, 기본값주기
+      const { id: userId, profile = "default.jpg" } = user;
+      console.log(userId, profile);
+
+      (function printUsderHobby({ name, hobby, favoriate = "떡볶이" }) {
+        console.log(name, hobby, favoriate);
+      })(user);
+    </script>
+  </body>
+</html>

@@ -80,4 +80,12 @@
 			<result column="status" property="status" typeHandler="boolTypeHandler"/>
 		</collection>
 	</resultMap>
+	
+	<select id="selectOneAttachment" resultMap="attachmentVo">
+		select * from attachment where no = #{no}
+	</select>
+	
+	<select id="autocomplete" resultType="boardExt">
+		select * from board where title like '%' || #{search} || '%'
+	</select>
 </mapper>

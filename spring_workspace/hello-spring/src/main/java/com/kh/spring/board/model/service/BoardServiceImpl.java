@@ -83,4 +83,14 @@ public class BoardServiceImpl implements BoardService {
 	public BoardExt selectBoardOneCollection(int no) {
 		return boardDao.selectBoardOneCollection(no);
 	}
+
+	@Override
+	public Attachment selectOneAttachment(int no) {
+		return boardDao.selectOneAttachment(no);
+	}
+
+	@Override
+	public List<BoardExt> selectBoardList(String search) {
+		return boardDao.selectBoardList(search);
+	}
 }

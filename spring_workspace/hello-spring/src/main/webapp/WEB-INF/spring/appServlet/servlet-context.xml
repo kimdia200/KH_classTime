@@ -46,7 +46,9 @@
 			<mapping path="/board/**"/>
 			<exclude-mapping path="/member/memberLogin.do"/>
 			<exclude-mapping path="/member/memberEnroll.do"/>
+			<exclude-mapping path="/member/checkIdDuplicate*.do"/>
 			<exclude-mapping path="/board/boardList.do"/>
+			<exclude-mapping path="/board/autocomplete.do"/>
 			<beans:bean id="loginInterceptor" class="com.kh.spring.common.interceptor.LoginInterceptor"/>
 		</interceptor>
 	</interceptors>
@@ -83,4 +85,19 @@
 		<beans:property name="maxUploadSizePerFile" value="10485760" /> <!-- 파일하나당 최대용량은 10MB(10 * 1024 * 1024)이다. 기본값: -1(제한없음) -->
 		<beans:property name="maxInMemorySize" value="10240" /> <!-- 메모리 사용최대용량. 기본값 10240. 이값을 넘어가면, 임시파일로 저장함. -->
 	</beans:bean>
+	
+	<!-- #14.1 jsonView Bean 및 viewResolver 등록 -->
+	<!-- 요청한 viewName과 실제bean이름을 매핑해주는 BeanNameViewResolver를 사용함. -->
+    <!-- bean아이디는 viewResolver로 반드시 지정. 처리순서를 1로 우선처리되도록함. -->
+    <beans:bean id="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+        <beans:property name="order" value="1"/>
+    </beans:bean>   
+	<beans:bean 
+		id="jsonView" 
+		class="net.sf.json.spring.web.servlet.view.JsonView">
+		<beans:property name="contentType" value="application/json;charset=UTF-8" />
+	</beans:bean>
+
+	<!-- #15.1 @Responsebody사용을 위한 의존 : 빈등록 (스프링 5.x => MappingJackson2HttpMessageConverter) -->
+	<beans:bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
 </beans:beans>

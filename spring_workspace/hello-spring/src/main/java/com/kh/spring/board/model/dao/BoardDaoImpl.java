@@ -62,5 +62,15 @@ public class BoardDaoImpl implements BoardDao {
 		//컬렉션을 사용해서 받을때는 List라고 생각할수있지만 One으로 작성해야함
 		return session.selectOne("board.selectBoardOneCollection",no);
 	}
+
+	@Override
+	public Attachment selectOneAttachment(int no) {
+		return session.selectOne("board.selectOneAttachment",no);
+	}
+
+	@Override
+	public List<BoardExt> selectBoardList(String search) {
+		return session.selectList("board.autocomplete",search);
+	}
 	
 }

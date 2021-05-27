@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
@@ -263,5 +267,65 @@ public class MemberController {
 			throw e;
 		}
 		return mav;
+	}
+	
+	/**
+	 * Spring에서 ajax를 사용하는 방법(Json)
+	 * 1. gson - 응답 메세지에 json문자열을 출력하는 방식  - servlet에서 했던방법
+	 * 2. jsonView Bean을 통해 처리하기 - model에 담긴 데이터를 json으로 변환, 응답에 출력
+	 * 3. @ResponseBody - 리턴된 자바객체를 JSON으로 변환, 응답에 출력 - jacksonMessageConverter이용함
+	 * 4. ResponseEntity<응답할 자바객체> 를 제네릭을 이용해서 리턴
+	 * 
+	 * 1번을 제외(해봤으니까) 하고 하나씩 해볼것
+	 * 
+	 * @param id
+	 * @return
+	 */
+	
+	//JsonView방식
+	@GetMapping("/checkIdDuplicate1.do")
+	public String checkIdDuplicate1(@RequestParam String id, Model model) {
+		log.debug("id = {}", id);
+		//1. 업무로직
+		Member member = memberService.selectOneMember(id);
+		boolean available = member == null;
+		log.debug("member = {}",member);
+		//2. model에 속성 저장
+		model.addAttribute("available",available);
+//		model.addAttribute("member",member);
+		return "jsonView";
+	}
+	
+	//@ResPonseBody 사용방식
+	@GetMapping("/checkIdDuplicate2.do")
+	@ResponseBody
+	public Map<String, Object> checkIdDuplicate2(@RequestParam String id) {
+		//1. 업무로직
+		Member member = memberService.selectOneMember(id);
+		boolean available = member == null;
+		
+		//2. map에 요소 저장후 리턴
+		Map<String, Object> map = new HashMap<>();
+		map.put("available", available);
+		map.put("id", id);
+		return map;
+	}
+	
+	//ResponseEntity
+	@GetMapping("/checkIdDuplicate3.do")
+	public ResponseEntity<Map<String, Object>> checkIdDuplicate3(@RequestParam String id) {
+		//1. 업무로직
+		Member member = memberService.selectOneMember(id);
+		boolean available = member == null;
+		
+		//2. map에 요소 저장후
+		Map<String, Object> map = new HashMap<>();
+		map.put("available", available);
+		map.put("id", id);
+		
+		return ResponseEntity
+				.ok()
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
+				.body(map);
 	}
 }

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>let | const</h1>
+    <script>
+      //var : function scope
+      var a = 100; // window.a 등록
+      let k = 8; //window.k 가 아님
+      (function foo() {
+        var a = 40;
+        console.log(a); //지역변수
+        console.log(this.a);
+
+        if (true) {
+          var a = 30;
+        }
+        console.log(a);
+
+        let b = 99;
+        // let b = 33;//Uncaught SyntaxError: Identifier 'b' has already been declared
+        //let과 const는 blockScope
+
+        if (true) {
+          let b = 333333333;
+        }
+        console.log("b = " + b);
+      })();
+    </script>
+  </body>
+</html>
