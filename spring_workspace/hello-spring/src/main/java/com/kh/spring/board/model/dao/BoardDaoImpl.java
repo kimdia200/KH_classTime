@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.spring.board.model.vo.Attachment;
+import com.kh.spring.board.model.vo.Board;
 import com.kh.spring.board.model.vo.BoardExt;
 
 @Repository
@@ -71,6 +72,11 @@ public class BoardDaoImpl implements BoardDao {
 	@Override
 	public List<BoardExt> selectBoardList(String search) {
 		return session.selectList("board.autocomplete",search);
+	}
+
+	@Override
+	public List<Board> searchTitle(String searchTitle) {
+		return session.selectList("board.searchTitle",searchTitle);
 	}
 	
 }

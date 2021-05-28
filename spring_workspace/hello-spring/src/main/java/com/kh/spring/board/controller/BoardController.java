@@ -31,6 +31,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.spring.board.model.service.BoardService;
 import com.kh.spring.board.model.vo.Attachment;
+import com.kh.spring.board.model.vo.Board;
 import com.kh.spring.board.model.vo.BoardExt;
 import com.kh.spring.common.util.HelloSpringUtils;
 
@@ -227,7 +228,7 @@ public class BoardController {
 		return resource;
 	}
 	
-	@GetMapping("autocomplete.do")
+	@GetMapping("/autocomplete.do")
 	public ResponseEntity<List<Map<String, Object>>> autocomplete(@RequestParam String search){
 		log.debug("search = {}", search);
 		
@@ -240,5 +241,23 @@ public class BoardController {
 			list.add(map);
 		}
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE,MediaType.APPLICATION_JSON_UTF8_VALUE).body(list);
+	}
+	
+	//위에꺼는 내가한거 이건 강사님이 한거
+	@GetMapping("/searchTitle.do")
+	@ResponseBody
+	public Map<String, Object> searchTitle(@RequestParam String search){
+		log.debug("searchTitle = {}", search);
+		
+		//1. 업무로직 : 검색어로 board 조회
+		List<Board> list = boardService.searchTitle(search);
+		log.debug("list = {}", list);
+		
+		//2. map에 검색결과 담아서 전송
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		map.put("searchTitle", search);
+		
+		return map;
 	}
 }

@@ -35,13 +35,29 @@ $(() =>{
 	    	  	console.log(response);
 	    	 	 //response([{label:'a', value:'a'},{label:'b', value:'b'}]);
 	    	  	$.ajax({
-					url:'${pageContext.request.contextPath}/board/autocomplete.do',
+		    	  	//내방식
+					//url:'${pageContext.request.contextPath}/board/autocomplete.do',
+					//강사님 방식
+					url:'${pageContext.request.contextPath}/board/searchTitle.do',
 					data:{
 						search:request.term
 					},
+					/* 내방식
 					success:data=>{
 						console.log("data = ",data);
 						response(data);
+					}, */
+					success(data){
+						console.log(data);
+						const {list} = data;
+						//배열
+						const arr = 
+							list.map(({title, no}) => ({
+								label: title,
+								value: no		
+							}));
+						console.log(arr);
+						response(arr);
 					},
 					error:(xhr, statusText, error) =>{
 						console.log(xhr, statusText,error);
@@ -55,12 +71,14 @@ $(() =>{
 	      },
 	      focus: function(event, focused){
 	    	return false;
-	    	}
+	      },
+	      autoFocus: true, 
+			minLength: 2
     });
 });
 </script>
 <section id="board-container" class="container">
-	<input type="search" placeholder="제목 검색..." id="searchTitle" class="form-control col-sm-3 d-inline"/>
+	<input type="search" placeholder="제목 검색..." id="searchTitle" class="form-control col-sm-3 d-inline" autofocus/>
 	<input type="button" value="글쓰기" id="btn-add" class="btn btn-outline-success" onclick="goBoardForm();"/>
 	<table id="tbl-board" class="table table-striped table-hover">
 		<tr>

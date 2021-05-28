@@ -88,4 +88,10 @@
 	<select id="autocomplete" resultType="boardExt">
 		select * from board where title like '%' || #{search} || '%'
 	</select>
+	
+	<select id="searchTitle" resultType="board">
+		select * 
+		from board
+		where title like '%' || #{searchTitle} || '%'
+	</select>
 </mapper>

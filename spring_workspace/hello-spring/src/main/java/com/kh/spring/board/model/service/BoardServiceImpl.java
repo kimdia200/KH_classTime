@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.spring.board.model.dao.BoardDao;
 import com.kh.spring.board.model.vo.Attachment;
+import com.kh.spring.board.model.vo.Board;
 import com.kh.spring.board.model.vo.BoardExt;
 
 import lombok.extern.slf4j.Slf4j;
@@ -92,5 +93,10 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<BoardExt> selectBoardList(String search) {
 		return boardDao.selectBoardList(search);
+	}
+
+	@Override
+	public List<Board> searchTitle(String searchTitle) {
+		return boardDao.searchTitle(searchTitle);
 	}
 }
