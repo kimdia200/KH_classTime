@@ -78,7 +78,7 @@ div.result{width:70%; margin:0 auto;}
 								<td>\${name}</td>
 								<td>\${price}</td>
 								<td>\${type}</td>
-								<td>\${taste}</td>
+								<td><span class="badge badge-\${taste == 'hot' ? 'danger' : 'warning'}">\${taste}</span></td>
 							</tr>`;
 					});
 				}else{
@@ -89,6 +89,12 @@ div.result{width:70%; margin:0 auto;}
 			}
 	        </script>
 			
+			<!-- 
+			
+				2. Get /menus/kr , /menus/ch , /menus/jp
+				경로함수를 사용하여 한번에 처리함
+				
+			 -->
 			<div class="menu-test">
 				<h4>추천메뉴(GET)</h4>
 				<form id="menuRecommendationFrm">
@@ -104,19 +110,228 @@ div.result{width:70%; margin:0 auto;}
 					</div>
 					<br />
 					<div class="form-check form-check-inline">
-						<input type="radio" class="form-check-input" name="taste" id="get-no-taste" value="" checked>
+						<input type="radio" class="form-check-input" name="taste" id="get-no-taste" value="all" checked>
 						<label for="get-no-taste" class="form-check-label">모두</label>&nbsp;
-						<input type="radio" class="form-check-input" name="taste" id="get-hot" value="hot" checked>
+						<input type="radio" class="form-check-input" name="taste" id="get-hot" value="hot">
 						<label for="get-hot" class="form-check-label">매운맛</label>&nbsp;
 						<input type="radio" class="form-check-input" name="taste" id="get-mild" value="mild">
 						<label for="get-mild" class="form-check-label">순한맛</label>
 					</div>
 					<br />
-					<input type="button" class="btn btn-block btn-outline-success btn-send" value="전송" >
+					<input type="submit" class="btn btn-block btn-outline-success btn-send" value="전송" >
 				</form>
 			</div>
 			<div class="result" id="menuRecommendation-result"></div>
+			<script>
+				$("#menuRecommendationFrm").submit(e=>{
+					// 폼제출을 방지 : return false;
+					e.preventDefault();
+
+					// 현재폼
+					const $frm = $(e.target);//e.target = form
+					const type = $frm.find("[name=type]:checked").val();
+					const taste = $frm.find("[name=taste]:checked").val();
+					console.log(type," | ",taste);
+
+					$.ajax({
+						url: `${pageContext.request.contextPath}/menus/\${type}/\${taste}`,
+						success(data){
+							console.log(data)
+							displayResultTable("menuRecommendation-result", data);
+						},
+						error : console.log
+					});
+				});
+			</script>
 		</div>
+		
+		
+		<!-- 2.POST /menu -->
+		<div class="menu-test">
+			<h4>메뉴 등록하기(POST)</h4>
+			<form id="menuEnrollFrm"> 
+				<input type="text" name="restaurant" placeholder="음식점" class="form-control" />
+				<br />
+				<input type="text" name="name" placeholder="메뉴" class="form-control" />
+				<br />
+				<input type="number" name="price" placeholder="가격" class="form-control" />
+				<br />
+				<div class="form-check form-check-inline">
+					<input type="radio" class="form-check-input" name="type" id="post-kr" value="kr" checked>
+					<label for="post-kr" class="form-check-label">한식</label>&nbsp;
+					<input type="radio" class="form-check-input" name="type" id="post-ch" value="ch">
+					<label for="post-ch" class="form-check-label">중식</label>&nbsp;
+					<input type="radio" class="form-check-input" name="type" id="post-jp" value="jp">
+					<label for="post-jp" class="form-check-label">일식</label>&nbsp;
+				</div>
+				<br />
+				<div class="form-check form-check-inline">
+					<input type="radio" class="form-check-input" name="taste" id="post-hot" value="hot" checked>
+					<label for="post-hot" class="form-check-label">매운맛</label>&nbsp;
+					<input type="radio" class="form-check-input" name="taste" id="post-mild" value="mild">
+					<label for="post-mild" class="form-check-label">순한맛</label>
+				</div>
+				<br />
+				<input type="submit" class="btn btn-block btn-outline-success btn-send" value="등록" >
+			</form>
+		</div>
+		<script>
+		/**
+		* POST    /menu
+		*/
+		
+		$("#menuEnrollFrm").submit(e=>{
+			// 폼제출을 방지 : return false;
+			e.preventDefault();
+			// 현재폼
+			const $frm = $(e.target);//e.target = form
+			const restaurant = $frm.find("[name=restaurant]").val();
+			const name = $frm.find("[name=name]").val();
+			const price = Number($frm.find("[name=price]").val());
+			const type = $frm.find("[name=type]:checked").val();
+			const taste = $frm.find("[name=taste]:checked").val();
+			console.log(restaurant, " | ",name," | ",price," | ",type," | ",taste);
+
+			const menu = {
+					//변수와 값이 이름이 같으면 이렇게 줄여서 사용 할수있음
+					restaurant,name,price,type,taste
+					};
+			console.log(menu);
+
+			$.ajax({
+				url: "${pageContext.request.contextPath}/menu",
+				method:"post",
+				//menu 객체를 JSON으로 변환하여 보냄
+				data:JSON.stringify(menu),
+				contentType:"application/json; charset=utf-8",
+				success(data){
+					console.log(data);
+					const {msg} = data;
+					alert(msg);
+				},
+				error : console.log,
+				complete(){
+					e.target.rest();
+				}
+			});
+		});
+		</script>
+		
+		<!-- #3.PUT /menu/123 -->
+	<div class="menu-test">
+		<h4>메뉴 수정하기(PUT)</h4>
+		<p>메뉴번호를 사용해 해당메뉴정보를 수정함.</p>
+		<form id="menuSearchFrm">
+			<input type="text" name="id" placeholder="메뉴번호" class="form-control" /><br />
+			<input type="submit" class="btn btn-block btn-outline-primary btn-send" value="검색" >
+		</form>
+		
+		<script>
+		//메뉴 조회
+		$("#menuSearchFrm").submit(e=>{
+			e.preventDefault();
+			const $frm = $(e.target);
+			const id = $frm.find("[name=id]").val();
+
+			$.ajax({
+				url: `${pageContext.request.contextPath}/menu/\${id}`,
+				method:"get",
+				//menu 객체를 JSON으로 변환하여 보냄
+				success(data){
+					console.log(data);
+					const {msg} = data;
+					const {menu} = data;
+
+					const $updateFrm = $("#menuUpdateFrm");
+					$updateFrm.find("[name=id]").val(menu.id);
+					$updateFrm.find("[name=restaurant]").val(menu.restaurant);
+					$updateFrm.find("[name=name]").val(menu.name);
+					$updateFrm.find("[name=price]").val(menu.price);
+
+					$updateFrm.find("#put-kr").removeAttr("checked");
+					$updateFrm.find("#put-ch").removeAttr("checked");
+					$updateFrm.find("#put-jp").removeAttr("checked");
+					switch (menu.type) {
+						case 'kr': $updateFrm.find("#put-kr").prop("checked",true); break;
+						case 'ch': $updateFrm.find("#put-ch").prop("checked",true); break;
+						case 'jp': $updateFrm.find("#put-jp").prop("checked",true); break;
+					}
+
+					$updateFrm.find("#put-hot").removeAttr("checked");
+					$updateFrm.find("#put-mild").removeAttr("checked");
+					switch (menu.taste) {
+					case 'hot': $updateFrm.find("#put-hot").prop("checked",true); break;
+					case 'mild': $updateFrm.find("#put-mild").prop("checked",true); break;
+					}
+					alert("조회 성공");
+				},
+				error : console.log
+			});			
+		});
+		
+		</script>
+	
+		<hr />
+		<form id="menuUpdateFrm">
+			<input type="hidden" name="id" value="" />
+			<input type="text" name="restaurant" placeholder="음식점" class="form-control" />
+			<br />
+			<input type="text" name="name" placeholder="메뉴" class="form-control" />
+			<br />
+			<input type="number" name="price" placeholder="가격" step="1000" class="form-control" />
+			<br />
+			<div class="form-check form-check-inline">
+				<input type="radio" class="form-check-input" name="type" id="put-kr" value="kr" checked>
+				<label for="put-kr" class="form-check-label">한식</label>&nbsp;
+				<input type="radio" class="form-check-input" name="type" id="put-ch" value="ch">
+				<label for="put-ch" class="form-check-label">중식</label>&nbsp;
+				<input type="radio" class="form-check-input" name="type" id="put-jp" value="jp">
+				<label for="put-jp" class="form-check-label">일식</label>&nbsp;
+			</div>
+			<br />
+			<div class="form-check form-check-inline">
+				<input type="radio" class="form-check-input" name="taste" id="put-hot" value="hot" checked>
+				<label for="put-hot" class="form-check-label">매운맛</label>&nbsp;
+				<input type="radio" class="form-check-input" name="taste" id="put-mild" value="mild">
+				<label for="put-mild" class="form-check-label">순한맛</label>
+			</div>
+			<br />
+			<input type="submit" class="btn btn-block btn-outline-success btn-send" value="수정" >
+		</form>
+	</div>
+	<script>
+		$("#menuUpdateFrm").submit(e=>{
+			e.preventDefault();
+
+			const $frm = $(e.target);
+			const id = $frm.find("[name=id]").val();
+			const restaurant = $frm.find("[name=restaurant]").val();
+			const name = $frm.find("[name=name]").val();
+			const price = Number($frm.find("[name=price]").val());
+			const type = $frm.find("[name=type]:checked").val();
+			const taste = $frm.find("[name=taste]:checked").val();
+			console.log(id," | ",restaurant, " | ",name," | ",price," | ",type," | ",taste);
+
+			const menu = {
+					//변수와 값이 이름이 같으면 이렇게 줄여서 사용 할수있음
+					id,restaurant,name,price,type,taste
+					};
+			console.log(menu);
+			$.ajax({
+				url: `${pageContext.request.contextPath}/menu/\${id}`,
+				method:"put",
+				//menu 객체를 JSON으로 변환하여 보냄
+				data:JSON.stringify(menu),
+				contentType:"application/json; charset=utf-8",
+				success(data){
+					console.log(data);
+					const {msg} = data;
+					alert(msg);
+				},
+				error : console.log,
+			});
+		});
+	</script>
 	</section>
 	<footer>
 		<p>&lt;Copyright 2017. <strong>KH정보교육원</strong>. All rights reserved.&gt;</p>

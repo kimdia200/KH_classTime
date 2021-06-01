@@ -11,4 +11,25 @@
 	<resultMap type="menu" id="menuMap">
 		<result column="type" property="type" typeHandler="menuTypeHandler"/>
 	</resultMap>
+	<select id="selectMenuListByTypeAndTaste" resultMap="menuMap">
+		select * 
+		from menu
+		<where>
+			<if test="type != 'all'"> type = #{type}</if>
+			<if test="taste != 'all'"> and taste = #{taste}</if>
+		</where> 
+	</select>
+	<insert id="insertMenu" parameterType="menu">
+		insert into menu (id,restaurant,name,price,type,taste) 
+		<!-- menuTypeHandler에 어노테이션으로 범용설정해놨기 때문에 굳이 적어주지 않아도 잘작동 되는것을 확인함 -->
+		values (seq_menu_id.nextval, #{restaurant},#{name},#{price},#{type, typeHandler=menuTypeHandler},#{taste})
+	</insert>
+	<select id="selectMenu" resultMap="menuMap">
+		select * from menu where id = #{id}
+	</select>
+	<update id="updateMenu">
+		update menu
+		set restaurant = #{restaurant}, name = #{name}, price = #{price}, type = #{type, typeHandler=menuTypeHandler}, taste = #{taste}
+		where id = #{id}
+	</update>
 </mapper>
