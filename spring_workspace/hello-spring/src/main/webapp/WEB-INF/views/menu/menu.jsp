@@ -3,44 +3,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Menu - RestAPI</title>
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<!-- bootstrap js: jquery load 이후에 작성할것.-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-<!-- bootstrap css -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-<!-- 사용자작성 css -->
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" />
+
+<jsp:include page="/WEB-INF/views/common/header.jsp">
+	<jsp:param value="Menu RestAPI" name="title" 	/>
+</jsp:include>
+
 <style>
 div.menu-test{width:50%; margin:0 auto; text-align:center;}
 div.result{width:70%; margin:0 auto;}
 </style>
-</head>
-<body>
-<div id="container">
-	<header>
-		<div id="header-container">
-			<h2>Menu - RestAPI</h2>
-		</div>
-		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			<a class="navbar-brand" href="#">
-				<img src="${pageContext.request.contextPath }/resources/images/logo-spring.png" alt="스프링로고" width="50px" />
-			</a>
-		  	<!-- 반응형으로 width 줄어들경우, collapse버튼관련 -->
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-		  	</button>
-			<div class="collapse navbar-collapse" id="navbarNav">
-				
-			</div>
-		</nav>
-	</header>
-	<section id="content">
+<script>
+const menuRestOrigin = "http://localhost:10001";
+const menuRestContextPath = "/springboot";
+const url = menuRestOrigin + menuRestContextPath;
+</script>
 		<div id="menu-container" class="text-center">
 			<!-- 1. GET /menus-->
 	        <div class="menu-test">
@@ -51,7 +27,8 @@ div.result{width:70%; margin:0 auto;}
 	        <script>
 	        $("#btn-menus").click(() => {
 				$.ajax({
-					url: "${pageContext.request.contextPath}/menus",
+					//url: `\${url}/menus`, // 타 REST server로 직접요청
+					url:"${pageContext.request.contextPath}/menu/selectMenuList.do",
 					method: "GET",
 					success(data){
 						console.log(data);
@@ -134,7 +111,7 @@ div.result{width:70%; margin:0 auto;}
 					console.log(type," | ",taste);
 
 					$.ajax({
-						url: `${pageContext.request.contextPath}/menus/\${type}/\${taste}`,
+						url: `\${url}/menus/\${type}/\${taste}`,
 						success(data){
 							console.log(data)
 							displayResultTable("menuRecommendation-result", data);
@@ -199,7 +176,7 @@ div.result{width:70%; margin:0 auto;}
 			console.log(menu);
 
 			$.ajax({
-				url: "${pageContext.request.contextPath}/menu",
+				url: `\${url}/menu`,
 				method:"post",
 				//menu 객체를 JSON으로 변환하여 보냄
 				data:JSON.stringify(menu),
@@ -234,7 +211,7 @@ div.result{width:70%; margin:0 auto;}
 			const id = $frm.find("[name=id]").val();
 
 			$.ajax({
-				url: `${pageContext.request.contextPath}/menu/\${id}`,
+				url: `\${url}/menu/\${id}`,
 				method:"get",
 				//menu 객체를 JSON으로 변환하여 보냄
 				success(data){
@@ -346,7 +323,7 @@ div.result{width:70%; margin:0 auto;}
 			console.log(menu1);
 			
 			$.ajax({
-				url: `${pageContext.request.contextPath}/menu/\${id}`,
+				url: `\${url}/menu/\${id}`,
 				method:"put",
 				//menu 객체를 JSON으로 변환하여 보냄
 				data:JSON.stringify(menu),
@@ -386,7 +363,7 @@ div.result{width:70%; margin:0 auto;}
 		if(!id) return;
 
 		$.ajax({
-			url : `${pageContext.request.contextPath}/menu/\${id}`,
+			url : `\${url}/menu/\${id}`,
 			method:"delete",
 			//success : function(data){~~~} 의 간략형
 			success(data){
@@ -409,11 +386,4 @@ div.result{width:70%; margin:0 auto;}
 		});
     });
     </script>
-	</section>
-	<footer>
-		<p>&lt;Copyright 2017. <strong>KH정보교육원</strong>. All rights reserved.&gt;</p>
-	</footer>
-	
-</div>
-</body>
-</html>
+<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

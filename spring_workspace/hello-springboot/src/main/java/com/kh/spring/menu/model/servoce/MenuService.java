@@ -17,4 +17,6 @@ public interface MenuService {
 
 	int updateMenu(Menu menu);
 
+	int deleteMenu(String id);
+
 }

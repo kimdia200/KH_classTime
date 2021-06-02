@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,13 +35,17 @@ import lombok.extern.slf4j.Slf4j;
  */
 @RestController
 @Slf4j
+//@CrossOrigin(origins = "http://localhost:9090")
+@CrossOrigin //아무것도 안적으면 모두 허용
 public class MenuController {
 	
 	@Autowired
 	private MenuService menuService;
 	
 	@GetMapping("/menus")
-	public List<Menu> menus(){
+	public List<Menu> menus(
+			//HttpServletResponse response
+			){
 		List<Menu> list = null;
 		try {
 			//1. 업무로직
@@ -50,6 +56,8 @@ public class MenuController {
 		} catch (Exception e) {
 			log.error("전체메뉴 조회 실패",e);
 		}
+		//3. SpringBoot(현재)의 컨트롤러에서 helloSpring프로젝트로 자료를 보낼때 정상적으로 받을수있게함
+//		response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "http://localhost:9090");
 		return list;
 	}
 	
@@ -159,6 +167,37 @@ public class MenuController {
 			return map;
 		} catch (Exception e) {
 			log.error("메뉴 업데이트 실패");
+			throw e;
+		}
+	}
+	
+//	@DeleteMapping("/menu/{id}")
+//	public Map<String, Object> deleteMenu(@PathVariable String id){
+//		try {
+//			log.debug("id@deleteMenu = {}", id);
+//			Map<String, Object> map = new HashMap<>();
+//			int result = menuService.deleteMenu(id);
+//			map.put("msg", "메뉴 삭제 성공");
+//			return map;
+//		} catch (Exception e) {
+//			log.error("삭제요청 실패");
+//			throw e;
+//		}
+//	}
+	
+	@DeleteMapping("/menu/{id}")
+	public ResponseEntity<Map<String, Object>> deleteMenu(@PathVariable String id){
+		try {
+			log.debug("id@deleteMenuEntity = {}",id);
+			Map<String, Object> map = new HashMap<>();
+			int result = menuService.deleteMenu(id);
+			if(result > 0) {
+				map.put("msg", "메뉴 삭제 성공");
+				return ResponseEntity.ok().body(map);
+			}
+			return ResponseEntity.notFound().build();
+		} catch (Exception e) {
+			log.error("삭제요청 실패");
 			throw e;
 		}
 	}

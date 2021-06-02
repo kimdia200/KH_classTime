@@ -56,6 +56,8 @@
                         </div>
 				    </li>
 				    <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/memo/memo.do">Memo(AOP)</a></li>
+				    <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/menu/menu.do">Menu(restAPI)</a></li>
+				    
 				    
 			    </ul>
 			    <%-- 로그인 이전  --%>

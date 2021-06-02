@@ -39,4 +39,9 @@ public class MenuDaoImpl implements MenuDao{
 	public int updateMenu(Menu menu) {
 		return session.update("menu.updateMenu",menu);
 	}
+
+	@Override
+	public int deleteMenu(String id) {
+		return session.delete("menu.deleteMenu",id);
+	}
 }
