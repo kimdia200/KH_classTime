@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -102,8 +103,29 @@ public class MenuController {
 		return map;
 	}
 	
+	//내가 한것
+//	@GetMapping("/menu/{id}")
+//	public Map<String, Object> selectMenu(@PathVariable int id){
+//		try {
+//			log.debug("id = {}",id);
+//			Menu menu = menuService.selectMenu(id);
+//			
+//			Map<String, Object> map = new HashMap<>();
+//			if(menu != null) {
+//				map.put("msg", "조회 성공");
+//				map.put("menu", menu);
+//			}else {
+//				map.put("msg", "조회 결과가 없습니다");
+//			}
+//			return map;
+//		} catch (Exception e) {
+//			log.error("DB조회 실패");
+//			throw e;
+//		}
+//	}
+	
 	@GetMapping("/menu/{id}")
-	public Map<String, Object> selectMenu(@PathVariable int id){
+	public ResponseEntity<Map<String, Object>> selectMenu(@PathVariable int id){
 		try {
 			log.debug("id = {}",id);
 			Menu menu = menuService.selectMenu(id);
@@ -112,10 +134,11 @@ public class MenuController {
 			if(menu != null) {
 				map.put("msg", "조회 성공");
 				map.put("menu", menu);
+				return ResponseEntity.ok().body(map);
 			}else {
-				map.put("msg", "조회 결과가 없습니다");
+				//httpstatus를 404로 리턴함
+				return ResponseEntity.notFound().build();
 			}
-			return map;
 		} catch (Exception e) {
 			log.error("DB조회 실패");
 			throw e;

@@ -242,30 +242,48 @@ div.result{width:70%; margin:0 auto;}
 					const {msg} = data;
 					const {menu} = data;
 
+					//ResponseEntity를 활용해서 404를 보낼때는 이 if절은 의미가 없다.
+					if(!menu){
+						alert(msg);
+						return;
+					}
+
 					const $updateFrm = $("#menuUpdateFrm");
 					$updateFrm.find("[name=id]").val(menu.id);
 					$updateFrm.find("[name=restaurant]").val(menu.restaurant);
 					$updateFrm.find("[name=name]").val(menu.name);
 					$updateFrm.find("[name=price]").val(menu.price);
 
+					/* prop속성으로 checked를 조정하는 경우 removeAttr을 할 필요가 없다.
 					$updateFrm.find("#put-kr").removeAttr("checked");
 					$updateFrm.find("#put-ch").removeAttr("checked");
-					$updateFrm.find("#put-jp").removeAttr("checked");
-					switch (menu.type) {
+					$updateFrm.find("#put-jp").removeAttr("checked"); */
+					
+					/* switch (menu.type) {
 						case 'kr': $updateFrm.find("#put-kr").prop("checked",true); break;
 						case 'ch': $updateFrm.find("#put-ch").prop("checked",true); break;
 						case 'jp': $updateFrm.find("#put-jp").prop("checked",true); break;
-					}
+					} */
+					$updateFrm.find(`[name=type][value=\${menu.type}]`).prop("checked",true);
 
+					/* prop속성으로 checked를 조정하는 경우 removeAttr을 할 필요가 없다.
 					$updateFrm.find("#put-hot").removeAttr("checked");
-					$updateFrm.find("#put-mild").removeAttr("checked");
-					switch (menu.taste) {
+					$updateFrm.find("#put-mild").removeAttr("checked"); */
+					/*switch (menu.taste) {
 					case 'hot': $updateFrm.find("#put-hot").prop("checked",true); break;
 					case 'mild': $updateFrm.find("#put-mild").prop("checked",true); break;
-					}
+					} */
+					$updateFrm.find(`[name=taste][value=\${menu.taste}]`).prop("checked",true);
 					alert("조회 성공");
 				},
-				error : console.log
+				//ResponseEntity에서 404를 리턴할 경우 실행가능
+				error(xhr, statusText, err){
+					console.log(xhr, statusText, err);
+
+					const {status} = xhr;
+					status == 404 && alert("해당 메뉴가 존재하지 않습니다.");
+					$("[name=id]", e.target).focus();
+				}
 			});			
 		});
 		
@@ -329,6 +347,13 @@ div.result{width:70%; margin:0 auto;}
 					alert(msg);
 				},
 				error : console.log,
+				complete(){
+					//reset()은 순수 자바스크립트의 form에 속해있는 메서드이기때문에 아래와 같이 사용해야한다.
+					//$("#menuUpdateFrm")[0] == javascript 객체
+					//$("#menuUpdateFrm") == jquery 객체
+					$("#menuSearchFrm")[0].reset();
+					$("#menuUpdateFrm")[0].reset();
+				}
 			});
 		});
 	</script>
