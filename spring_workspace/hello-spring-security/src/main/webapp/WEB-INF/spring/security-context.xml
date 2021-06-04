@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/security 
+		http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- #4. 암호화인코딩 빈등록 : BCryptPaaswordEncoder -->
+	<beans:bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+
+	<!-- #5. 권한체크 설정 -->
+	<http security="none" pattern="/resources/**"/><!-- 정적파일은 검사를 제외시킨다 -->
+	<http auto-config="true">
+		<intercept-url pattern="/" access="permitAll"/><!-- index페이지는 권한없이 접속가능하게 -->
+		<intercept-url pattern="/index.jsp" access="permitAll"/><!-- index접속 forward주소 -->
+		<intercept-url pattern="/admin/**" access="hasRole('ADMIN')"/><!-- admin으로 시작되는 경로는 admin권한이있어야함 -->
+		<intercept-url pattern="/**" access="hasRole('USER')"/>
+	</http>
+	
+	<!-- #6. 인증/권한 검사 manager빈 설정 -->
+	<authentication-manager>
+		<authentication-provider>
+			<password-encoder ref="bcryptPasswordEncoder"/>
+			<user-service>
+				<user 
+					name="honggd" 
+					password="$2a$10$6wLRctSpj6rDSkoDPNdUSeN3mO/lfhAJzD083EZ13sVgT/gPyMeUa" 
+					authorities="ROLE_USER"/>
+				<user 
+					name="admin" 
+					password="$2a$10$6wLRctSpj6rDSkoDPNdUSeN3mO/lfhAJzD083EZ13sVgT/gPyMeUa" 
+					authorities="ROLE_USER,ROLE_ADMIN"/>
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+	
+</beans:beans>
