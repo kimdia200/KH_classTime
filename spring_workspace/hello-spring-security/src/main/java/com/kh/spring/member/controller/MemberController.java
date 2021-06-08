@@ -34,36 +34,44 @@ public class MemberController {
 
 	@GetMapping("/memberLogin.do")
 	public void memberLogin() {}
-	@PostMapping("/memberLogin.do")
-	public void memberLogin_() {}
 	
+	/**
+	 * 
+	 * Authentication
+	 * 1. Principal : 인증된 사용자객체
+	 * 2. Credential : 인증에 필요한 비밀번호
+	 * 3. Authorities : 인증된 사용자가 가진 권한
+	 * 
+	 */
 	@GetMapping("/memberDetail.do")
 	public void memberDetail(Authentication authentication, @AuthenticationPrincipal Member member, Model model) {
 		//1.security context holder bean
+		//SecurityContextHolder로 부터 가져오는 방법
 //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		//2. handler의 매개인자로 authentication객체 요청
 		// UsernamePasswordAuthenticationToken
 		log.debug("authentication = {}", authentication); 
-		log.debug("member = {}", authentication.getPrincipal());
+		log.debug("member = {}", (Member)authentication.getPrincipal());
 		
 		//3. @AuthenticationPrincipal Member member
 		log.debug("member = {}", member);
 		
-		model.addAttribute("loginMember", authentication.getPrincipal());
+		model.addAttribute("loginMember", (Member)authentication.getPrincipal());
 		
 	}
 	
 	@PostMapping("/memberUpdate.do")
 	public String memberUpdate(Member updateMember, Authentication oldAuthentication, RedirectAttributes redirectAttr) {
-		//1.업무로직 : db반영
-		
+		//1.업무로직 : db의 내용 수정
+		//수정값들이 저장되어있는 updateMember객체
 		log.debug("updateMember = {}", updateMember);
 		
 		
 		//updateMember에 authorities setting
 		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 		for(GrantedAuthority auth: oldAuthentication.getAuthorities()) {
+			//SimpleGrantedAuthority는 GrantedAuthority의 자손으로 문자열로 권한을 입력받을수있음
 			SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(auth.getAuthority());
 			authorities.add(simpleGrantedAuthority);
 		}
@@ -74,6 +82,10 @@ public class MemberController {
 		
 		//2. security context 에서 principal 갱신
 		Authentication newAuthentication = 
+				//public UsernamePasswordAuthenticationToken(
+						//Object principal, 
+						//Object credentials,
+						//Collection<? extends GrantedAuthority> authorities) {}
 				new UsernamePasswordAuthenticationToken(
 							updateMember,
 							oldAuthentication.getCredentials(),

@@ -1,3 +1,4 @@
+<%@page import="org.springframework.security.core.context.SecurityContextHolder"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@page import="com.kh.spring.member.model.vo.Member, java.util.*"%>
@@ -13,7 +14,10 @@
 		String[] hobby = member.getHobby();
 		List<String> hobbyList = (hobby != null) ? Arrays.asList(hobby) : null;
 		pageContext.setAttribute("hobbyList", hobbyList);		
+		System.out.println(hobbyList);
 	}
+	
+	Member member2 = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 %>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">

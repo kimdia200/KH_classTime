@@ -54,9 +54,11 @@ alert("${msg}");
 			    </ul>
 			    <%-- 로그인한 경우 --%>
 			    <sec:authorize access="isAuthenticated()">
-			    <sec:authentication property="principal.username"/>님, 안녕하세요.
+			    <a href="${pageContext.request.contextPath}/member/memberDetail.do"><sec:authentication property="principal.username"/></a>님, 안녕하세요.
 			    <sec:authentication property="authorities"/>
-			    <button onclick="location.href='${pageContext.request.contextPath}/logout';">로그아웃</button>
+			    <form:form class="d-inline" action="${pageContext.request.contextPath}/member/memberLogout.do" method="POST">
+				   	<button class="btn btn-outline-success my-2 my-sm-0" type="submit">로그아웃</button>
+			    </form:form>
 			    </sec:authorize>
 			    <%-- 로그인하지 않은 경우 --%>
 			    <sec:authorize access="isAnonymous()">
@@ -68,3 +70,4 @@ alert("${msg}");
 		</nav>
 	</header>
 	<section id="content">
+	<sec:authentication property="principal"/>

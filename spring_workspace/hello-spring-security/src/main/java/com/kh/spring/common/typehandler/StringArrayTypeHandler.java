@@ -27,7 +27,7 @@ public class StringArrayTypeHandler extends BaseTypeHandler<String[]> {
 	public void setNonNullParameter(PreparedStatement ps, int i, String[] parameter, JdbcType jdbcType)
 			throws SQLException {
 		// {"Java", "C", "Javascript"} -----> "Java,C,Javascript" 
-		String x = String.join(",", parameter); 
+		String x = String.join(", ", parameter); 
 		ps.setString(i, x);
 
 	}
@@ -35,19 +35,19 @@ public class StringArrayTypeHandler extends BaseTypeHandler<String[]> {
 	@Override
 	public String[] getNullableResult(ResultSet rs, String columnName) throws SQLException {
 		String x = rs.getString(columnName);
-		return x != null ? x.split(",") : null;
+		return x != null ? x.split("[, ]+") : null;
 	}
 
 	@Override
 	public String[] getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
 		String x = rs.getString(columnIndex);
-		return x != null ? x.split(",") : null;
+		return x != null ? x.split("[, ]+") : null;
 	}
 
 	@Override
 	public String[] getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
 		String x = cs.getString(columnIndex);
-		return x != null ? x.split(",") : null;
+		return x != null ? x.split("[, ]+") : null;
 	}
 
 }

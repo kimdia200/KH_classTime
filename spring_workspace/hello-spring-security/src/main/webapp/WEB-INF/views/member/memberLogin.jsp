@@ -54,7 +54,7 @@ $(() => {
 				<!-- Cross-site Request Forgery 사용자가 공격자의 의도대로 crud를 실행하게 만듬. -->
 				<!-- 게시글에 form태그하고 관리자권한으로 실행하게 만듬. -->
 				<form:form
-					action="${pageContext.request.contextPath}/member/memberLogin.do"
+					action="${pageContext.request.contextPath}/member/memberLoginProdess.do"
 					method="post">
 					<div class="modal-body">
 						<c:if test="${param.error != null}">

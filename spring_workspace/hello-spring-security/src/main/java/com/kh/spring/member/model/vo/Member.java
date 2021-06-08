@@ -19,10 +19,16 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+/**
+ * UserDetails를 상속해서 해야지만 spring security를 사용 할 수 있다.
+ * 
+ * @author kimYS
+ *
+ */
 public class Member implements UserDetails{
 
-	private String id;
-	private String password;
+	private String id;  // 스프링 시큐리티 재료1 . username로 사용될 필드
+	private String password; // 스프링 시큐리티 재료2 . password로 사용될 필드
 	private String name;
 	private String gender;
 	private Date birthday;
@@ -31,13 +37,21 @@ public class Member implements UserDetails{
 	private String address;
 	private String[] hobby;
 	private Date enrollDate;
-	private boolean enabled;
 	
-	/**
-	 * 권한을 문자열로 관리
-	 */
+	
+	//복수개의 권한을 관리
+	// 재료3 . 문자열 data("ROLE_USER", "ROLE_ADMIN")를 처리할수있는 GrantedAuthority의 하위클래스
 	private List<SimpleGrantedAuthority> authorities;
 	
+	//재료4. 활성화 여부 확인할수있는 필드
+	private boolean enabled;
+
+	/**
+	 * 
+	 * Collection - List/Set
+	 * 
+	 * Collection<? extends GrantedAuthority> : GrantedAuthority를 상속받는 ? = 자식타입
+	 */
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
@@ -58,4 +72,5 @@ public class Member implements UserDetails{
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
+
 }

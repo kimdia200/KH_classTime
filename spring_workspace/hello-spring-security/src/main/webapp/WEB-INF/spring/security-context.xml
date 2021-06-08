@@ -2,25 +2,47 @@
 <beans:beans xmlns="http://www.springframework.org/schema/security"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/security 
-		http://www.springframework.org/schema/security/spring-security.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 	<!-- #4. 암호화인코딩 빈등록 : BCryptPaaswordEncoder -->
 	<beans:bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
 	<!-- #5. 권한체크 설정 -->
 	<http security="none" pattern="/resources/**"/><!-- 정적파일은 검사를 제외시킨다 -->
-	<http auto-config="true">
-		<intercept-url pattern="/" access="permitAll"/><!-- index페이지는 권한없이 접속가능하게 -->
-		<intercept-url pattern="/index.jsp" access="permitAll"/><!-- index접속 forward주소 -->
-		<intercept-url pattern="/admin/**" access="hasRole('ADMIN')"/><!-- admin으로 시작되는 경로는 admin권한이있어야함 -->
-		<intercept-url pattern="/**" access="hasRole('USER')"/>
-	</http>
+	<http auto-config="true"> <!-- auto-config="true" : 자질구레한 설정 자동으로 해줌 -->
+        <intercept-url pattern="/" access="permitAll"/>
+        <intercept-url pattern="/index.jsp" access="permitAll"/><!-- forward로 가는거라 등록 -->
+        <intercept-url pattern="/member/memberLogin.do" access="isAnonymous()"/> <!-- 인증 전에만 접근 가능 -->
+        <intercept-url pattern="/member/memberLoginProcess.do" access="isAnonymous()"/> <!-- 인증 전에만 접근 가능 -->
+        <intercept-url pattern="/admin/**" access="hasRole('ADMIN')"/><!-- admin관련 -->
+        <intercept-url pattern="/**" access="hasRole('USER')"/>
+        <!-- 
+        login-page : 로그인 폼 페이지 요청
+        login-processing-url : 로그인 폼 제출 페이지. 핸들러작성 필요없음
+        
+        username-parameter / password-parameter:
+        제출폼에서  id/pw에 해당하는 name값이 username/password가 아닌경우
+         -->
+        <form-login
+            login-page="/member/memberLogin.do"
+            login-processing-url="/member/memberLoginProdess.do"
+            username-parameter="id"
+            password-parameter="password"/>
+         	<!-- 로그아웃시 원하는 쿠키도 지울수있음 -->
+         <logout
+         	logout-url="/member/memberLogout.do"
+         	logout-success-url="/"
+         	delete-cookies=""
+         />
+    </http>
 	
 	<!-- #6. 인증/권한 검사 manager빈 설정 -->
 	<authentication-manager>
-		<authentication-provider>
+		<authentication-provider user-service-ref="securityService">
 			<password-encoder ref="bcryptPasswordEncoder"/>
+			<!-- 직접명시 방식
 			<user-service>
 				<user 
 					name="honggd" 
@@ -30,8 +52,10 @@
 					name="admin" 
 					password="$2a$10$6wLRctSpj6rDSkoDPNdUSeN3mO/lfhAJzD083EZ13sVgT/gPyMeUa" 
 					authorities="ROLE_USER,ROLE_ADMIN"/>
-			</user-service>
+			</user-service> -->
+			
 		</authentication-provider>
 	</authentication-manager>
-	
+	<!--  #7. UserDetails구현체 빈등록 -->
+	<context:component-scan base-package="com.kh.spring.security" />
 </beans:beans>
