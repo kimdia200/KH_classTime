@@ -36,6 +36,20 @@
          	logout-success-url="/"
          	delete-cookies=""
          />
+         <!-- remember-me : session-timeout시간이상으로 사용자 정보를 관리 -->
+         <!-- 
+         	data-souce-ref = DB연결하는 빈
+         	token-validity-seconds : remember-me 토큰 유효시간 60*60*24*14(초단위) 2주로함
+          -->
+         <remember-me
+         	data-source-ref="dataSource"
+         	token-validity-seconds="1209600"
+         />
+         <!-- 권한 없는 페이지 접근시 처리 -->
+         <!-- 로그인 했는데도 권한이 부족할경우 에러페이지로 넘어감 -->
+         <!-- ex) 회원이 ROLE_USER만있는데 ROLE_ADMIN이 필요한경우 -->
+         <!-- error/accessDenied.do는 강사님이 HomeController에 만들어놈 -->
+         <access-denied-handler error-page="/error/accessDenied.do"/>
     </http>
 	
 	<!-- #6. 인증/권한 검사 manager빈 설정 -->
