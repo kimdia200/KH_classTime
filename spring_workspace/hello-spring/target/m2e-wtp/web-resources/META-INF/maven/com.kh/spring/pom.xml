@@ -252,6 +252,13 @@
 	        <artifactId>jackson-databind</artifactId>
 	        <version>2.9.5</version>
 	    </dependency>
+	    
+	    <!-- #16. Websocket 관련 의존 추가 -->
+        <dependency>
+	        <groupId>org.springframework</groupId>
+	        <artifactId>spring-websocket</artifactId>
+	        <version>${org.springframework-version}</version>
+    	</dependency>
 	</dependencies>
     <build>
         <plugins>
