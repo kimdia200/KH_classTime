@@ -259,6 +259,13 @@
 	        <artifactId>spring-websocket</artifactId>
 	        <version>${org.springframework-version}</version>
     	</dependency>
+    	
+    	<!-- stomp관련 의존 추가 -->
+	    <dependency>
+	        <groupId>org.springframework</groupId>
+	        <artifactId>spring-messaging</artifactId>
+	        <version>${org.springframework-version}</version>
+	    </dependency>
 	</dependencies>
     <build>
         <plugins>

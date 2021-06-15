@@ -44,6 +44,7 @@
 			<!-- /member이하는 모두 로그인 인터셉터를 거치되 memberLogin.do는 제외 -->
 			<mapping path="/member/**"/>
 			<mapping path="/board/**"/>
+			<mapping path="/ws/stomp.do"/>
 			<exclude-mapping path="/member/memberLogin.do"/>
 			<exclude-mapping path="/member/memberEnroll.do"/>
 			<exclude-mapping path="/member/checkIdDuplicate*.do"/>

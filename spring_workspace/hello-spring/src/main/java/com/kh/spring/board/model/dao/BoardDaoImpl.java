@@ -79,4 +79,5 @@ public class BoardDaoImpl implements BoardDao {
 		return session.selectList("board.searchTitle",searchTitle);
 	}
 	
+	
 }
