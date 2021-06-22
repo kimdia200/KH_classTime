@@ -1,13 +1,22 @@
 package com.kh.jdk8.lambda;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 
@@ -27,7 +36,112 @@ public class LambdaStudy {
 //		study.test1();
 //		study.test2();
 //		study.test3();
-		study.test4();
+//		study.test4();
+//		study.test5();
+		study.test6();
+	}
+	/**
+	 * 컬렉션도 람다식을 필요로 하는부분이 존재함
+	 */
+	public void test6() {
+		//뒷부분 Integer생략안된데
+		List<Integer> list = new ArrayList<Integer>() {
+			{
+				for(int i = 1; i<=10; i++) {
+					add(i);
+				}
+			}
+		};
+		//특정 요소 제거(true이면 제거함) list.removeIf(Predicate<T>)
+		list.removeIf(n->n%2==0);
+		
+		//요소 대체 list.replaceAll(UnaryOperator<T>)
+		//UnaryOperator<T>: 매개변수와 리턴타입이 같은경우 Function<T,R> 대신 사용가능
+		list.replaceAll(n->n*100);
+		
+		//모든 요소를 순회하는 list.forEach(Consumer<T>) 메서드를 사용해보자
+		list.forEach(n-> System.out.println(n));
+	}
+	
+	
+	/**
+	 * 메서드 참조 Method Reference 
+	 * 람다식을 더욱 간결히 표현한 문법
+	 * 베이스가 되는 함수형 인터페이스에 따라 달라질수있다.
+	 * 
+	 * $.ajax({
+	 *  	success(data){},
+	 *  	error:console.log
+	 * });
+	 * 처럼 줄여서 사용 할 수 있다.
+	 * 
+	 * 특징
+	 * 1. static메서드를 간결하게 표현가능: Integer.parseInt("123") -> Integer::parseInt 라고 표현할수있다
+	 * 2. non_static메서드도 사용가능 : "홍길동".equals(name) -> String::equals (두개의 인자를 받아서 처리)
+	 * 3. 특정객체의 메서드: str::equals (한개의 인자를 받아서 처리)
+	 * 4. 생성자 참조 : new Person() -> Person::new (함수형 인터페이스에 따라 여러 생성자를 호출 가능)
+	 */
+	private void test5() {
+		//아래의 코드는 같은 코드이다
+		//Consumer<String> printer = s -> System.out.println(s);
+		Consumer<String> printer = System.out::println;
+		printer.accept("홍길동");
+		
+		//1. static
+		//Function<String, Integer> intParser = s->Integer.parseInt(s);
+		Function<String, Integer> intParser = Integer::parseInt;
+		int num = intParser.apply("1234567");
+		System.out.println(num);
+		System.out.println("------------------------------------");
+		
+		//2. non_static
+		Function<String, Integer> strLength = String::length;
+		int length = strLength.apply("123456789");
+		System.out.println(length);
+		
+		//non_static메서드의 경우 메서드의 시그니처에 따라 다양하게 표현할수있다.
+		//equals를 예로 들어 사용해보자 (generic이 세개가 필요하다 -> BiFunction이라는 제네릭 세개를 받는 함수형 인터페이스가 존재함)
+		//만약 원하는 함수형 인터페이스를 자바에서 기본제공 해주지 않는다면 자신이 따로 인터페이스를 생성해야함
+		
+		//BiFunction<파라미터1타입, 파라미터2타입, 리턴타입>
+		//BiFunction<String, String, Boolean> strEquals = (s1, s2) -> s1.equals(s2);
+		BiFunction<String, String, Boolean> strEquals = String::equals;
+		System.out.println(strEquals.apply("김윤수", "김윤수"));
+		System.out.println("------------------------------------");
+		
+		//3. 특정객체 기준으로 작성하는 메서드
+		String title = "소나기";
+		//Predicate<String> equalsToTitle = s -> title.equals(s);
+		Predicate<String> equalsToTitle = title::equals;
+		System.out.println(equalsToTitle.test("소나기"));
+		System.out.println(equalsToTitle.test("장마"));
+		System.out.println("------------------------------------");
+		
+		//4. 생성자메서드 참조 - 테스트를 위해 클래스 하나 생성함(Person)
+		//Supplier<Student> spNew = () -> new Person();
+		Supplier<Student> stContr1 = Student::new;
+		Student s1 = stContr1.get();
+		System.out.println("s1 = "+s1);
+		
+		//BiFunction<String, Integer, Student> stContr2 = (stdName, stdAge) -> new Student(stdName, stdAge);
+		BiFunction<String, Integer, Student> stContr2 = Student::new;//함수형인터페이스의 시그니처에 따라 작동
+		Student s2 = stContr2.apply("김윤수",29);
+		System.out.println("s2 = "+s2);
+		
+		//@문제 Student객체에서 nonNull이 붙은 생성자를 호출해서 메서드 레퍼런스로 구현하라
+		Function<String, Student> stContr3 = Student::new;
+		Student s3 = stContr3.apply("기임윤수");
+		System.out.println("s3 = "+s3);
+	}
+	
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@RequiredArgsConstructor //NonNull 어노테이션이 붙은 필드만 가지고 생성자를 만들어줌
+	class Student{
+		@NonNull
+		private String name;
+		private int age;
 	}
 	
 	/**
@@ -43,7 +157,7 @@ public class LambdaStudy {
 		
 		//로또 (1~45사이의 중복없는 난수 Set) 생성 람다식
 		Supplier<Set<Integer>> sp = ()->{
-			Set<Integer> set = new HashSet<>();
+			Set<Integer> set = new TreeSet<>();
 			while(set.size()<6) {
 				set.add((int)(Math.random()*45)+1);
 			}
