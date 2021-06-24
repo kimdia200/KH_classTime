@@ -50,7 +50,6 @@ alert("${msg}");
 			    	<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/board/boardList.do">게시판</a></li>
                     <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/admin/memberList.do">회원관리</a></li>
-                    
 			    </ul>
 			    <%-- 로그인한 경우 --%>
 			    <sec:authorize access="isAuthenticated()">
