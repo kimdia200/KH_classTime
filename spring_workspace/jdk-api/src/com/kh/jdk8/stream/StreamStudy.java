@@ -2,12 +2,19 @@ package com.kh.jdk8.stream;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 public class StreamStudy {
 	public static void main(String[] args) {
@@ -16,7 +23,140 @@ public class StreamStudy {
 //		study.test2();
 //		study.test3();
 //		study.test4();
-		study.test5();
+//		study.test5();
+//		study.test6();
+//		study.test7();
+//		study.test8();
+		study.test9();
+	}
+	/**
+	 * reduce 
+	 * 스트림의 요소로 연산처리후 하나의 결과값을 리턴
+	 * 
+	 * BinaryOperator : 매개변수와 리턴값의 자료형이 같은 Function
+	 * 
+	 */
+	
+	public void test9() {
+		int result = Arrays
+			.asList(1,2,3,4,5,6,7,8,9,10)
+			.stream()
+			.reduce(0, (sum, n)->{
+				System.out.println("sum = " + sum + ", n = "+n);
+				return sum + n;
+				//리턴값은 매개인자 첫번째 값으로 전달됨
+				//  (0, (sum,n) -----> 초기값 0, 리턴값 sum에 지속저장, n = 새로운 파라미터
+			});
+		
+		System.out.println("result = " + result);
+		
+		result =
+			Arrays
+				.asList(1,2,30,4,15,67,7,8,9,10)
+				.stream()
+				.reduce(0, (max, n) -> max > n ? max : n);
+	
+		System.out.println("max = " + result);
+		
+		List<Person> list= 
+				Arrays.asList(
+						new Person("홍길동", 35),
+						new Person("신사임당", 40),
+						new Person("세종", 45),
+						new Person("홍난파", 80),				
+						new Person("전달력", 69)			
+					);
+			Person maxAgePerson = list.stream()
+									  .reduce((p1, p2) -> p1.age > p2.age ? p1 : p2) // Optional<Person>
+									  .get();
+			System.out.println(maxAgePerson);
+			
+			Person person=list.stream()
+							  .reduce(new Person(), (identity, p)->{
+								  identity.age += p.age;
+								  identity.name += p.name;
+								  return identity;
+							  });
+			System.out.println(person);
+
+	}
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	static class Person{
+		private String name;
+		private int age;
+	}
+	
+	/**
+	 * 구구단도 가능
+	 */
+	public void test8() {
+		IntStream
+				.range(2, 10)
+				.forEach(dan->{
+					IntStream
+							.range(1, 10)
+							.forEach(n-> System.out.println(dan+" * "+n+" = " + (dan*n)));
+				});
+	}
+	
+	/**
+	 * 기본형 stream
+	 * - IntStream
+	 * - LongStream
+	 * - DoubleStream
+	 */
+	public void test7() {
+		
+		int[] arr = {1,2,3};
+		IntStream intStream = Arrays.stream(arr);
+		
+		DoubleStream doubleStream = DoubleStream.of(1.1,2.3,4.56);
+		doubleStream.forEach(System.out::println);
+		
+		//range | rangeClosed
+		IntStream
+			.range(0, 10)
+			.forEach(System.out::print);
+		System.out.println();
+		IntStream
+			.rangeClosed(1, 10)
+			.forEach(System.out::print);
+		System.out.println();
+		
+		int sum = IntStream.rangeClosed(1, 10).sum();
+		System.out.println("1~10까지 총합 : " + sum);
+		
+		double avg = IntStream.rangeClosed(1, 100).average().getAsDouble();
+		System.out.println("1~10까지 평균 : " + avg);
+		
+		IntSummaryStatistics summary = 
+				IntStream
+					.of(32, 50, 80, 77, 100, 27, 88)
+					.summaryStatistics();
+			System.out.println(summary);
+			System.out.println(summary.getAverage());
+	}
+	
+	/**
+	 * anyMatch()
+	 * 
+	 * noneMatch()
+	 */
+	public void test6() {
+		//하나라도 true이면 true
+		Boolean bool = Arrays
+							.asList("1", "b2", "c", "d4", "5")
+							.stream()
+							.anyMatch(s->s.startsWith("a"));
+		System.out.println(bool);
+		
+		bool = Arrays
+					.asList("홍길동", "1", "가나다")
+					.stream()
+					.noneMatch(s->Pattern.matches("[0-9]", s));
+		System.out.println(bool);
 	}
 	
 	/**
