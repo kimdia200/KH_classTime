@@ -76,8 +76,8 @@ public class MemberController {
 			authorities.add(simpleGrantedAuthority);
 		}
 		
+		//폼에서 제출 받은 정보(updateMember)에 부
 		updateMember.setAuthorities(authorities);
-		
 		updateMember.setPassword(((Member)oldAuthentication.getPrincipal()).getPassword());
 		
 		//2. security context 에서 principal 갱신
